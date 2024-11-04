@@ -6,9 +6,39 @@ Notes for acloud.guru AWS Solution Architect Associate training
 
 
 
+Availability Zone == Data Center, can have multiple DCs in an AZ
+
+Region: geographical area, each Region consists of 2 or more AZ.
+
+Edge Location: endpoints for AWS which is used to cache content i.e. CloudFront (CDN)
+
+
+Main course topics: compute, storage, databases, network, content delivery, security, IAM, compliance
+
+
+## Identity and Access Management / S3
+
+IAM: manage users and level of access to AWS Console
 
 
 
+IAM Features: 
+    - Centralized controle of AWS Account
+    - Shared access to your AWS Account
+    - Granular perms
+    - Identity Federation (including Active Directory, Facebook, LinkedIn)
+    - Multifactor Authentication
+    - Provide temproary access for users / devices / services
+    - Password rotation policy
+    - Integrates with AWS services
+    - Supports PCI DSS Compliance
+
+
+Key IAM Aspects: 
+    Users:    end users sucha as people, employees etc
+    Groups:   collection of users, each user in the group will inherit the permissions of the group
+    Policies: policies made up of policy documents (JSON that gives perms to what a User, Group, or Role is able to do)
+    Roles :   create roles and assign to resources
 
 
 
