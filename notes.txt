@@ -42,6 +42,284 @@ Key IAM Aspects:
 
 
 
+## IAM LAB
+
+> Console > Search > IAM
+Upper right shows login console: 
+
+https://iamwhatiam.signin.aws.amazon.com/console
+
+NOTE:  I changed it to knotknull for the alias:
+https://knotknull.signin.aws.amazon.com/console
+
+
+Root Account:  Account that created the AWS account == "God Mode"
+
+Policies > choose a police (i.e. Administrator Access), click on "+" for JSON: 
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Effect": "Allow",
+            "Action": "*",
+            "Resource": "*"
+        }
+    ]
+}
+
+- IAM is universal, does not apply to regions
+- root account has full Admin Access
+- new user has not access, can add console and programtic access
+
+# billing alarm
+CloudWatch > Alarms > Billing > Create Alarm
+
+
+ - Create SNS topics
+ - add email (confirm)
+
+subscription to topic: 
+ arn:aws:sns:us-east-1:709596356054:aws_billing_alarm:368bbef4-b4e2-4f70-b103-ab42cfb544d6
+
+
+Take away:  use CloudWatch to create a billing alarm via SNS topic
+
+
+## S3 
+
+Simple Storage Service 
+- object storage
+    - key (name) / value (data)
+    - version ID
+    - metadata
+    - ACLs
+    - toreents
+
+- data spread across multiple devices / facilities
+- size: 0 bytes to 5TB files **
+- unlimited storage
+- files stored in buckets (think folder)
+- universal namespace: must be globally unique
+- successful upload:  HTTP 200 code
+NOTE: not suitable for installing an OS on 
+
+
+# S3 Consistency:
+    - Read after Write for PUTS of new objects
+    - Eventural Consistency for overwrite PUTS and DELETES (propogates)
+        - could get older version or deleted file
+
+
+# S3 Versioning: 
+    Can version buckets and suspend versioning:
+    - versioning give a version to each new put a key
+    - suspending versioning makes the version id null 
+        - if there versions without a null version id they will remain
+        - putting a new entry with a key that has a null will overwrite the null key version
+    - MFA Delete
+    - Encryption
+
+# S3 Guarantees:
+    - 99.9% Availability **
+    - 99.9999999999% Durability **    (11 9's )
+
+
+# S3 Storage Classes
+
+- S3 Standard
+    - 99.99 Availability / 99.9999999 durability
+        - stored redundantly across multiple devices / multiple facilities 
+            - sustain loss of 2 facilities concurrently
+
+- S3 IA (infreqeuently accessed)
+    - less frequent access
+    - requires rapid access when needed
+    - lower fee than S3, charged retrieval fee
+
+
+- S3 One Zone - IA (infreqeuently accessed)
+    - low cost IA
+    - don't require multiple AZs resiliency
+NOTE: was known as RRS (Reduced Redundancy Storage)
+
+
+- S3 Intelligent Tiering
+    - optimize costs by automatically moving data to most cost effective access tier,
+        - no performance impact / no operational overhead
+
+- S3 Glacier
+    - low cost storage for data archiving
+        - retrieval time from minutes to hours
+
+- S3 Deep Archive
+    - lowest cost storage 
+        - retrieval time 12 hours
+
+
+
+**          S3 Standard     S3 Intelligent-Tiering      S3-IA       S3-One Zone IA      S3 Glacier      S3 Deep Archive
+durability      11 9s               11 9s               11 9s           11 9s               11 9s               11 9s
+availability    99.99               99.99               99.99           99.95               N/A                  N/A 
+SLA             99.99               99                  99              99                  N/A                  N/A 
+AZ zones         >=3                >=3                 >=3              1                  N/A                  N/A                   
+Min Charge       N/A                N/A                128 kb          128 kb               40 kb                40 kb            
+Min Duratio     N/A                30 days            30 days         30 days              90 days              180 days
+Retrieval Fee   N/A                 N/A               per GB          per GB               per GB               per GB
+1st byte latency  ms                 ms                 ms                ms               min - hr             hours
+
+
+S3 Charges: 
+- storage
+- requests
+- management priceing (tiers)
+- data transfer
+- transfer acceleration
+    - use CloudFront to speed up bucket transfers
+- cross region replication
+
+
+
+Buckets viewed globally but can be housed regionally
+
+Access:   **
+    - Bucket Policies: applies across the entire bucket
+    - Object Policies: applies to individual files
+    - IAM policies to Users and groups: applies to users / groups
+
+
+# S3 pricing
+    - storage
+    - requests / data retrieval
+    - data transfer
+    - mgmt & replication
+
+S3 and S3 Intelligent Tiering is same for frequent access, less for IA tier
+cost hierarchy: 
+    S3 Std > S3 IA > S3 IA > S3 One Zone IA > Glacier > Glacier Deep Archive  **
+
+
+# S3 Security / Encryption
+
+    - Bucket Policies
+    - ACL (to object)
+
+S3 buckets can be configured to create access logs make to bucket.
+
+Encryption in Transit 
+    - SSL / TLS (https)
+
+Encryption at Rest 
+ - Server Side
+    - S3 Managed Keys - SSE-S3: Amazon manages keys
+    - AWS Key Management Service, Managed Keys - SSE-KMS: manage keys with AWS Key Management Service
+    - Server Side Encryption w/ Customer Provided Keys:  SSE-C
+    - NEW: Dual-Layer server-side encryption with AWS KMS Service Keys (DSSE-KMS)
+
+ - Client Side Encryption
+    - customer encrypts and uploads
+
+Can encrypt individual objects and at bucket level.
+
+
+# S3 Versioning 
+    - stores all versions of an object (soft delete)
+    - once enabled, CANNOT DISABLE, only suspend  **
+    - lifecycle rules
+    - MFA Delete
+
+
+Note: latest version is available (can be made public)
+      - lower versions not made available/public unless specifically made so
+      DELETING the DELETE MARKER makes most recent version available  **
+
+# S3 Lifecycle Rules
+    - Automates moving objects between storage tiers 
+        - can be used w/ versioning 
+        - current and prior versions
+buckets > bucket > management > lifecycle configuration > create rule 
+
+# S3 Object Lock & Glacier Vault Lock
+    Object Lock: write once, ream many (WORM)
+        - prevent object from being deleted / modified for fixed amount of time or indefinitely 
+
+        - Governance Mode: users can't overwrite or delete and object version or alter lock settings  **
+                - special perms needed
+
+        - Compliance Mode: protected object version can't be overwritten or deleted by ANY USER (including root user)  **
+            - ensures object version can't be overwritten or deleted for the duration of the retention period (i.e. 7 Years)
+
+        retention period: protects object version for fixed amount of time  
+            - timestamp of expiration kep in version metadata
+
+        - Legal Hold: prevents an object version from being overwritten or deleted
+                - does not have a retention period.  In place until removed
+                - can be applied / removed with s3:PutObjectLegalHold perm
+
+    Glacier Vault Lock: deploy and enforce compliance controls for individual S3 Glacier Vaults 
+            with Vault Lock Policy. 
+                - specify controls in a Vault Lock Policy
+                    - policy locked from future edits
+- Object Lock == WORM
+- Object Lock applied to objects or bucket
+- governance mode and compliance mode
+- Glacier Vault Lock = compliance controls for Glacier Vaults
+    - Vault Lock policy locked for edits
+
+
+
+# S3 Performance
+    S3 Prefix:   between bucket name and object name 
+        i.e.  /bucketname/folder1/subfolder2/xyz.txt  >> Prefix = /folder1/subfolder2
+
+
+S3 latency:  1st byte within 100 - 200 ms
+
+Throughput Requests can achieve: 
+    - 3500 PUT / COPY / POST / DELETE   per PREFIX  **
+    - 5500 GET/HEAD requests per second per PREFIX  **
+
+
+NOTE: can get better performance by spreading reads across different prefixes i.e.:
+    - 2 prefixes (/folder1/subfolder2) 11,000 requests / sec
+    - 4 prefixes (/folder1/subfolder2/dir1/dir2 ) 22,000 requests / sec
+
+MORE PREFIXES == BETTER PERFORMANCE !!  **
+
+SSE-KMS Quotas: 
+
+ - KMS Request rates: 
+    - SSE-KMS has KMS limits 
+        - upload   file:  GenerateDataKey in KMS API
+        - download file:  Decrypt in KMS API
+
+KMS Quota is region specific **
+    - 5500 or 10k or 30k requests per second  **
+
+NOTE: CANNOT REQUEST QUOTA INCREASE FOR KMS 
+
+
+Uploads
+
+    Multi-part uploads:
+        - recommended for files over 100 MB  **
+        - required for files over  5 GB   
+
+Downloads:
+    S3 Byte-Range fetches: 
+        - parallelize downloads by specifying byte ranges
+        - can speed up downloads
+        - download partial file
+
+# S3 Select & Glacier Select
+    S3 Select:  retrieve subtset of data from object using simple SQL expressions
+        - retrieve only data you need
+            - performance increase 
+                - up to 400% faster  ** 
+                - up to 80% cheaper
+
+    Glacier Select:  Similar to S3 Select but run against Glacier
+
+# AWS Organizations and Consolidated billing
 
 
 
