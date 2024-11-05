@@ -321,7 +321,90 @@ Downloads:
 
 # AWS Organizations and Consolidated billing
 
+AWS Organizations: account management service that enables you to consolidate multiple AWS accounts 
+    into an organization to centally manage. 
+    Accounts under organization unit under ROOT  with policies at the OU and account
+OU = Organizational Unit
 
+{Organization}
+---------------
+[Policy]    [ROOT]          
+      |   /        \   +---[Policy]              [Policy]
+     [OU]           \  |                            /
+    /    \           [OU]----------------------+   /       
+[Account]  \           |                       |  /
+             [OU]    [Account]                [OU]---------+
+           /      \                          / |           |
+     [Account]    [Account]         [Account] [Account] [Account]      
+
+Consolidated Billing: 
+    - Paying account (cannot access sub resources) linked to AWS accounts
+
+
+                        +------[Test/Dev]
+                        |
+    [Paying Account] ---+------[Production]
+                        |
+                        +------[Back Office]
+
+Consolidates usage for volume discounts
+
+- Root Account should always have MFA
+- Paying account should be for billing only 
+    - do no deploy resources to paying account
+- Service Control Policies on OU or individual account  **
+    - enable / disable AWS Services
+
+
+# Share S3 Buckets Across Accounts
+    - 3 ways to share S3 Buckets across acounts  **
+        1. Bucket Policies and IAM
+            - across the entire bucket
+            - programatic access only
+        2. Bucket ACLs and IAM 
+            - individual objects
+            - programatic access only
+        3. Cross-account IAM Roles
+            - programatic access 
+            - console access 
+
+IAM > Roles > Create Role
+    - Another AWS Account
+    - Attach permission policies to role
+        i.e. AmazonS3FullAccess
+    - Role Name > Create Role
+
+NOTE:  Give this link to users who can switch roles in the console   **
+    user logs in an clicks "Switch Role" under id or use link
+
+
+# Bucket replication
+S3 > buckets > bucket > Replication Rule > Create Replication Rule
+
+NOTE: Source and replicated buckets need to be versioned !! **
+    - Detele markers are not replicated 
+    - Permissions on source bucket will replicate across regions
+
+# S3 Transfer Acceleration
+    - utilizes CloudFront Edge Network to accelerate uploads
+        - use distinct URL to upload to edge location which is then transfered to S3
+
+
+# DataSync
+    - move large amounts of data to AWS
+    - AWS DataSync Agent
+    - locally connects to NAS or SMB filesystem
+        - copy to AWS 
+        - write from AWS 
+    - Connects to AWS Services: 
+        - S3
+        - EFS
+        - FSx for Windows File Server
+    - Hourly, daily or weekly
+NOTE: can replicate EFS to EFS 
+
+
+# CloudFront
 
 
 
