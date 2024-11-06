@@ -652,19 +652,37 @@ CloudFront:
     Types:
         - Web Distribution: web content
         - RTMP: Media Streaming
+    Edge Locations can be read / write
+    Objects cached for TTL
+
+Snowball:
+    - Disk appliance to move data in /out of S3
+    - import to S3
+    - export from S3
 
 
+Storage Gateway:  agent installed on prem
+    File Gateway  : flat files stored on S3
+
+    Volume Gateway: iSCSI / disk volumes
+        Stored Volumes: entire dataset stored on site and is asyn backed up to S3
+        Cached Volumes: entire dataset on S3 and more frequently accessed is cached locally 
+
+    Gateway Virtua Tape Library: backup to S3
 
 
+Athena: 
+    - query S3 using SQL
+    - serverless
+    - analyse log data in S3
 
 
+Macie: 
+    - uses ML / NLP / AI to idetnify PII in S3
+    - analyze CloudTrail logs
+    - dashboard, reports, alerts
+    - PCI-DSS compliance
 
 
-
-
-
-
-
-
-
+A Deny in a policy will override an Allow that user may have
 .
