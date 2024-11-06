@@ -392,7 +392,7 @@ NOTE: Source and replicated buckets need to be versioned !! **
 
 # DataSync
     - move large amounts of data to AWS
-    - AWS DataSync Agent
+    - AWS DataSync Agent  (on prem)
     - locally connects to NAS or SMB filesystem
         - copy to AWS 
         - write from AWS 
@@ -405,6 +405,140 @@ NOTE: can replicate EFS to EFS
 
 
 # CloudFront
+ - Content Delivery Network
+    - pushes contact to local Points of Presence
+    - Edge Location:  where content is cached
+        - Can Read and Write to Edge Locations
+    - Origin       :  Origin of all files distributed via ECN
+        - bucket
+        - ec2 instance 
+        - ELB
+        - Route 53
+    - Distributon  :  Name of the CDN
+        - collection of Edge Locations
+
+    - Can deliver:
+        - Static
+        - Dynamic
+        - Streaming
+        - Interactive content
+
+    - Objects cached for the TTL (Time To Live) 
+
+    Web Distribution:  Used for websites
+    RTMP :  Media Streaming
+
+NOTE: Can clear cached objects, will be charged
+
+
+Can restrict access via signed URLs or signed cookies
+
+Domain Name created for Cached Content
+i.e. https://d16s698dkl8k6u.cloudfront.net
+
+https://d16s698dkl8k6u.cloudfront.net/README.txt
+
+NOTE:  can invalidate the Distribution:  CloudFront > Distributions > Invalidations
+
+
+# CloudFront Signed URLs and Cookies
+
+    - Signed URLs  :  1 file   = 1 URL
+    - Signed Cookie:  1 cookie = multiple files
+
+
+Attach policy to 
+    - URL Expiration
+    - IP Ranges
+    - Trusted Signers (which AWS accounts can create signed URLS)
+
+
+Origin Access Identity (OAI):  
+    - users access CloudFront which then access S3 bucket via OAI 
+
+
+CloudFront SDK generates Signed URL
+
+    - key pari of Signed URL is account wide (managed by ROOT)
+
+S3 Signed URL 
+    - request as IAM user who creates presigned URL 
+    - limited lifetime
+
+Origin is EC2 use CloudFront
+Origin is S3  use S3 Signed URL
+
+
+# Snowball
+    - Petabyte scale data transport solutions 
+    - import / export to S3
+    - secure appliances to transfer large amounts of data into / out of AWS
+        - addresses high network costs
+        - long transfer times
+        - security
+        - 1/5th cost of high speed Internet
+
+50TB / 80TB
+    - 256 bit encryption
+    - Trusted Platform Module
+    - Once transferred, AWS wipes
+
+Snowball Edge 
+    - 100TB onboard storage and compute
+    - can use lambda functions
+    - applications can run when can't access cloud
+    - portable AWS
+
+Snowmobile 
+    - Exabyte-scale data transfer
+    - 100 PB per Snowmobile (45ft trailer)
+
+
+
+# Storage Gateway
+    - services that connects on prem software appliance with cloud storage.
+    - secure integration between onprem and AWS storage
+    - can be software or physical device
+    - download as virtual machine
+        - VMWare ESXi
+        - Microsoft Hyper-V
+
+3 Types: 
+    File Gateway  :  NFS & SMB     (files)
+        - files stored as S3 objects 
+        - access ad NFS mount
+        - perms / timestampes are S3 metadata
+
+    Volume Gateway:                 (drive images)
+        - iSCSI
+        - stored volumes
+            - store primary data locally 
+            - async backups to AWS
+            - backup to S3 as EBS snapshots  (1GB - 16 TB)  **
+        - cached volumes
+        - asynchronouse backup as point-in-time snapshots (deltas)
+        - stored as EBS snapshots
+
+        - cached volumes
+            - use S3 as primary data storage
+            - frequently accessed data is stored locally
+                - caches frequently used data
+            - upto 32 TB volumes and attach as iSCSI
+                - 1GB to 32 TB
+
+    Gateway Virtual Tape Library  :
+        - VTL (Virtual Tape Library)
+        - media changer and tape drives preconfigured
+        - backup applicatons can use
+        - virtual tapes to S3
+
+
+
+
+
+
+
+
 
 
 
