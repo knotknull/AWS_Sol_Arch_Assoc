@@ -532,6 +532,131 @@ Snowmobile
         - backup applicatons can use
         - virtual tapes to S3
 
+# Athena vs Macie
+
+Athena:
+    - Query S3 data with standard SQL
+    - Serverless
+    - Pay per query / per TB scanned
+    - query log files
+    - reports off of S3
+    - query clickstream data
+
+Macie:
+    - Security services that uses ML / NLP to discover sensitive data in S3 
+    - Uses AI to check if S3 has senstivie data, PII
+    - dashoboard, reports, alerts
+    - analyze CloudTrail logs
+    - PCI-DSS use case / prevent ID theft
+
+S3 & IAM Summary
+
+IAM: 
+    - Users
+    - Groups
+    - Roles
+    - Policies
+    - Universal, not region specific
+    - Root Account has Admin
+    - New Users 
+        - have NO permissions
+        - Assigned Access Key and Secret Access Keys  (view once)
+
+S3:
+    - Object based
+    - 0 Bytes to 5 TB
+    - Universal name space, globally unique
+    - HTTP 200: upload successful
+    - Bucket Policies: across all objects in Bucket
+    - ACL: individual objects (files)
+    - Can be setup to generate access logs
+    - Attributes: 
+        - Key
+        - Value
+        - Verison ID
+        - Metadata
+        - Subresources:
+            - ACL / torrents
+    - Consistency: 
+        - Read after Write for PUTS new Objects
+        - Eventual consistency for overwrite PUTS / Deletes
+    S3 Standard    
+    - Availability 
+        - 99.99   (4 9's)
+    - Durability:  
+        - 99.999999999 (11 9's)
+    S3 IA: Infrequently Accessed / less frequent / rapid access
+    S3 IA One Zone:  just 1 AZ
+    S3 Intelligent Tiering :  Mchine learning to migrate data to cost-effective tier
+            - no performance impact or operational overhead
+    S3 Glacier:  Low cost data archival / retrieval minutes to hours
+    S3 Glacier Deep Archive: Archival, retrieval up to 12 hours
+        - lowest cost storage class
+
+    Cost hierarchy: 
+        - S3 Std
+        - S3 IA
+        - S3 Intelligent Tiering
+        - S3 One Zone - IA     NOTE: can lose your data
+        - S3 Glacier
+        - S3 Glacier Deep Archive
+
+    Encryption In Transit: 
+        - SSL / TLS
+
+
+    Encryption At Rest: 
+        - SSE - S3  Server Side Encryption
+        - SSE - KMS utilizing Key Management Service
+        - SSE - C: Customer Proided Keys 
+        - Client Side Encryption
+
+    Organization: 
+        - bucket from one account to another
+        - Server Control Policies:
+            - on Organization Unit (OU) 
+            - individual accts
+
+
+    Share S3 Buckets across accounts
+        - Bucket Policy & IAM
+            - entire bucket
+            - programmatic only
+        - ACLs & IAM
+            - individual objects
+            - programmatic only
+        - Cross Acount Roles 
+            - programmatic 
+            - console
+
+
+Cross Region Replication 
+    - Versioning MUST BE ON at source and target
+    - existing files not replicated automatically
+    - DELETE MARKERS ARE NOT REPLICATED
+    - Delete individual versions will not be replicated
+
+Lifecycle Policies:
+    - Automate moving objects to different storage tiers
+    - Can be used with versioning
+
+S3 Transfer Acceleration
+    - utilizes CDN 
+
+CloudFront: 
+    - CDN
+    - Edge Location: location where content is cached
+    - Origin:  origin of all content
+        - S3, EC2, ELB, Route53
+    - Distribution:  Name of CDN
+    Types:
+        - Web Distribution: web content
+        - RTMP: Media Streaming
+
+
+
+
+
 
 
 
