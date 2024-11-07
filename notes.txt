@@ -685,4 +685,56 @@ Macie:
 
 
 A Deny in a policy will override an Allow that user may have
+
+
+
+## EC2 
+- Elastic Cloud Compute: Virtual Machines in Cloud
+     pricing:
+        - on demand: fixed rate by the hour with no commitment
+
+        - reserved : capacity reservation ata a discount on hourly charge (1 to 3 year terms)
+                        - Standard Reserved: up to 75% off on demand
+                        - Convertible Reserved: up to 54% on demand 
+                                - can change instance types as long as instance is equal or greater value
+                        - Scheduled Reserved: up to 54% on demand 
+                                - time window of reservation
+                                - match capacity to a recurring schedule
+
+        - spot     : bid what you will pay for insance capacity
+                        can lose instance at any time 
+
+        - dedicated host: physical EC2 server dedicated for your use.
+            - regulatory that does not allow multi-tenant virtualization
+            - licensing the does not support cloud deployments
+            - can be purchased on-demand (hourly)
+            - purchased as reservation up to 70% off
+
+EC2 Intances Mnemonic:  Fight Dr. McPixiez AU
+F - FPGA
+I - IOPS 
+G - Graphics
+H - High Thruoughput disk
+T - T2 Micro (cheak general purpose)
+D - Density
+R - RAM
+M - Main choice for general purpose apps
+C - Compute
+P - Graphics (think Pics)
+X - Extreme Memory
+Z - Extreme Memory and CPU
+A - Arm-based workloads
+U - Bare Metal
+
+
+security group is a "virtual firewall"
+
+Termination Protection turned off by default 
+
+Root EBS volume will be default deleted when instance terminated
+    - Root valume can be encrypted
+
+
+# Security Groups
+
 .
