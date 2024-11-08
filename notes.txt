@@ -803,3 +803,38 @@ Volume       |---------------Solid State DrivesSSD ------------|----------------
 
 # EBS Volumes and Snapshots
 
+- EBS and EC2 instances are in the same AZ
+
+- root EBS volumes destroyed when instance is destroyed
+    - attached non-root volumes persist when instance terminated
+
+- can change size of drive on the fly (have to extend file system to get the additional storage)
+
+- can change the volume type (ex. gp3 to iop) on the fly
+
+Exam question:  how to move volume and ec2 instance to another AZ
+    > volumes > select volume > create snapshot
+
+    > created snapshot > create image
+        NOTE: set Virtualization Type as "Hardware-assisted virtualization"
+             Allows for greater selection of EC2 instance types
+
+Once image is created:
+    > AMIs > select created image >  Launch > choose new AZ to spin up into
+
+NOTE: 
+    AMI > copy AMI to a different region
+
+Snapshots exist on S3
+Snapshots are point in time copy of volumes
+Snapshots are incremental 
+    - only blocks that have changes since last snapshot are moved to S3
+
+
+
+
+
+
+
+
+.
