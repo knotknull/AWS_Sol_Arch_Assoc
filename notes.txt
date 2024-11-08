@@ -737,4 +737,69 @@ Root EBS volume will be default deleted when instance terminated
 
 # Security Groups
 
-.
+- firewall for a resource 
+    - change to a security group rule takes place immediately
+    NOTE: security groups are STATEFULL 
+            - creating an inbound rule will allow for the corresponding outbound rule 
+                i.e. HTTP / 80 IN will automatically allow HTTP / 80 OUT 
+
+NOTE:  You can't block a particular port or IP address in a security group, can only do that with NACLs
+       Security groups block everything by DEFAULT.
+
+       NACLs are STATELESS, need to create both inbound and outbound rule
+
+- can attach more than one security group to an EC2 instance
+
+- All Inbound  traffic BLOCKED by default
+- All Outbound traffic ALLOWED by default
+- Security Groups are STATEFUL 
+    - those allowed IN are also allowed OUT
+- Cannot block specific ports or IP addresses using Security Groups
+    - use Network Access Control Lists (NACLs)
+
+- Can have any number of EC2 instances in a security group
+- Can have multiple security groups attached to an EC2 instances 
+- Can only specify "ALLOW" rules in a Security Group 
+    - default of a SECURITY GROUP is to "DENY" everything
+
+
+# EBS
+
+- Elastic Block Store 
+    - persistent block storage volumes for EC2 instances
+        - virtual hard disk in cloud
+    - automatically replicated within its Availability Zone
+
+5 Types of EBS Storage:
+    - General Purpose (SSD)
+    - Provisioned IOPS (SSD)
+    - Throughput Optimised Hard Disk Drive  (Physical Magnetic drive)
+    - Cold Hard Disk Drive
+    - Magnetic
+
+
+             |---------------Solid State DrivesSSD ------------|----------------- Hard Disk Drives HDD --------------------|
+Volume Type  |        General                 Provisioned      |  Throughput              Cold                  EBS        |
+             |        Purpose SSD             IOPS SSD         |  Optimized SSD           HDD                   Magnetic   |
+             |                                                 |                                                           |
+Desc         |        general purpose          Highest         | Low Cost HDD             Low Cost HDD          previous   | 
+             |balances price / performance     Performance SSD | freq access,             less freq             generation | 
+             |wide variety of transactions     mission critical| thruput intensive        accessed workloads    HDD        |
+             |                                                 |                                                           |
+             |                                                 |                                                           |
+Use Cases    |  most work loads               Databases        | Big Data &               File Servers        Infreq access|
+             |                                                 | Datawarehouses                                workloads   |    
+             |                                                 |                                                           |
+API Name     |         gp2                       io1           |     st1                    sc1                 standard   | 
+             |                                                 |                                                           |
+Volume Size  |      1 GB - 16 TB              4 GB - 16 TB     | 500 GB - 16 TB           500 GB - 16 TB       1GB - 1 TB  |
+             |                                                 |                                                           |
+Max IOPS /   |        16,000                    64,000         |     500                      250               40 - 200   |
+Volume       |---------------Solid State DrivesSSD ------------|----------------- Hard Disk Drives HDD --------------------|
+
+
+
+
+
+# EBS Volumes and Snapshots
+
