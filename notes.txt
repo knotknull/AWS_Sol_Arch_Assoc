@@ -830,11 +830,37 @@ Snapshots are point in time copy of volumes
 Snapshots are incremental 
     - only blocks that have changes since last snapshot are moved to S3
 
+Can create AMIs from snapshots
 
 
+# AMI Types (EBS vs Instance Store)
 
+AMI factors: 
+    - Region
+    - OS
+    - Architecture (32-bit or 64-bit)
+    - Launch Perms
+    - Storage for Root Device (Root Dev Vol)
 
+    - Instance Store (Ephemeral Storage)
+        - root device is instance store volume created from template stored in S3
+        NOTE: instance store restricts type of instance types
+                can only reboot or terminate in instance store ec2 instance 
+                CANNOT STOP instance store e2c instance 
+                If you stop instance store you will lose all data on that instance (EPHEMERAL storage)
 
+    - EBS Backed Volumes
+        - root device created from an EBS snapshot
+        - EBS instance can be stopped without losing data
+    
+    Can reboot both Instance Store and EBS Backed Volumes wihout losing data
 
+    Can keep EBS volume after termination, Instance Store loses all data
+
+ENI vs ENA vs EFA 
+
+Elastic Network Interface
+Elastic Network Adapter
+Elastic Fabric  Adapter
 
 .
