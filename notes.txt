@@ -859,8 +859,87 @@ AMI factors:
 
 ENI vs ENA vs EFA 
 
-Elastic Network Interface
-Elastic Network Adapter
-Elastic Fabric  Adapter
+ENI - Elastic Network Interface
+     virtual network card 
+
+EN  - Enhanced Networking 
+    Single root I/O virtualization  (SR-IOV)
+    high performance netwoking on supported instance types 
+    NOTE:  ENA is a subset of Enhanced Netowrking
+
+EFA - Elastic Fabric  Adapter
+    network device than can attached to EC2 instance to accelerate 
+    High Performance Computing (HPC) and Machine Learning apps
+
+
+ENI: virtual network card 
+    - primary private IPv4 address from IPv4 address range
+    - One or more secondare private IPv4 address from IPv4 address range
+    - One Elastic IP address (IPv4) per private IPv4 address 
+    - One public IPv4 address
+    - One or more IPv6 addresses
+    - One or more security groups
+    - One MAC address
+    - source / destination check flag
+    - description
+
+    - create a management network (separate traffice)
+    - use network and security applianced in VPC
+    - dual-homed instances with workloads / roles on distinct subnets
+    - low budget, high availability solution
+
+
+EN: Enahcned Networking 
+    - single root I/O virtualization (SR-IOV)
+        SR-IOV device virtualization provides hight I/O and lower CPU utilization 
+         compared to traditional virtualized network interfaces
+
+    - higher bandwidth, higher packet per second (PPS) performance, 
+      lower inter-instance latencies.  
+      NOTE: No additional changed for using enhanced networking
+      user for good networking performance
+
+    Depending on Instance type, enhanced networking enabled by: 
+
+    Enhanced Network Adapter (ENA)  up to 100Gbps
+    or
+    Intel 82599 Virtual Function (VF) interface, supports up to 10 Gbps
+     (older instances)
+
+
+EFA: Elastic Frabric Adapter
+    network device attach to EC2 instance to accelerate HPC and ML
+    provides lower and more consistent latency and higher thruput than TCP transport
+    EFA can us OS-bypass.  
+        Allows apps to bypass OS kernel and communicate directly with EFA device
+            (only Linux)
+
+
+Encrypted Root Device Volumes & Snapshots
+
+How to create an encrypted image from unencrypted volume
+
+bring up ec2 instance > volumes > create snapshot:  my_unencrypted_snap 
+
+snapshots > copy my_unencrypted_snap > 
+    - check Encrypt this snapshot 
+    - default key
+        > my_encrypted_snap
+
+
+snapshots > select  my_encrypted_snap  > create image > my_encrypted_image
+
+AMI > select my_encrypted_image > Launch Instance
+
+NOTE:  
+- Snapshots of encrypted volumes are encrypted automatically
+- Volumes restored from encrypted snapshots are encrypted automatically
+- Can share snapshots but only if they are unencrypted
+- snapshots can be shared with other AWS accounts / made public
+- Can nore encrypt root device volumes upon creation of EC2 instance **
+
+
+## Spot Instaces & Spot Fleets
+
 
 .
