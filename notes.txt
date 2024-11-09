@@ -1173,11 +1173,129 @@ put in commands or upload a file
 # Instance Metadata
 
 
+get metadata from ec2 instance
+
+Address to get meta data from: http://169.254.169.254
+     - IPv6 http://[fd00:ec2::254]/latest/user-data
+
+OLD WAY :     **
+curl http://169.254.169.254/latest/user-data
+
+http://169.254.169.254/latest/meta-data/
+http://169.254.169.254/latest/dynamic/
+http://169.254.169.254/latest/user-data
 
 
 
+NEW WAY (2024) :     **
+TOKEN=`curl -X PUT "http://169.254.169.254/latest/api/token" -H "X-aws-ec2-metadata-token-ttl-seconds: 21600"` \
+&& curl -H "X-aws-ec2-metadata-token: $TOKEN" http://169.254.169.254/latest/user-data
+
+NOTE:  The above gets an api token first and then makes a second call with the token to get the user data 
+. get token first:
+    TOKEN=`curl -X PUT "http://169.254.169.254/latest/api/token" -H "X-aws-ec2-metadata-token-ttl-seconds: 21600"` 
+
+use the TOKEN to call curl for metadata:
+
+    curl -H "X-aws-ec2-metadata-token: $TOKEN" http://169.254.169.254/latest/user-data
 
 
+all of the metadata you can query 
+    curl -H "X-aws-ec2-metadata-token: $TOKEN" http://169.254.169.254/latest/metadata
+    i.e. curl -H "X-aws-ec2-metadata-token: $TOKEN" http://169.254.169.254/latest/metadata/hostname
+
+ami-id
+ami-launch-index
+ami-manifest-path
+block-device-mapping/
+events/
+hostname
+iam/
+identity-credentials/
+instance-action
+instance-id
+instance-life-cycle
+instance-type
+local-hostname
+local-ipv4
+mac
+managed-ssh-keys/
+metrics/
+network/
+placement/
+profile
+public-hostname
+public-ipv4
+public-keys/
+reservation-id
+security-groups
+services/
+
+Dynamic info:
+
+TOKEN=`curl -X PUT "http://169.254.169.254/latest/api/token" -H "X-aws-ec2-metadata-token-ttl-seconds: 21600"` && curl -H "X-aws-ec2-metadata-token: $TOKEN" http://169.254.169.254/latest/dynamic/instance-identity/document
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+100    56  100    56    0     0   6901      0 --:--:-- --:--:-- --:--:--  7000
+{
+  "accountId" : "709596356054",
+  "architecture" : "x86_64",
+  "availabilityZone" : "us-east-1b",
+  "billingProducts" : null,
+  "devpayProductCodes" : null,
+  "marketplaceProductCodes" : null,
+  "imageId" : "ami-063d43db0594b521b",
+  "instanceId" : "i-0a1f63ada50c5f1a7",
+  "instanceType" : "t2.micro",
+  "kernelId" : null,
+  "pendingTime" : "2024-11-09T21:09:23Z",
+  "privateIp" : "172.31.53.155",
+  "ramdiskId" : null,
+  "region" : "us-east-1",
+  "version" : "2017-09-30"
+}[root@ip-172-31-53-155 ec2-user]# 
+
+
+# EFS
+
+Elastic File System 
+ - file system for EC2 instances
+ - capacity is elastic, do not have to pre-provision
+ - for linux based 
+ - like EBS 
+    - EBS can only be mounted by one machine
+    - EFS volume can be mounted by several machines
+
+- on prem can access EFS via DirectConnect
+- 2 performance modes:
+    - general purpose 
+    - max i/o
+
+- EFA IA (Infreq. Access)
+    - cheaper instance
+
+- data redundant across multiple AZs
+
+
+NOTE: ensure NFS protocol has been added to inbound rule  of the security group for the instance mounting the EFS
+
+
+
+Create EFS cluster 
+
+to mount on EC2 
+
+sudo mount -t efs -o tls fs-0655fd1617d986dbd:/ efs
+
+
+- EFS supports NFS v4 
+- only pay for storage used
+- scale up to petabytes
+- can support 1000s of concurrent NFS connections
+- Data store across multiple AZs within a region
+- Consistency:  Read after Write
+
+# FSx for Windows and Lustre
 
 
 
