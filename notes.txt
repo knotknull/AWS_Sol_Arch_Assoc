@@ -1049,9 +1049,52 @@ NOTE:   Instance RAM must be less than 150 GB in size.    **
         Available for: Windows, Amazon Linux 2 AMI, Ubuntu
         CANNOT BE HIBERNATED FOR MORE THAN 60 DAYS 
 
+# CloudWatch
+
+ - monitoring services to monitor AWS resources as well as apps
+ - performance monitoring:
+    - Compute
+        - EC2 instances
+        - Autoscaling groups
+        - Elastic Load Balancers
+        - Route53 Health check
+    - Storage 
+        - EBS Volumes
+        - Storage Gateway
+        - CloudFront
+EC2:
+    - CPU
+    - Network
+    - Disk 
+    - Status Check
+
+CloudTrail:
+    - camera into your AWS environment
+    - user and resource activity
+    - records Management Console actions and API Calls
+        - which users / accounts called AWS
+        - source IP address 
+        - when called
+
+CloudWatch:  monitors performance
+CloudTrail:  monitors API calls in AWS platform
+
+CloudWatch:
+    - every 5 minutes by default   **
+    - can have 1 minute intervals 
+    - can create alarms to trigger notifications 
+
+NOTE: 
+    CloudWatch about PERFORMANCE
+    CloudTrail about AUDITING
 
 
-
+Can create regional and global dashboards
+Can create alarms
+Can send logs to CloudWatch    
+    - aggregate, monitor and store logs
+Events: near real-time stream of system events 
+    - respond to state changes in AWS resources
 
 
 
