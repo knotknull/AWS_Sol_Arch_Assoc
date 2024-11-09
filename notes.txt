@@ -939,7 +939,95 @@ NOTE:
 - Can nore encrypt root device volumes upon creation of EC2 instance **
 
 
-## Spot Instaces & Spot Fleets
+# Spot Instaces & Spot Fleets
+
+Spot instance: 
+ - take advantage of unused ec2 capacity with up to 90% discount of on-demand
+     - can be used for stateless, fault-tolerage, flexible apps
+       - containerized workloads
+       - CI/CD, web servers, etc
+       - image / rendering
+       - HPC
+       - analytics
+    NOT GOOD FOR: 
+       - persistent workloads
+       - critical jobs
+       - databases
+
+ - decide on maximum spot price
+    - instance provisioned as long as spot price is below your maximum spot price
+
+ - hourly spot price varies hourly 
+
+ - if spot price goes above your maximum, have 2 minutes to choose whether 
+    to stop or terminate your instance
+
+ - Spot block, stop spot instances from being terminated even if the spot price is 
+    over your max spot price.   Spot Blocks only for 1 to 6 hours **
+
+
+
+Spot Instance Termination 
+
+
+                                                     +------below spot price ----> request failed
+                                                     |
+create requet -> [ Spot Request ]   -----------------+        +--------- stop ------+  
+                   - max price                       |        v       (persistent)  |
+                                                     |      start                   |
+                   - # of instances                  |   (persistent)  interrupt <--+
+                   - launch specification            |        |        (persistent) |
+                   - request type:                   |        v                     |
+                        - one time                   +------Launch instance --------+  
+                        - persistent                                                |
+                   - valid from / to                                            Interrupt
+                                                                                (one-time)
+
+NOTE:  if the request is one-time
+             then once the price crosses it is terminated
+       if the request is persistent
+            then once the price crosses it is stopped
+            if price comes back down the instance is started again
+               until it is interrupted
+
+
+Spot Fleet
+    - collection of spot instances 
+        and on-demand instance
+
+    - spot fleet attempts to launch the number of spot instances and 
+       on demand instances to satisfy the spot fleet target capacity 
+                spot instances + on demand instances == spot fleet target capacity
+
+    - tries to match target capacity with price restraint
+
+    - setup different launc pools 
+        - define: instance type, OS, AZ
+        - Can have multiple pools
+            - fleet will determine best way to implement strategy
+        - spot fleets will stop launching instances once you reach price threshold 
+            capacity desire state
+
+Spot Fleet Strategies:
+    - capacityOptimized
+        spot instances come from pool with optimal capcity         
+        for the number of instances launching
+
+    - lowestPrice
+        spot instances come from pool with lowest price
+
+    - diversified
+        spot instances are distributed across all pools
+
+    - InstancePoosToUseCount
+        spot instances are distributed across the number of 
+        spot instance pools specified.  Only valid with lowestPrice
+            like diversified + lowestPrice
+
+
+# EC2 Hibernate
+
+
 
 
 .
