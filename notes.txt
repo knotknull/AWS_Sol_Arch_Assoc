@@ -1097,9 +1097,37 @@ Events: near real-time stream of system events
     - respond to state changes in AWS resources
 
 
+# AWS CLI
+
+spin up an instance 
+run: aws configure 
+  > asks for access key and secret access key
+
+aws s3 ls   
+
+aws s3 mb s3://knotknull.really-stupid-bucket-name
+
+Secret directory --v
+
+cd ~/.aws
 
 
+[ec2-user@ip-172-31-61-160 .aws]$ ls -l
+total 8
+-rw-------. 1 ec2-user ec2-user  30 Nov  9 17:40 config
+-rw-------. 1 ec2-user ec2-user 116 Nov  9 17:40 credentials
 
+[ec2-user@ip-172-31-61-160 .aws]$ cat credentials
+[default]
+aws_access_key_id = AK.................D
+aws_secret_access_key = a.............................X
+
+[ec2-user@ip-172-31-61-160 .aws]$ cat config
+[default]
+region =  us-east-1
+
+
+# AWS Roles
 
 
 
