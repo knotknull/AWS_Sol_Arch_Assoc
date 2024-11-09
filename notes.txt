@@ -1326,7 +1326,66 @@ FSx for Luster
 SMB == FSx for Windows
 
 
-# EC2 Placement Groups
+# EC2 Placement Groups 
+
+ - A way to place EC2 instances 
+ 3 types of Placement Groups: 
+    - Clustered Placement Group
+    - Spread Placement Group
+    - Partitioned 
+
+
+Clustered Placement Group
+ - grouping of instances within a single AZ
+ - apps that need low network latency
+ - high network throughput or both
+NOTE: only certain instances can be launched in 
+   to a Clustered Placement Group
+
+Spread Placement Group (Opposite of Clustered)
+ - group of instances that are each placed on distinct 
+   underlying hardware
+        - separate rack
+        - separate network
+        - separte power
+  i.e. if a rack fails, only that instance fails      
+ - apps that have a small number of critical instances 
+    that should be kept separate from each other
+ - Individual Critical Instances
+ - can be in different AZs in one region
+
+
+Partitioned Placement Groups (Similar to Spread )
+ - each group divided into logical segments (partitions)
+ - each partition within a placement group  has its own set of racks
+ - each rack has own network and power source
+ - no 2 partitions within placement group share same racks
+
+multiple instances per partition
+     i.e. HDFS, HBash, Cassandra
+
+
+Name of placement group must be unique within AWS Account
+Only certain types of instances can be launched in placement group 
+    - Compute Optimized 
+    - GPU, Memory Optimized   (COGMOS)
+    - Storage Optimizes
+
+AWS recommends homogenous instances within clustered placement groups
+
+Can't merge placement groups 
+
+Can move an instance into a placement group 
+    - must be in stopped state 
+    - can move or remove and instance via CLI or SDK (not console, is this still correct ?)
+
+
+
+# HPC on AWS
+
+
+
+
 
 
 
