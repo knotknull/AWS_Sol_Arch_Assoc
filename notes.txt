@@ -1297,6 +1297,39 @@ sudo mount -t efs -o tls fs-0655fd1617d986dbd:/ efs
 
 # FSx for Windows and Lustre
 
+FSx for Windows
+ - fully managed native Microsoft Windows file system 
+ - build on Windows Server
+ - essentially a Windows File Server
+    - can work with SQL Server, IIS, Active Directory, Sharepoint, etc.
+
+            Windows FSx                                    EFS
+     - Managed Windows Server that                      - A managed NAS filer for EC2 
+     runs Windows Server Message Blocks                 instances based on NFSv4       
+     (SMB)-based file services
+
+    - Designed for Windows and Windows apps             - one of first network file sharing protocols
+                                                        native to Unix and Linux  
+    - Supports AD users, access control lists, 
+    groups and security policies along with 
+    Distributed File System (DFS) and replication
+
+
+FSx for Luster 
+ - fully managed file system that is optimzed for compute instensive workloads: 
+    HPC, ML, etc.
+ - 100s GBs / sec throughput 
+ - millions of IOPS 
+ - sub-second latencies
+ - Can store data directly on S3
+
+SMB == FSx for Windows
+
+
+# EC2 Placement Groups
+
+
+
 
 
 
