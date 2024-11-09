@@ -1127,7 +1127,30 @@ aws_secret_access_key = a.............................X
 region =  us-east-1
 
 
-# AWS Roles
+# IAM / AWS Roles
+
+https://aws.amazon.com/blogs/security/new-attach-an-aws-iam-role-to-an-existing-amazon-ec2-instance-by-using-the-aws-cli/
+https://aws.amazon.com/blogs/security/easily-replace-or-attach-an-iam-role-to-an-existing-ec2-instance-by-using-the-ec2-console/
+
+
+
+Roles allow to interact with AWS without keys, etc.
+
+IAM > create role > 
+    Trusted Entity type:  AWS Service
+    Use Case :  EC2
+    [NEXT]
+    Add Perms Policies: 
+    [x] AdminAccess
+    [CREATE]
+
+
+To add a role to an existing EC2 instance: 
+    EC2 > instance > Actions > Security > Modify IAM Role
+    Choose Role 
+    [ Update IAM Role]
+
+
 
 
 
