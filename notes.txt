@@ -862,7 +862,7 @@ ENI vs ENA vs EFA
 ENI - Elastic Network Interface
      virtual network card 
 
-EN  - Enhanced Networking 
+EN  - Enhanced Networking  / Enhanced Networking Adapter
     Single root I/O virtualization  (SR-IOV)
     high performance netwoking on supported instance types 
     NOTE:  ENA is a subset of Enhanced Netowrking
@@ -1026,6 +1026,36 @@ Spot Fleet Strategies:
 
 
 # EC2 Hibernate
+ - OS told to perform hibernation (suspend-to-disk)
+ - saves contents from RAM to EBS root volume
+ - root volume and attached EBS volumes are persisted
+
+starting out of hibernation:
+    - root volume restored to previous state
+    - RAM contents are reloaded
+    - processes previously running are resumed
+    - previously attached data volumes are reattached 
+       instance retains its instance ID
+    - boots instance faster
+        - don't have to restart OS or Apps
+
+good for:
+    - long running processes
+    - services that take a long time to initialize
+
+
+NOTE:   Instance RAM must be less than 150 GB in size.    **
+        Instance Families:  C3, C4, C5, M3, M4, M5, R3, R4, R5
+        Available for: Windows, Amazon Linux 2 AMI, Ubuntu
+        CANNOT BE HIBERNATED FOR MORE THAN 60 DAYS 
+
+
+
+
+
+
+
+
 
 
 
