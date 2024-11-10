@@ -1383,13 +1383,50 @@ Can move an instance into a placement group
 
 # HPC on AWS
 
+used in: genomics, financial risk modeling, weather prediction, etc
 
+Data Transfer: How to get data into AWS
+ - Snowball, Snowmobile
+ - DataSync
+ - DirectConnect 
+    - cloud service solution to establish dedicated network connection 
+    from on prem to AWS.  Private connectivity between office, data center, colo, etc.
+    to AWS
+    - can reduce costs
+    - increase bandwidth throughput
+    - dedicated line from on prem to AWS
 
+Compute 
+    - EC2 GPU / CPU Optimized
+    - EC2 fleets (Spot intaces or Spot fleets)
+    - Placement Groups
 
+Network:
+    - Enhanced Netowrking  (SR-IOV) Single Root I/O virtualization
+    - Elastic Network Adapters (100 Gbps)
+    - Elastic Fabric Adapters
 
+EBS:
+    - Scale up to 64k IOPS w/ Provisioned IOPS
+    - Instance Store: scale to millions of IOPS, low latency
 
+Network Storage:
+    - S3 : Distributed object store, not a file system
+    - EFS: Scale IOPS based on total size, use Provisioned IOPS
+    - FSx for Lustere: Scale IOPS based on total size, use Provisioned IOPS
 
+Orchestration & Automation 
+ - AWS Batch
+    - run 100ks of batch computing jobs
+    - supports multi-node parallel jobs, 
+        - single job that spance multiple EC2 instances
+    - schedule jobs and launch EC2 instances as needed
 
+ - AWS Parallel Cluster 
+    - open source cluster management tool
+        - easy to deploy HPC clusters 
+    - text file to model to provision resources
+    - automate creation of VPC, subnet, cluster type and instance types
 
 
 
