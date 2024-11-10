@@ -1428,7 +1428,43 @@ Orchestration & Automation
     - text file to model to provision resources
     - automate creation of VPC, subnet, cluster type and instance types
 
+# AWS Web Aplication Firewall (WAF)
+    - monitor HTTP / HTTPS requests that are forwarded to 
+        - CloudFront
+        - Application Load Balancer
+        - API Gateway
 
+    - control access to content
+    - Layer 7 aware firewall
+
+    - can scan query string parameters
+
+    - can configure conditions as 
+        - what IP addresses are allowed to make request 
+        - what query string parameters are needed to be passed for request to be allowed
+
+    - CloudFront, API Gateway, App Load Balancer will allow it 
+      or give HTTP 403 status code
+
+WAF allows 3 Types of Behaviors:
+    - allow all requests except ones specified
+    - block all requests except ones specified
+    - count the requests that mtch the properties specified
+
+Protects against web attacks using conditions specified
+Define conditions by using characteristics of web requests:
+    - IP addresses that requests originiate from
+    - Country that requests originiate from
+    - Valaues in request headers
+    - Strings that appear in requests, 
+        - specific strings
+        - strings that match regex patterns
+    - Length of requests
+    - SQL code that could be SQL injections
+    - Presence of a script that is likely to be malicious 
+        - cross-site scripting
+
+# EC2 Summary
 
 
 
