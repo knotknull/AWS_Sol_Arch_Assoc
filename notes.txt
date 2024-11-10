@@ -1574,5 +1574,264 @@ NOTE:   can't merge placement groups
 
 LAB: Using Tags and Resource Groups
 
+Tag Editor:
+    - Tag multiple different types of resources using the same tags  i.e. Env=QA or Acct=112233
 
+AWS Config:
+    - can utilize rules to determine if resources are in compliance with configuration rules
+
+LAB: EC2 Roles and Instance Profiles
+
+IAM Role:  "what you can do"
+
+Instance Profile:
+    - can associate a role with an EC2 instance, this is what an Instance Profile is for
+    - entity or container (?) connect an IAM Role to an EC2 instance
+    - IAM Role  is       : "what can I do i"
+    - Instance Profile is: "who am i"
+
+- Provide Temporary Credentials that are rotated automatically
+
+NOTE: when you create a ROLE and ATTACH to an EC2 Instance via Management Consol, 
+   the creation and use of Instance Profile is handled behind the scenes 
+
+Trust Policy: allows EC2 service to assume role  
+
+1. Create policy trust_policy_ec2.json: 
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+       "Effect": "Allow",
+       "Principal": {"Service": "ec2.amazonaws.com"},
+       "Action": "sts:AssumeRole"
+    }
+  ]
+}
+
+2. Create Role 
+
+aws iam create-role --role-name DEV_ROLE --assume-role-policy-document file://trust_policy_ec2.json
+
+OUTPUT:  
+{
+    "Role": {
+        "Path": "/",
+        "RoleName": "DEV_ROLE",
+        "RoleId": "AROAT537H4KBEDHTOPKOH",
+        "Arn": "arn:aws:iam::270312923778:role/DEV_ROLE",
+        "CreateDate": "2024-11-10T21:40:42+00:00",
+        "AssumeRolePolicyDocument": {
+            "Version": "2012-10-17",
+            "Statement": [
+                {
+                    "Effect": "Allow",
+                    "Principal": {
+                        "Service": "ec2.amazonaws.com"
+                    },
+                    "Action": "sts:AssumeRole"
+                }
+            ]
+        }
+    }
+}
+
+NOTE: Role created with Assume Role policy attached 
+
+
+3. Grant role read access to S3 Buckets, need to create policy that allows this
+
+Create S3 Access Policy document  dev_s3_read_access.json 
+
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "AllowUserToSeeBucketListInTheConsole",
+      "Action": [
+        "s3:ListAllMyBuckets",
+        "s3:GetBucketLocation"
+      ],
+      "Effect": "Allow",
+      "Resource": [
+        "arn:aws:s3:::*"
+      ]
+    },
+    {
+      "Effect": "Allow",
+      "Action": [
+        "s3:Get*",
+        "s3:List*"
+      ],
+      "Resource": [
+        "arn:aws:s3:::<DEV_S3_BUCKET_NAME>/*",
+        "arn:aws:s3:::<DEV_S3_BUCKET_NAME>"
+      ]
+    }
+  ]
+
+}
+
+NOTE:  <bucket_name>/*   allows get / list to objects within the bucket
+NOTE:  <bucket_name>     allows get / list to just the bucket
+
+4. create the managed policy: 
+
+aws iam create-policy --policy-name DevS3ReadAccess --policy-document file://dev_s3_read_access.json
+
+OUTPUT: 
+
+{
+    "Policy": {
+        "PolicyName": "DevS3ReadAccess",
+        "PolicyId": "ANPAT537H4KBAQK4ATMNH",
+        "Arn": "arn:aws:iam::270312923778:policy/DevS3ReadAccess",
+        "Path": "/",
+        "DefaultVersionId": "v1",
+        "AttachmentCount": 0,
+        "PermissionsBoundaryUsageCount": 0,
+        "IsAttachable": true,
+        "CreateDate": "2024-11-10T21:53:53+00:00",
+        "UpdateDate": "2024-11-10T21:53:53+00:00"
+    }
+}
+
+5. Attached managed policy to Role
+
+aws iam attach-role-policy --role-name DEV_ROLE --policy-arn "<DevS3ReadAccess_POLICY_ARN>"
+
+
+list attached policies of role (DEV_ROLE)
+ aws iam list-attached-role-policies --role-name DEV_ROLE
+OUTPUT: 
+{
+    "AttachedPolicies": [
+        {
+            "PolicyName": "DevS3ReadAccess",
+            "PolicyArn": "arn:aws:iam::270312923778:policy/DevS3ReadAccess"
+        }
+    ]
+}
+
+
+6. create instance profile
+
+aws iam create-instance-profile --instance-profile-name DEV_PROFILE
+
+OUTPUT:
+{
+    "InstanceProfile": {
+        "Path": "/",
+        "InstanceProfileName": "DEV_PROFILE",
+        "InstanceProfileId": "AIPAT537H4KBAN4X7PAWO",
+        "Arn": "arn:aws:iam::270312923778:instance-profile/DEV_PROFILE",
+        "CreateDate": "2024-11-10T22:19:57+00:00",
+        "Roles": []
+    }
+}
+
+
+7. add role to  instance profile
+aws iam add-role-to-instance-profile --instance-profile-name DEV_PROFILE --role-name DEV_ROLE
+
+
+8.  Verify instance profile
+aws iam get-instance-profile --instance-profile-name DEV_PROFILE
+
+
+{
+    "InstanceProfile": {
+        "Path": "/",
+        "InstanceProfileName": "DEV_PROFILE",
+        "InstanceProfileId": "AIPAT537H4KBAN4X7PAWO",
+        "Arn": "arn:aws:iam::270312923778:instance-profile/DEV_PROFILE",
+        "CreateDate": "2024-11-10T22:19:57+00:00",
+        "Roles": [
+            {
+                "Path": "/",
+                "RoleName": "DEV_ROLE",
+                "RoleId": "AROAT537H4KBEDHTOPKOH",
+                "Arn": "arn:aws:iam::270312923778:role/DEV_ROLE",
+                "CreateDate": "2024-11-10T21:40:42+00:00",
+                "AssumeRolePolicyDocument": {
+                    "Version": "2012-10-17",
+                    "Statement": [
+                        {
+                            "Effect": "Allow",
+                            "Principal": {
+                                "Service": "ec2.amazonaws.com"
+                            },
+                            "Action": "sts:AssumeRole"
+                        }
+                    ]
+                }
+            }
+        ],
+        "Tags": []
+    }
+}
+
+
+9.  Attach DEV_PROFILE Role to Instance
+
+aws ec2 associate-iam-instance-profile --instance-id <LAB_WEB_SERVER_INSTANCE_ID> --iam-instance-profile Name="DEV_PROFILE"
+OUTPUT:
+{
+    "IamInstanceProfileAssociation": {
+        "AssociationId": "iip-assoc-02f68d9cfc4fc2372",
+        "InstanceId": "i-0481fe9257d238059",
+        "IamInstanceProfile": {
+            "Arn": "arn:aws:iam::270312923778:instance-profile/DEV_PROFILE",
+            "Id": "AIPAT537H4KBAN4X7PAWO"
+        },
+        "State": "associating"
+    }
+}
+
+
+
+10. Verify config of web server 
+
+aws ec2 describe-instances --instance-ids <LAB_WEB_SERVER_INSTANCE_ID>
+OUTPUT: 
+.....
+                    "IamInstanceProfile": {
+                        "Arn": "arn:aws:iam::270312923778:instance-profile/DEV_PROFILE",
+                        "Id": "AIPAT537H4KBAN4X7PAWO"
+                    },
+
+
+https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/iam-roles-for-amazon-ec2.html
+https://aws.amazon.com/iam/faqs/
+https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_use_switch-role-ec2_instance-profiles.html
+https://aws.amazon.com/tools/
+https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-instance-metadata.html
+https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-configure.html#config-settings-and-precedence
+https://boto3.amazonaws.com/v1/documentation/api/latest/guide/configuration.html
+https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-envvars.html
+
+
+
+TEST 
+
+- Cannot delete the snapshot of a root device of an EBS volume used by a registered AMI
+- can detatch an additional EBS (non-root volume)
+- Hypervisors for EC2:  XEN, Nitro
+- Standard Reserviced instances cannot be moved between regions
+- which ec2 feature uses SR-IOV?    Enhanced Netowrking
+- Cheapest EBS options are always HDD over SDD !!!!
+- Changes to IAM policies take effect almost immediatly
+    - IAM Policy exists in AWS API and not on instance itself
+- IP Address to retrieve instance meta-data or user-data:  http://169.254.169.254
+- Spread placement groups can be deployed across Availability Zones
+- IAM Roles an be attached to instances in stopped or running state or 
+   replaced for instances in the running state
+- You can control whether an EBS root volume is deleted when its associated instance is terminated.
+   By default, the DeleteOnTermination attribute for root volumes is set to 'true.' 
+- which AWS cli command shouldI use to crate a snapshot of an EBS volume: 
+    aws ec2 create-snapshot 
+
+
+## Databases on AWS
+ 
 .
