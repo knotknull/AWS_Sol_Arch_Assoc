@@ -1466,6 +1466,113 @@ Define conditions by using characteristics of web requests:
 
 # EC2 Summary
 
+EC2: 
+ - If Spot Instance is terminated by EC2, you will not be charged for partial hour of usage.
+ - Fight Dr McPxz AU
+ - Termination Protection is turned off by default
+
+EBS: 
+Root EBS volume deleted by default on termination 
+ - Root EBS volume can be encrypted
+ - additional volumes can be encrypted
+ - snapshots exist on S3
+    - point in time copies of volume
+    - incremental
+ - can create AMIs from volumes or snapshots
+ - can change EBS volume size and storage types
+ - ALWAYS in same AZ as EC2 instance
+
+HOWTO: MOVE EC2 Volume to another AZ
+    - take snapshot
+    - create AMI from snapshot
+    - launch AMI to new AZ
+
+HOWTO: MOVE EC2 Volume to another Region
+    - take snapshot
+    - create AMI from snapshot
+    - copy AMI to target region
+    - launch from AMI in target region
+
+NOTE: Can create snapshot that can be used to create EBS Volume in different AZ
+      Can create snapshot that can be used to create EBS Volume in different Region
+
+Security Groups
+ - All Inbound traffic is blocked 
+    - inbound traffic  is automatically allowed out
+ - All Outbound traffic is blocked 
+ - SGs are STATEFUL
+ - multiple ec2 to an SG
+ - multiple SG  to an ec2
+ - cannot block specific IPs 
+    - use NACLs
+ - only allow rules 
+    - no deny rules
+
+Encryption:
+    - snapshots of encrypted volumes are automatically encrypted
+    - volumes restored from encrypted snapshots are encrypted automatically
+    - Can share unencrypted snapshots ONLY
+
+HOWTO: Encrypt Root Volume that is unencrypted
+    - take snapshot of root device volume
+    - copy snapshot and select encrypt option
+    - create AMI from encrypted snapshot
+    - launch new AMI instances with encrypted root volume
+
+
+Instance Store: 
+    - Ephemeral Storage (can lose data)
+    - CANNOT BE STOPPED, if so lose daata
+    - Can reboot and not lose data
+
+Enhanced Networking 
+    - Elastic  Network Interface (ENI)
+    - Enhanced Network Adapter   (EN / ENA)
+    - Enhanced Fabric  Adapter   (EFA)
+
+CloudWatch 
+    - Monitors (WATCHES) performance
+        - monitors AWS and apps running on it
+    - Default every 5 minutes
+    - Dashboards, Events, Alarms, Logs  (DEAL)  
+
+    CloudTrail == Auditing
+
+Roles: 
+    - more secure than acckey
+    - can be assigned to instance after creation
+    - UNIVERSAL (any region)
+
+Metadata 
+    169.254.169.254/latest/meta-data
+    169.254.169.254/latest/user-data   << Bootstrap Script
+
+    Version 2 needs a token to be passed to metadata URL
+        get token first:
+            TOKEN=`curl -X PUT "http://169.254.169.254/latest/api/token" -H "X-aws-ec2-metadata-token-ttl-seconds: 21600"` 
+        use the TOKEN to call curl for metadata:
+            curl -H "X-aws-ec2-metadata-token: $TOKEN" http://169.254.169.254/latest/user-data
+
+
+Placement Groups
+    - Clustered     (close together, same rack) 
+            - low latency / high thruput
+            - SAME AZ
+            - homogenous instances 
+
+    - Spread        (spread apart, guaranteed not on same rack) 
+            - critical instances
+            - can span AZs 
+            
+    - Partitioned   (hybird: instances close together on partitions, partiions spread apart)
+            - Multiple EC2 instances: HDFS, HBase, Cassandra
+            - can span AZs 
+
+NOTE:   can't merge placement groups
+        YOU CAN move existing instance into placement group  
+
+
+LAB: Using Tags and Resource Groups
 
 
 .
