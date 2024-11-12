@@ -2154,30 +2154,75 @@ Security
 
 # Aurora
 
+ - MySQL and PostgreSQL compatible Relational DB engine 
+    - combines speed of high-end commercial db
+    - simplicity and cost-effectiveness of open source dbs
+
+ - up to 5x better performance than MySQL 
+ - up to 3x better performance than PostgreSQL 
+
+Features: 
+    - Start with 10 GB, scales in 10 GB increments to 64 TB  **
+        (Storage is autoscaling )
+
+    - Compute resources can scale to 32 vCPUs and 244 GB RAM **
+
+    - 2 copies of data contained in each AZ   **
+        - min 3 AZ ==>> 6 copies of data
+   
+Scaling:
+    - can handle loss of up to 2 copies of data without affecting write availability **
+    -      """   loss of 3 copies of data without  
+    - Aurora storage is self-healing: 
+        - data blocks / disks are scanned continuously for errors and repaired automatically
+
+Replicas: **
+ - Aurora Replicas     : 15
+ - MySQL Read Replicas : 5
+ - PostgreSQL Read Repl: 1
+
+Feature Comparison  **
+                                                Amazon Aurora Replicas              MySQL Replicas
+Number of Replicas                                      up to 15                        up to 5
+Replication Type                                       Asynch (ms)                      Asynch (sec)
+Performance impact on primary                           Low                             High
+Replica location                                        In-region                       Cross-Region
+Act as failover target                                  Yes (no data loss)              Yes (potentially minuste of data loss)
+Automated failover                                      Yes                             No
+Support for user-defined rep delay                      No                              Yes
+Support for different data or schema                    No                              Yes
+   vs primary  
 
 
+Backups: 
+    - automated backups always enabled
+        - backups DO NOT IMPACT db performance
+
+    - can take snapshots of Aurora
+        - snapshots DO NOT IMPACT db performance
+
+    - can share Aurora Snapshots with other AWS accounts
+
+Amazon Aurora Serverless: 
+    - on demand, autoscaling config for 
+        MySQL and PostgreSQL compatible edition of Amzaon Aurora
+    - Serverless DB cluster: 
+        -  automatically starts up / shuts down 
+        -  scales cpacity up or down based on applications needs
+
+    - simple, cost-effective option for infrequent, intermittent, unpredictable workloads
+        - pay on a per invocation, not paying for idle resources 
+
+Create Aurora read replica from MySQL 
+ RDS > RDS Instance > Actions > Create Aurora read replica 
+
+once available
+  choose auroroa writer node and promote read replicat 
+  NOTE:  you are taking a MySQL DB and copying to Aurora DB
+ RDS > RDS Instance > Actions > Promote Read Replica
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+# Elasticache
 
 
 
