@@ -2290,10 +2290,15 @@ NOTE:  NEED Schema Configuration Tool for heterogeneous migration
 
 
 
+# Caching Strategies
+
+- CloudFront
+- API Gateway
+- ElastiCache - Memcached and Redis
+- DynamoDB Accelerator (DAX)
 
 
-
-
+# EMR Overview
 
 
 
