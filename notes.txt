@@ -715,7 +715,7 @@ F - FPGA
 I - IOPS 
 G - Graphics
 H - High Thruoughput disk
-T - T2 Micro (cheak general purpose)
+T - T2 Micro (check general purpose)
 D - Density
 R - RAM
 M - Main choice for general purpose apps
@@ -724,7 +724,7 @@ P - Graphics (think Pics)
 X - Extreme Memory
 Z - Extreme Memory and CPU
 A - Arm-based workloads
-U - Bare Metal
+U - Uhh Bare Metal
 
 
 security group is a "virtual firewall"
@@ -1833,5 +1833,82 @@ TEST
 
 
 ## Databases on AWS
- 
+
+AWS RDBMS (RDS):
+    - SQL Server
+    - Oracle
+    - MySQL
+    - PostgreSQL
+    - Aurora
+    - MariaDB
+
+2 Key Features: 
+- Multi-AZ for Disaster Recovery 
+- Read Replicas - Performance
+
+Multi-AZ
+ - AWS points DNS for RDS instance to an IP, 
+    fail over points DNS to second IP 
+ - failovers automatic with Multi-AZ
+
+
+Read Replicas
+ - write to primary db is replicated to Read Replica
+ - No automatic fail over
+ - can have 5 read replicas
+
+
+DynamoDB:
+ - NoSQL
+ - Collection holds Documents, key - value pair
+ -  Document can have different fields
+
+Data Warehousing:
+OLTP vs OLAP
+
+Redshift (OLAP): 
+- Amazon Data Warehouse:  
+
+ElastiCache:
+- web service for in-memory cache in cloud 
+- improves web app performance by caching to in-memory
+- 2 open source in-memory caching engines
+     - memcached
+     - redis
+
+
+## RDS LAB
+
+connectivity endpoint: map-sql-db.cjy7mdwejhd4.us-east-1.rds.amazonaws.com
+- RDS runs on virtual machines 
+    - can't login to RDS VMs 
+- RDS patching OS and DB is Amazon's responsibility
+- RDS is NOT SERVERLESS
+
+bootstrap: 
+
+#!/bin/bash
+yum install amazon-linux-extras httpd -y 
+amazon-linux-extras install php7.2 -y
+yum install httpd -y
+systemctl start httpd
+systemctl enable httpd
+cd /var/www/html
+wget https://wordpress.org/latest.tar.gz
+tar -xzf latest.tar.gz
+cp -r wordpress/* /var/www/html/
+rm -rf wordpress
+rm -rf latest.tar.gz
+chmod -R 755 /var/www/html/*
+chown -R apache:apache /var/www/html/*
+
+NOTE: THIS DID NOT WORK !!!  PHP was not running
+
+
+
+
+
+
+
+
 .
