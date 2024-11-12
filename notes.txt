@@ -2299,6 +2299,43 @@ NOTE:  NEED Schema Configuration Tool for heterogeneous migration
 
 
 # EMR Overview
+Elastic Map Reduce
+    - cloud big data platform
+    - used with 
+        - Spark, Hive, HBase, Flink, Hudi, Presto 
+
+- EMR cluster collection of EC2 instances i.e. node: 
+    - different software on each node type 
+    - like Apache Hadoop
+
+Node Types: 
+    - Master Node: manages cluster
+        - tracks status of tasks
+        - monitors healt of cluster
+        - every cluster has a master node
+
+    - Core Node: runs tasks and stores data in HDFS
+        - multinode clusters have at least one core node
+
+    - Task Node: runs tasks, DOES NOT STORE DATA
+        - task nodes are optional
+
+NOTE: Smallest cluster you can have is 1, that is a Master Node   **
+      Every node can communicate with each other
+
+
+
+Log data is store on /mnt/var/log on Master Node   **
+    - can periodically archive log files on Master Node to S3 
+    - EMR does this at 5 minute intervals
+        - ONLY WHEN CLUSTER IS FIRST SETUP
+
+# Database Summary
+
+
+
+
+
 
 
 
