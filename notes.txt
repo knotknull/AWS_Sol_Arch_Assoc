@@ -2333,10 +2333,45 @@ Log data is store on /mnt/var/log on Master Node   **
 # Database Summary
 
 
+Read Replicas:
+  - can be Multi-AZ  **
+    - increase performance
+  - Can be in different Regions **
+  - MySQL, PostgreSQL, MariaDB, Oracle, Aurora, MSSQL
+  - Can be promoted to master / breaks replication
 
+Multi-AZ :
+ - Used for DR ONLY / not performance
+ - Force a failover by rebooting RDS instance
 
+Encryption at res: 
+  - MySQL, PostgreSQL, MariaDB, Oracle, Aurora, MSSQL
+  - Uses KMS 
 
+DynamoDB 
+ - Serverless
+ - Stored on SSD
+ - Spread across 3 geo distinct data centers
+ - Eventual Consistency Reads (Default) if data can be consistent > 1 sec
+ - Strongly Consistency Reads if data had to be consistent < 1 sec
 
+Redshift 
+  - only in 1 AZ
+  - backups enabled by default = 1 day retention
+  - Attempts to keep 3 copies of data 
+    - original 
+    - replica on compute nodes 
+    - backup in S3
+  - Async replica snapshots to S3 in another region for DR
+
+Auroroa 
+    - 2 copies of data in each AZ with min 3 AZ == 6 total copies
+    - auotmated backups turned on by default
+    - share snapshots with other AWS accounts
+    - 3 types of replicas 
+        - Aurora Replicas  ( within same region = 15) 
+        - MySQL replicas   (multiple regions = 5)
+        - PostgresSQL      (only 1)
 
 
 .
