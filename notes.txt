@@ -2148,8 +2148,11 @@ Security
         - HSM  (Hardware Security Management)
         - KMS 
 
+ - Availability
+    - currently only available in 1 AZ
+    - Can restore snapshots to new AZs in event of outage
 
-
+# Aurora
 
 
 
