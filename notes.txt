@@ -2248,6 +2248,53 @@ Redis is Mult-AZ
 Backup and restores of Redis 
 
 
-Database Migration Service (DMS)
+# Database Migration Service (DMS)
+- migrate RDBMS, Data Warehouses, NoSQL to AWS Cloud 
+    - between on-prem instances (AWS Cloud Setup)
+    - compbinations of cloud and on-prem
+
+- DMS is a server in AWS Cloud and runs replication software
+    - create source (extract) and target (load) connections
+    - schedule task that runs on server and moves data
+    - DMS crates tables and associated primary keys
+    - can pre-create target tables manually 
+    - utilize AWS Schema Conversion Tool (SCT)
+        - create somr or all of target tables, indexes, views, triggers, etc.
+
+
+                  +-----------------------------------------------------------+
+[ Source DB ] --> |                           AWS DMS                         |  --> [ Target DB]
+                  | [source  ] -> [Replication Task    ] -> [target]          |
+                  | [endpoint]    [Replication Instance]    [endpoint]        |
+                  +-----------------------------------------------------------+
+- Supports homogenous migrations (ex. Oracle to Oracle)
+- Supports heterogeneous migrations ( MS SQL Server to Aurora)
+
+
+Sources **                                          Targets
+on-prem and EC2 instances:                      on-prem and EC2 instances: 
+    - Oracle, Microsoft SQL Server                  - Oracle, Microsoft SQL Server
+    - MySQL, MariaDB, PostgreSQL                    - MySQL, MariaDB, PostgreSQL
+    - SAP, MongoDB, Db2                             - SAP
+Azure SQL Database                              RDS 
+Amazon RDS (including Aurora)                   Redshift
+Amazon S3                                       DynamoDB
+                                                S3
+                                                Elasticsearch service
+                                                Kinesis Data Streams
+                                                DocumentDB
+
+
+NOTE:  NEED Schema Configuration Tool for heterogeneous migration  
+       DO NOT NEED SCT when migrating idential databases 
+
+
+
+
+
+
+
+
+
 
 .
