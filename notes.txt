@@ -2102,4 +2102,82 @@ Security
 
 # Redshift 
 
+ - petabyte scale managed data warehouse
+ - single node (160 GB)  **
+ - multi-node
+    - Leader  Node ( manages client connections and receives queries )
+    - Compute Node 
+        - store data 
+        - perform queries / computations
+        - up to 128 compute nodes
+
+ - advanced compression
+    - columnar data
+        - column compression better than row compression
+    - uses multiple compression techniques
+    - doesn't require indexes / materialized views
+    - when loading data into empty table 
+        - Redshift analyzes data and selects appropriate compression scheme
+
+ - Massively Parallel Processing (MPP)
+    - distributes data and query loads across all nodes
+    - can scale by adding nodes
+
+ - Backups
+    - eabled by default, 1 day retention period
+        - max 35 days
+    - attempts to maintain at least 3 copies of data
+        - original and replica on compute nodes + one backup in S3
+    - can asyncronously replicate snapshots to S3 in another region for DR
+
+ - Priced 
+    - Compute Node hours    
+        - total number of hours you run all compute nodes for billing period
+        - 1 unit per node per hour
+            3 nodes * 24 hr * 30 days = 2160 incance hours            
+        - not billed for leader node hours
+    - Backup
+    - Data Transfer 
+        - only within a VPC / not outside it
+
+ - Security
+    - Encrypted in transit using SSL
+    - Encrypted at rest using AES-256
+    - Redshift hangles key management
+    - Can manage own keys via: 
+        - HSM  (Hardware Security Management)
+        - KMS 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 .
