@@ -1904,11 +1904,202 @@ chown -R apache:apache /var/www/html/*
 
 NOTE: THIS DID NOT WORK !!!  PHP was not running
 
+# RDS Backups, Multi-AZ, Read Replicas
+
+2 types of backups: 
+    - automated backups 
+        - allow you to recover db to any point in time within a retention period
+            - retention period between 1 and 35 days
+        - takes full daily snapshot and stores transaction logs through out day.
+        - On recovery, AWS will frst choos most recent daily backup and apply transaction logs
+        - enabled by DEFAULT
+        - stored to S3  / free storage space equal to size of DB. 
+        - backups taken within a defined window
+        - during backup window, storage I/O may be suspended while your data is being backed up 
+            - may experience latency 
+
+    - snapshots
+        - DB Snapshots are done manually (user initiated)
+        - They are stored even after you delete the original RDS instance
+
+when you restore, the restored version of DB will be a new RDS instance with new DNS endpoint
+
+Encryption: 
+    - encryption at rest supported for MySQL, Oracle, SQL Server, PostgreSQL, MariaDB, Aurora **
+    - done via KMS
+    - once RDS instance is encrypted, data stored at rest in the underlying storage is encrypted
+        - backups, read replicas and snapshots are also encrypted
+
+Multi-AZ: 
+    - exact copy of Prod DB in another AZ
+    - All writes hitting Prod DB synchronized to other AZ
+        - AWS handles syncing
+    - if database maintenance, or DB or AZ Failure, RDS fails over to standby 
+        - no admin intervention
+        - it updates URL to backup
+    - for DR only, NOT USED FOR PERFORMANCE
+    - available for SQL Server, Oracle, MySQL Server, PostgreSQL, MariaDB **
+
+
+Read Replica: 
+    - main DB asyncronously replicated to multiple instances
+        - can read from either replica and write to Prod DB
+    - can have Read Replicas of Read Replicas (watch for latency)
+    - available for SQL Server, Oracle, MySQL Server, PostgreSQL, MariaDB, Aurora **
+    - Used for PERFORMANCE NOT DR
+    - Must have automatic backups turned on to deploy read replica
+    - up to 5 read replicas copies of any db
+    - each Read Replica will have its own DNS end point
+    - can have Read Replicas that have multi-AZ 
+    - can create Read Replicas of Multi-AZ source databases.
+    - Read Replicas can be promoted to be their own databases (breaks replication)
+    - Can have Read Replica in second region
+
+RDS Backups, Multi-AZ, Read-Replicas LAB
+    - modify database to be Multi-AZ
+    - reboot w/ failover causes the backup to become primary
+
+NOTE: Need to have backups turned on before creating Read Replicas **
+
+Multi-AZ: 
+ - can force a failover from one AZ to another by rebooting RDS instace
+
+
+# DynamoDB 
+    - NoSQL solution
+    - single digin ms latency 
+    - fully managed db
+    - supports document and key-value
+    - flexible data model ideal for 
+        - mobile, web 
+        - gaming, ad-tech
+        - IoT, etc
+
+
+    - Stored on SSD
+    - spread across 3 geographically distinct data centers **
+    - Eventually Consistent Reads (Default)
+        - consistency across all copies of data usually reached within 1 second 
+        - Best Read Performance
+    - Strongly Consistent Reads
+        - returns result that reflects all writes that received a successful respons 
+          prior to the read ( less than 1 second)
+        - if update is done and need to read that update in less than 1 second
+
+# Advanced DynamoDB 
+DynamnoDB Accelerator (DAX)
+    - fully managed, highly available in-memory cache
+    - 10x performance improvement
+    - Reduces request time from milliseconds to microseconds
+    - don't need to manage caching logic
+    - Compatible with DynamoDB API calls
+
+    [ Application ]  <------>  [ DAX ] <------>  [ DynamoDB ]
+
+        - no change to application
+        - DAX has write thru cache
+        - High Availability, will failover to own replicat in another AZ
+
+
+Transactions
+    - Multiple "all or nothing" operations 
+        - financial transactions
+        - fulfilling orders
+    - Two underlying reads / writes  **
+        - prepare / commit 
+    - Up to 25 items or 4 MB of data
+
+
+On-Demand Capacity
+ - pay-per-request pricing
+ - balance cost / performance
+ - no minimume capacity
+ - no read/write charges when idle
+    - only storage and backups
+ - pay more per request than provisioned capacity
+ - use for new product launces
+
+
+On-Demand Backup and Restore
+ - full backups at any time
+ - zero impact on table performance / availability
+ - consistent within seconds / retained until deleted
+ - operates within same resion as the source table
+
+Point-in-Time Recover (PITR)
+ - protects against accidental writes / deletes 
+ - restore to any point in the last 35 days
+ - incremental backups
+ - NOTE enabled by default  **
+ - latest restorable: five minutes in the past
+
+
+Streams: 
+ - Time-ordered sequence of item-level changes in a table 
+ - FIFO
+ - stored for 24 hours
+ - inserts, updates, deletes
+
+
+stream record
+  - single modification to Dynamo DB table
+  - each stream record assigned squence number
+  - stream record organized into groups / shards 
+  - shard contains info on iterating thru records
+  - combine with Lambda functions for functionality "like" stored procedures in traditional databases
+
+
+                                    shard (group of stream records)
+                                       |
+            +--------------------------|-------------------------------------+  +
+            |                   +------------+                               |  |
+            |     [.][.][.][.]   [.][.][.][.]   [.][.][.][.]                 |  +-DynamoDB Stream
+            |         ^                                                      |  |
+            +---------|------------------------------------------------------+  +
+                      +--- stream record 
+              (representing an change to DyanamoDB table)
 
 
 
+Global Tables 
+Managed Multi-Master, Multi-Region Replication
+ - globally distributed applications
+ - based on DynamoDB strams
+ - Multi-region redundancy for DR or HA
+ - No application rewrite
+ - Replication latency under 1 sec
 
 
+Need to have DynamoDB streams enabled
 
+Database Migration Service (DMS)
+migrate from source to target
+
+       Source                             Target
+ (on-prem, EC2, RDS)                (on-prem, EC2, RDS)      
+------------------------          ------------------------  
+Aurora      MongoDB                 Aurora      Kafka
+S3          MySQL               DocumentDB      MariaDB
+MariaDB     Oracle                DynamoDB      SQL Server
+AzureDB     PostgreSQL             Kinesis      MySQL
+SQL Server  Sybase                Redshift      Oracle
+DB2                                    S3       PostgreSQL
+                             Elasticsearch      Sybase
+
+- Data transformation logic in DMS
+    - migration performed automatically
+- Source database is operational during migration
+
+
+Security
+ - Encryption at Rest (KMS)
+ - Site to Site VPN
+ - Direct Connect (DX)
+ - IAM policies and roles 
+ - Fine-grained access
+ - CloudWatch / CloudTrail
+ - VPC endpoints to (private IPs) avoid publice internet 
+
+# Redshift 
 
 .
