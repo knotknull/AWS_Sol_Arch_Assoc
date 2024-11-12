@@ -2223,9 +2223,31 @@ once available
 
 
 # Elasticache
+ - web servcies for in-memory cache in cloud
+ - improve performance of web apps
+    - retrieve infor from fast in-memory cache
+ - Supports to open source caching engines: 
+    - memcached
+    - redis
+
+Comparison 
+
+        Requiement                              Memcached           Redis        **
+Simple Cache to offload DB                      Yes                 Yes 
+Ability to scale horizontally                   Yes                 Yes 
+Multi-threaded performance                      Yes                 No  
+Advanced data types                             No                  Yes 
+Ranking / Sorting data sets                     No                  Yes 
+Pub / Sub capabilities                          No                  Yes 
+Persistance                                     No                  Yes 
+Multi-AZ                                        No                  Yes 
+Backup & Restore Capabilities                   No                  Yes 
 
 
+Redis is Mult-AZ
+Backup and restores of Redis 
 
 
+Database Migration Service (DMS)
 
 .
