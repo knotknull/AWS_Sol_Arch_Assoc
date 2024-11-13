@@ -936,7 +936,7 @@ NOTE:
 - Volumes restored from encrypted snapshots are encrypted automatically
 - Can share snapshots but only if they are unencrypted
 - snapshots can be shared with other AWS accounts / made public
-- Can nore encrypt root device volumes upon creation of EC2 instance **
+- Can NOW encrypt root device volumes upon creation of EC2 instance **
 
 
 # Spot Instaces & Spot Fleets
