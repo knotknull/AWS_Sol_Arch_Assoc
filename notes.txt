@@ -2409,29 +2409,87 @@ MySQL default port
 Data transferred between Availability Zones for replication of Multi-AZ deployments is free. 
 Reference: Amazon RDS for MySQL Pricing: Data Transfer.
 
- ## Advanced IAM
+## Advanced IAM
 
 # AWS Directory Service
 
+- family of managed services
+- Connect AWS resources with on-prem Active Directory
+- Standalong directory in the cloud
+- Use existing corporage credentials
+- Can login to console with on prem AD credentials
+- SSO to any domain-joined EC2 instance
+
+Active Directory:
+ - on prem directory service 
+ - Hierarchical database of users, groups, computers -- trees and forests
+ - group policies
+ - based on LDAP and DNS
+ - supports Kerberos, LDAP, NTLM authentication
+ - Highly Available 
+
+AWS Managed Microsoft AD
+
+ - AD Domain Controllers running Windows Server
+    - 2 domain controllers for high availability
+ - Reachable by applications in you VPC
+ - Add DCs for HA / Performance
+ - Exclusive access to DCs
+ - Extend existing AD to on-prem using AD Trust
+
+
+Responsibilites
+
+                AWS                                     Customer
+    - Multi-AZ deployment                     - Users, groups, Group Policy Object
+    - Patch, monitor, recover                 - Standard AD tools
+    - Instance rotation                       - Scale out DCs 
+    - Snapshot and restore                    - Trusts (resource forest)
+                                              - Certificate authorities (LDAPs)
+                                              - Federation
+
+Simple AD 
+ - Standalone managed directory
+ - Basic AD features: 
+    - Small <= 500
+    - Large <= 5,000
+ - Easier to manage EC2
+ - Linux workloads that need LDAP
+ - Does not support trust (can't join on-prem AD)
+
+AD Connector 
+ - use existing AD Directory with compatible AWS services
+ - Directory gateway (proxy) for on-premises AD
+ - Avoid caching info in the cloud
+ - Allow on-prem users to log into AWS using AD      
+ - Join EC2 Instances to your existing AD 
+ - Scale across multiple AD Connectors
+
+
+Cloud Directory 
+ - Directory-based store for developers
+ - Muliple hierarchies with hundreds of millions of objects
+ - Fully managed service
+Use Cases: 
+    - org charts
+    - course catalogs
+    - device registries
+
+Cognito User Pools 
+ - Managed user directory for SaaS applications
+ - sign-up and sign-in for web or mobile
+ - works with social media identies 
+    i.e. facebook, gmail, etc.
+
+
+ Active Directory Compatible               NOT  Active Directory Compatible
+    - Manged Microsoft AD                   - Cloud DIrectory 
+    - AD Connector                          - Cognitor User Pools
+    - Simple AD
+
+
+# IAM Policies
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-.
+. 
