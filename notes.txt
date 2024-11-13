@@ -2374,4 +2374,64 @@ Auroroa
         - PostgresSQL      (only 1)
 
 
+
+RDS Multi-AZ and Read Replica labs
+
+wordpress.c9x6gz16a86n.us-east-1.rds.amazonaws.com
+load-balancer-388667590.us-east-1.elb.amazonaws.com
+
+Quiz:
+
+New RDS Instance: automated backups enabled by default
+Echeck for Error node in response from RDS API
+
+DocumentDB has MongoDB compatability
+
+Can crate RDS SQL Server max 16 TB
+
+DynamoDB charges in a single region 
+    - Read and Write Capacity
+    - Storage of Data
+    NOTE: no charge to data transfer within a single region, cross region is charged at both ends
+            - no charge for local secondary indexes
+
+
+I/O may be briefly suspended while the backup process initializes (typically under a few seconds), 
+ and you may experience a brief period of elevated latency.
+
+MySQL default port
+
+
+3 data formats Athena supports 
+    - Parquet, ORC, JSON
+
+
+Data transferred between Availability Zones for replication of Multi-AZ deployments is free. 
+Reference: Amazon RDS for MySQL Pricing: Data Transfer.
+
+ ## Advanced IAM
+
+# AWS Directory Service
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 .
