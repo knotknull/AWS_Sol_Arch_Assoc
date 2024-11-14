@@ -2846,9 +2846,126 @@ Resources that can be shared using RAM:
 
 SSO:
  - use existing corporate identities
- 
+ - Account Level perms 
+ - SAML: Security Assertion Markup Language 
+
+
+## Route 53
+
+DNS is on port 53
+
+
+IPv4:  32 bits ==>> 4.2 Billion
+IPv6: 128 bits ==>>  340 undecillion addr
+
+Top Level Domain:  .com , .edu, .gov
+
+Internet Assigned Numbers Authority (IANA)
+ - root zone database
+ - db of all top level domains
+
+domain names in whois 
+
+Every Domain Record has 
+
+SOA:  Start of Authority Record
+ - name of the server that supplied data for the zone
+ - the administrator of the zone
+ - current version of the data file
+ - default number of seconds for TTL on resource records
+
+NS: Name Server Records
+ - used by Top Level Domain servers to direct traffice to the 
+    Content DNS server which contains the authoritative DNS records.
+
+
+xyz.com >> TLD  xyz.com  172800 IN NS ns.awsdns.com    >>  NS Records (and Name Server) >> SOA record >> DNS Records
+
+
+DNS Records contain several types of records: 
+
+"A" record: fundamental type of DNS Record 
+    "A" stands for Address
+    translates name to IP addr 
+
+TTL: length that a DNS record is cached,  Time To Live
+        Default TTL = 48 hours, lower number faster update
+
+
+CName:  Canonical Name 
+    - resolve one domain to another
+    ex. m.xyz.com ==>> moble.xyz.com
+
+
+Alias Records:   
+ - map resource record sets in hosted zone to ELB, CloudFrond or S3 buckets 
+    that are configured as websites
+Like an CName
+
+map xyz.com ==>> elb1234.ebl.amazonaws.com
+
+DIFFERENCE between CName and Alias
+    - CName can't be used for naked domain names (zone apex record)
+
+i.e. xxyz.com can't be a CName 
+
+Tips:
+ - ELBs DO NO have pre-defined IPv4 addresses, always resolve via a DNS name.
+
+ - difference between Alias and CName
+    point a zone apex record or named nomain name to an ec2 instance, Alias record is used 
+    i.e. xyz.com ==>> EC2 Instance (done via Alias Record)
+
+
+Common DNS Record Types:
+ SOA:   Start of Authority
+ NS:    Name Server 
+ A:     Alias 
+ CName: Canonical,  resolve one domain to another
+ MX:    Mail
+ PTR:   Reverse of an A Record, look up name against IP address
+
+
+# Route53 Routing Policies Available on AWS 
+
+Routing Policies:
+ - Simple Routing
+ - Weighted Routing
+ - Latency-based Routing
+ - Failover Routing
+ - Geolocation Routing
+ - Geoproximity Routing (Traffic Flow Only)
+ - Multivalue Answer Routing
+
+
+Simple Routing Policy:
+    - one record with multiple IP Addr
+
+Weighted Routing Policy:
+  - split traffice dependent on weight
+    10% traffic 1.1.1.1
+    75% traffic 2.2.2.2
+    15% traffic 3.3.3.3
+
+Associate with Health Check (y/n) 
+ - when responding to queries, Route 53 can omit resources that fail health checks.
+    - removed until health check passes
+ - can be notified if healthcheck failed
+
+
+Latency Based Routing Policy:
+ - route traffic based on lowest network latency for end user
+ - create latency resource record for EC2 or ELB
+
+Failover Routing Policy:
+ - active / passive setup
+    - failover to Secondary if Primary goes down
+ - 53 monitors via health check
+
+NOTE: you have to create a Health Check record in Route 53
+
+ - Geolocation Routing Policy:
+
+
 
 .
-
-
-
