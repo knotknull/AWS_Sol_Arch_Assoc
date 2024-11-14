@@ -2490,6 +2490,113 @@ Cognito User Pools
 
 # IAM Policies
 
+Amazon Resource Name (ARN)
+ - uniquely identifies any resource in AWS 
+begin with:
 
+ arn:partition:service:region:account_id:
+
+partition: aws | aws-cn
+    - aws
+    - aws-cn == China  (probably include GovCloud)
+
+service:
+    i.e. s3 | ec2  | rds
+
+Region:
+    i.e. us-east-1 | eu-central-1
+
+Account ID:
+    i.e. 12 dig-it accountid 123456790012
+
+
+end with: 
+resource
+resource_type/resource
+resource_type/resource/qualifier
+resource_type/resource:qualifier
+resource_type:resource
+resource_type:resource:qualifier
+
+
+examples 
+
+arn:aws:iam::123456789012:user/marc              << "::" means part of name skipped over, since IAM is global, there is no region hence "::"
+arn:aws:s3:::my_awsome_bucket/image.png          << ":::" means 2 parts skipped, no region or account needed for globally unique s3 bucket name
+arn:aws:dynamodb:us-east-1:123456789012:table/orders <<  dynamodb service, resource type (table), table name
+arn:aws:ec2:us-east-1:123456789012:instance/*    <<  specifies all resources of a particular type
+
+
+
+IAM Policy
+ - JSON document that defines permissions
+ - 2 types of policies:
+
+    - Identity Policy: 
+        - attached to IAM: user, group or role 
+        - specifies WHAT and identity CAN DO
+            i.e. permissions
+
+    - Resource Policy: 
+        - attached to a resource
+            s3, ec2, KMS keys, etc.
+        - specifies WHO has access to resource
+              and   WHAT actions they can perform
+
+- NO EFFECT until attached policy is attached to Identity or Resource
+
+- Policy == List of statements
+ex.
+{
+    "Version": "2012-10-27",
+    "Statement": [          NOTE: square brackets are an array or list i.e. list of statements
+        {                           each statement enclosed in curl braces {}
+            ...
+        },                  - each statement matches an AWS API request
+        {
+            ...
+        },
+        {
+            ...
+        }
+    ]
+}
+
+{
+    "Version": "2012-10-27",
+    "Statement": [          
+        {
+            "Sid": "SpecificTable",
+            "Effect":"Allow",
+            "Action": [
+                "dynamodb:BatchGet*",
+                "dynamodb:DescribeStream",
+                "dynamodb:DescribeTable*,
+                "dynamodb:Get*",
+                "dynamodb:Query",
+                "dynamodb:Scan",
+                "dynamodb:BatchWrite*",
+                "dynamodb:CreateTable",
+                "dynamodb:Delete*",
+                "dynamodb:Update*",
+                "dynamodb:PutItem"
+            ],
+            "Resource": "arn:aws:dynamodb:*:*:table/MyTable"
+        }
+    ]
+
+}
+
+Breakdown: 
+
+Sid    :  "Human Readble Id for this Statement"   think statement name / desc
+Effect :  either Allow or Deny                    think: allow / deny these actions on this resource
+Action :  service name : action name              * wildcards: any API request that starts with that string i.e. dynamodb:Get* 
+Resouce: ARN of resource                          Resource that the Action is against
+
+
+mnemonic == SEAR (Sid, Effect (ALLOW|DENY), Action, Resource)
+
+MAP stopped at 6:55
 
 . 
