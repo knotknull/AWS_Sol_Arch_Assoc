@@ -2964,8 +2964,40 @@ Failover Routing Policy:
 
 NOTE: you have to create a Health Check record in Route 53
 
- - Geolocation Routing Policy:
+Geolocation Routing Policy:
+ - traffic sent based on geographical locations of users
+ - location can be continents or countryes
+
+Geoproximity Routing Policy (Traffic Flow Only): 
+ - route traffice based on geo location of users and resources
+ - can optionally choose to route traffic via a bias 
+    - bias expands or shrinks the size of the geographic region 
+       from which the trafic is routed to a resource
+
+NOTE: MUST BE USED with ROUTE 53 Traffic Flow
+
+Route 53 > Traffic Flow > Traffic Policies
 
 
+Multivalue Answer Routing Policy:
+    - return multiple values i.e. IP Addr
+    - specify multiple values for almost any record
+        - multivalue answer routing lets you check health of each resource
+    - returns only valus for healthy reousrces
+
+Similar to simple routing but puts a health check on each record set.
+
+DNS Summary:
+
+- ELBs do NOT have pre-defined IPv4 addresses, resolves to DNS Name
+- Alias can be used a root CName cannot
+
+
+Quota for domain names in Route 53:    **
+ - The limit is 20 for new customers as of March 2021. 
+   If you have an existing account and your default limit is 50 now, it will remain at 50. Reference: Amazon Route 53 Quotas. 
+
+
+## VPC
 
 .
