@@ -2597,6 +2597,103 @@ Resouce: ARN of resource                          Resource that the Action is ag
 
 mnemonic == SEAR (Sid, Effect (ALLOW|DENY), Action, Resource)
 
-MAP stopped at 6:55
 
-. 
+2 kinds of policies:
+    - AWS Managed
+    - Customer Managed
+
+To create a policy:
+IAM > policies > create > visual | JSON
+ex.
+
+{
+    "Version": "2012-10-27",
+    "Statement": [          
+        {
+            "Effect":"Allow",                       NOTE: Allow ListBucket on test bucket 
+            "Action": ["s3:ListBucket"],
+            "Resource": [arn:aws:s3:::test"]
+        },
+        {
+            "Effect":"Allow",                       NOTE: Allow Put / Get / Delete on all objects under test/
+            "Action": [
+                "s3:PutObject",
+                "s3:GetObject",
+                "s3:DeleteObject"
+                ],
+            "Resource": [arn:aws:s3:::test/*"]
+        }
+    ]
+}
+choose name / description of policy 
+
+
+Create Role 
+IAM > Role > Create Role 
+
+Here you can select type of "trusted entity": AWS Service, AWS Account, Web Identity, SAML
+
+ex. 
+
+select AWS Service > EC2 > [NEXT: Permissions] 
+enter name of policy created above
+Name / description or FOle
+
+Attaching Role to any EC2 instance will allow the actions laid out in the policy
+
+Can add a managed policy, as well as custom policy to Role
+
+
+Inline Policy
+    - works like other policy but is not formally defined as a policy
+    - scope is limited to this specific role
+
+TIPS:
+
+- Any perms not EXPLICITY ALLOWED are IMPLICITY DENIED
+    - starts off denying EVERYTHING
+
+- EXPLICITY DENY > everything else 
+    - explicit deny overrides any explicity allow of the same action / resource
+
+- Only attached policies have an effect
+
+With muliple policies attached to identity or resource
+    - AWS JOINS (UNION) all applicable policies together
+
+
+Permission Boundaries:
+ - Used to delegate admin to others
+    - admin creating users vs. devs needing perms for Lambda functions 
+
+ - for IAM entities: users and roles 
+
+ - prevent privilege escalation
+    or unnecessarily broad perms
+
+using a MANAGED POLICY to SET MAXIMUM PERMISSIONS that an IDENTITY based POLICY  can grant to an IAM ENTITY
+
+Entity Permission Boundary allows it to perform ONLY ACTION ALLOWED 
+     by BOTH Identity based policy and Permission Boundaries
+
+NOTE: Permission Boundary controls the maximum permissions an IAM policy can grant
+
+Use cases:
+    - Devs creating roles for Lambda functions 
+    - App owners creating roles for ECS instances
+    - Admins creating ad hoc users
+
+IAM > Users > user_name > Set Permission Boundary
+
+select managed policy i.e. AmazonDynamoDBFullAccess 
+
+hence, if user as full Admin perms, the Permission Boundary limits that to AmazonDynamoDBFullAccess 
+
+
+AWS Resource Access Manager
+
+
+.
+
+
+
