@@ -2483,7 +2483,7 @@ Cognito User Pools
 
 
  Active Directory Compatible               NOT  Active Directory Compatible
-    - Manged Microsoft AD                   - Cloud DIrectory 
+    - Manged Microsoft AD                   - Cloud Directory 
     - AD Connector                          - Cognitor User Pools
     - Simple AD
 
@@ -2692,6 +2692,161 @@ hence, if user as full Admin perms, the Permission Boundary limits that to Amazo
 
 AWS Resource Access Manager
 
+ - allows resource sharing between accounts
+     - multiple individual accounts
+     - AWS Organization
+
+Resources that can be shared using RAM:
+    App Mesh
+    Aurora
+    CodeBuild
+    EC2
+    EC2 Image Builder
+    License Manager
+    Resource Groups
+    Rout 53
+ex.
+Launch EC2 instance in a shared subnet 
+    - Acct 1 has a private subnet 
+    - Acct 2 can launch instances into the Shared subnet
+
+ex. RDS 
+
+Acct1 
+    - Auroa Database cluster
+
+Goal is to share into Acct 2
+
+Resource Access Manager > Create a resource share
+Name: Aurora Cluster Share 
+Resources:   Aurora DB clusters
+ - select cluster
+
+
+Principals:
+[x] Allow external accounts
+Enter Account number for Acct 2
+
+[create resource share]
+
+
+Acct 2: 
+RDS > Databases > refresh
+Nothing is shown
+
+
+Details of share show shared principal in "Associating" state. 
+
+NOTE: Acct 1 sends and invite to Acct 2 to share resource
+
+Acct 2 > Resource Acces Share > Shared with me > Resource Shares 
+- pendng invitation
+ - click 
+ - accept resource share
+
+RDS > refresh 
+Role "Shared from account ...."
+
+
+AWS Single Sign On
+
+ - SSO service helps centally manage access to AWS accounts / business apps.
+    - can be third party 
+        i.e. Box, GitHub Slack, SeriveNow, Office365, etc.
+
+ - can sign into AWS accounts i (and 3rd party accts)
+   using SSO portal with corporate identities
+
+Granular Account-Level Perms
+
+SSO integrates with Active Directory or 
+  any SAML 2.0 Identity Provider
+    i.e. Azure AD
+ 
+  - can log into SSO portal with Active Directory creds
+  - SSO can grant access to AWS Organizations 
+        - OU=Dev, OU=Prod
+  - SSO can grant access SAML 2.0 enabled applications
+
+SAML: Security Assertion Markup Language
+ - standard to log users into applications 
+     based on sessions in another context 
+        i.e. Microsoft Active Directory
+           or businss app i.e. GSuite
+
+NOTE:  All signon activities recorded in CloudTrail
+
+If you see SAML in question, look for SSO in answers
+
+
+Advanced IAM Summary 
+
+Directory Service 
+ - connects AWS resources with on-prem AD
+ - SSO to any domain-joined EC2 instance
+
+AWS Managed Microsoft AD
+    - Real AD running on MS Servers
+
+
+AD Trust:
+ - extend AWS Managed Microsoft AD to on-prem
+
+KNOW Responsibilites
+                AWS                                     Customer
+    - Multi-AZ deployment                     - Users, groups, Group Policy Object
+    - Patch, monitor, recover                 - Standard AD tools
+    - Instance rotation                       - Scale out DCs 
+    - Snapshot and restore                    - Trusts (resource forest)
+                                              - Certificate authorities (LDAPs)
+                                              - Federation
+Simple AD
+ - AD Lite 
+ - Basic AD features: 
+ - Small  <= 500
+ - Large  <= 5000
+    - Does not support Trusts
+
+AD Connector 
+ - Directory gateway (proxy) for on-premises AD
+ - Allow on-prem users to log into AWS using AD      
+ - Join EC2 Instances to your existing AD 
+
+Cloud Directory
+  - LDAP
+
+Cognito User Pools 
+    - works with social media logins
+
+ Active Directory Compatible               NOT  Active Directory Compatible
+    - Manged Microsoft AD                   - Cloud Directory 
+    - AD Connector                          - Cognitor User Pools
+    - Simple AD
+
+IAM
+ARN: 
+    arn:partition:service:region:account_id:
+    resource_type/resource/qualifier
+    resource_type/resource:qualifier
+Policy: Effect / Action / Reasource (EAR)
+
+Deny > Allow 
+Permissions Boundaries
+     - max resources an entity can have
+
+Resources that can be shared using RAM:
+    App Mesh
+    Aurora
+    CodeBuild
+    EC2
+    EC2 Image Builder
+    License Manager
+    Resource Groups
+    Route 53
+
+SSO:
+ - use existing corporate identities
+ 
 
 .
 
