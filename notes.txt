@@ -3247,6 +3247,56 @@ Only 1 Intgernet Gateway per VPC
 Security Groups CAN NOT SPAN VPCs
 
 
+NAT Instance vs NAT Gateway
+
+SSH Notes:
+
+1. Use ssh-agent forwarding from bastion host to ec2 instances
+
+2. On client add key to keychain 
+    ssh-add -K ssh_key.pem 
+
+3. Can verify keys available to ssh-agent use:
+    ssh-add -L 
+
+4. Connect to bastion host using -A option.   Enables SSH agent forwarding. 
+   Local SSH agent responds to public-key challenge when ssh from bastion to EC2 instance.
+    ssh -A user@bastion_host    # Agent Forwarding
+
+6. Once in bastion host, connect to ec2 instance 
+    ssh  user@ec2_instance
+
+
+NOTE:  ssh-agent will try all keys until successful, however only 5 attempts allowed. 
+       Make sure there are not more than 5 keys in ssh-agent by chcking:
+         ssh-add -L 
+
+
+https://aws.amazon.com/blogs/security/securely-connect-to-linux-instances-running-in-a-private-amazon-vpc/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
