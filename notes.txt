@@ -3247,7 +3247,6 @@ Only 1 Intgernet Gateway per VPC
 Security Groups CAN NOT SPAN VPCs
 
 
-NAT Instance vs NAT Gateway
 
 SSH Notes:
 
@@ -3276,28 +3275,39 @@ https://aws.amazon.com/blogs/security/securely-connect-to-linux-instances-runnin
 
 
 
+# NAT Instance vs NAT Gateway
+
+Network Adress Translation
+
+NAT Instance:  EC2 instance
+NAT Gateway:   HA Gateway service
+               - private subnets can communicate w/ Internet without being public
 
 
+Can create a NAT instance via Amazon Linux image via: 
+ https://docs.aws.amazon.com/vpc/latest/userguide/work-with-nat-instances.html#create-nat-ami
+
+Or 
+
+You can use a NAT Gateway
 
 
+TIP:
 
+- When creating a NAT instnce:  Disable Source / Destination Check on the instance
+- NAT instance put be in public subnet
+- Must be a route OUT of private subnet to the NAT instance
+- NAT instances ALWAYS behind a security group
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+NAT gateways
+- redundant inside AZ 
+- Only ONE NAT Gateway in an AZ  (can't span)
+- start at 5 Gbps and scale to 45 Gbps
+- No patching
+- Not associated with security groups
+- Automatically assigned a public IP address
+- Update route tables
+- Create NAT Gateway per AZ per HA
 
 
 
