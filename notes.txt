@@ -3053,28 +3053,51 @@ Private IP Addr Ranges
 ------------------------------------------
 10.0.0.0    - 10.255.255.255        10/8                                                                                                       
 172.16.0.0  - 172.31.255.255        172.16/12
-182.168.0.0 - 192.168.255.255       192.168/16
+192.168.0.0 - 192.168.255.255       192.168/16
 
 
+NOTE: Largest  subnet you can have inside a VPC  /16
+      Smallest subnet you can have inside a VPC  /28
+
+CIDR.xyz    << site to calculate CIDR
 
 
+VPC Features:
+  - Launch instances into subnet
+  - Assign custom IP Address ranges in each subnet
+  - Configure route tables between subnets
+  - Create internet gateway and attach VPC
+  - Better security control over AWS resources
+  - Instance security groups
+  - Subnet network access control lists
+
+Default VPC vs Custom VPC
+ - deafault allows for immediate deploy
+ - all subnets in default have a route to the internet
+ - Each EC2 instance has both public and private IP address
+
+VPC Peering
+ - Allows you to connect one VPC with another via direct network route 
+    using private IP addresses
+
+ - Instances behave as if they were on the same network
+ 
+ - Can peer VPC's with other AWS accounts as well as with other VPCs in same account
+ - Can peer across Regions 
+ 
+ - NOTE: Peering is in a star configuration: 1 central VPC peers with 4 others.
+         NO TRANSITIVE PEERING
+
+Tips:
+1 Subnet = 1 AZ
+    - CANNOT HAVE 1 SUBNET across AZs
+    - Can Have 1 AZ have multiple subnets
+
+Security Groups are Statefule
+NACLs  are Stateless
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+# Create Own VPC Part 1
 
 
 
