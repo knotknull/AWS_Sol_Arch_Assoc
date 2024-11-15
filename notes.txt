@@ -3100,6 +3100,155 @@ NACLs  are Stateless
 # Create Own VPC Part 1
 
 
+VPC > VPC instance > Subnets
+acutal subnets in VPC 
+
+172.31.0.0/20   =>> us-east-1c    4091 available IP Addresses
+172.31.16.0/20  =>> us-east-1d
+172.31.32.0/20  =>> us-east-1e
+172.31.48.0/20  =>> us-east-1b
+172.31.64.0/20  =>> us-east-1a
+172.31.80.0/20  =>> us-east-1f
+
+VPC > VPC instance > Route table
+2 routes: 
+-   detination: 0.0.0.0/0       target: internet gateway (igw)
+-   detination: 172.31.0.0/16   local:   
+
+VPC > VPC instance > Internet Gateway
+  attached to VPC
+
+VPC > VPC instance > Network ACLs
+    - associated with all subnets
+Inbound
+Rule Number        Type             Protocol        Port Range      Source         Allow/Deny
+100                 All traffic     All             All             0.0.0.0/0       Allow
+0                   All traffic     All             All             0.0.0.0/0       Deny
+
+Outbound
+Rule Number        Type             Protocol        Port Range      Source         Allow/Deny
+100                 All traffic     All             All             0.0.0.0/0       Allow
+0                   All traffic     All             All             0.0.0.0/0       Deny
+
+
+
+VPC > VPC instance > Security groups
+
+Create VPC (what resource created by default)
+
+NOTE: CIDR block size must be between /16 and /28.
+
+
+Tenancy: Default | Dedicated
+NOTE: Dedicated means dedicated hardware / MUCH MORE EXPENSIVE
+
+CLI command:
+
+aws ec2 create-vpc \
+ --instance-tenancy "default" \
+ --cidr-block "10.0.0.0/16" \
+ --ipv6-cidr-block-network-border-group "us-east-1" \
+ --tag-specifications '{"resourceType":"vpc","tags":[{"key":"Name","value":"knotknull.dev.vpc"},{"key":"env","value":"dev"}]}' 
+
+
+What was created:
+Subnets     : NO
+Route Table : YES  (only local routes, four subnets)
+Inet gateway: NO
+NACLS       : Yes  (Same default Inbound / Outbound Rules but for IPv4 and IPv6.  NOTE: No subnets associated)
+Security Grp: Yes  (Default Security Group Created)
+                    NOTE:  for Default Security Grop                
+                        Inbound :  1 Rule,  all traffic / all IP types
+                        Outbound:  2 Rules, all traffic / one each for IPv4 and IPv6
+
+Default resources created for a new VPC: 
+  - Route Table
+  - NACL 
+  - Security Grp 
+  - Router
+
+
+NOTE: availability zones are randomized per account 
+  i.e.  acct #1 us-east-1a  is not the same as acct #2 us-east-1a
+
+NETWORK NOTES: 
+Only 251 out of 256 addresses available
+
+Amazon Reserves 5 IP Addresses:
+  10.0.0.0   - Network   Address 
+  10.0.0.1   - VPC Router
+  10.0.0.2   - DNS Server
+                    - base of VPC network range + 2
+                    - base of each subnet range + 2
+  10.0.0.3   - Reserved for future use
+  10.0.0.255 - Broadcast Address
+
+
+Make on e subnet have Auto-assing public IP addresses
+
+VPC > Subnet > Select > Action > Edit Subnet Settings
+ - enable auto-assign publc IPv4 addresses
+
+Add Internet Gateway to new VPC: 
+Create Internet Gateway
+
+Once created, attach to VPC
+VPC> Internet Gatways > Actions > Attach 
+
+aws ec2 attach-internet-gateway --vpc-id "vpc-07faa2b86804d88c8" --internet-gateway-id "igw-0076d4f89018b05bf" --region us-east-1
+
+NOTE: can only have one Internet Gateway per VPC
+
+
+Create Route to Internet via Route Table
+VPC > Route Tables > instance 
+
+NOTE:  keep main route table private and create route table for public access
+
+VPC > Route Tables > Create Route Table
+
+once created, add route to internet gateway
+
+VPC > Route Tables > Instance > Edit Routes > Add Route
+destination: 0.0.0.0/0 
+target     : igw ... (new internet gateway assocaited with VPC)
+
+associate subnet to new public route table
+VPC > Route Tables > Instance > Edit Routes > Subnet Associaions > Edit Subnet Associations
+Associate Public Route table with subnet that had set Auto Assign Public IP Addr 
+
+create 2 ec2, one public, one private
+
+
+
+
+NOTE: Security Groups DO NOT SPAN VPCs
+Review: 
+
+Default resources created for a new VPC: 
+  - Route Table
+  - NACL 
+  - Security Grp 
+  - Router
+
+NO SUBNETS or Internet Gateway
+
+Amazon Reserves 5 IP Addresses:
+  10.0.0.0   - Network   Address 
+  10.0.0.1   - VPC Router
+  10.0.0.2   - DNS Server
+                    - base of VPC network range + 2
+                    - base of each subnet range + 2
+  10.0.0.3   - Reserved for future use
+  10.0.0.255 - Broadcast Address
+
+Only 1 Intgernet Gateway per VPC
+
+Security Groups CAN NOT SPAN VPCs
+
+
+
+
 
 
 
