@@ -3309,6 +3309,23 @@ NAT gateways
 - Update route tables
 - Create NAT Gateway per AZ per HA
 
+# Network Access Control Lists (NACLs) vs Security Groups
+
+New NACL deny all traffic inbound / outbound by default
+
+
+Ephemeral ports for NAT Gateway, port assigned for the client end of a client-server communication.  (i.e. the port that the client gets)
+NAT Gateway Ephemeral Ports:  1024 - 65535
+
+Rules are being evaluated by rule number lowest to greateest and then the DENY rules
+
+
+
+
+
+
+
+
 
 
 
