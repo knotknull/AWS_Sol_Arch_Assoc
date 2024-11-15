@@ -3318,14 +3318,25 @@ Ephemeral ports for NAT Gateway, port assigned for the client end of a client-se
 NAT Gateway Ephemeral Ports:  1024 - 65535
 
 Rules are being evaluated by rule number lowest to greateest and then the DENY rules
+    - If you have a DENY first (lower number) followed by an ALLOW later for same rule the DENY takes precedence
+
+MAIN THING:  NACLS can deal with ports and IP Addrs and Security Groups cannot
 
 
+Subnet can only have associated with 1 NACL
+NACL can have man subnets
 
 
+NOTE:  NACLs evaluated BEFORE security groups 
+     A DENY in NACL won't ever make it to a security group
 
+VPC automatically comes with default NACL
+    - default allows all inbound and outbound
 
+Custom NACL stargs with all inbound / outbound traffice as DENY
 
-
+Each subnets associated with 1 NACL
+ - if NOT defined it is associated with default NACL
 
 
 
