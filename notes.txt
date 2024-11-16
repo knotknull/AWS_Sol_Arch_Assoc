@@ -3559,6 +3559,78 @@ NOTE:   aws s3 ls << hangs, may have to specify region you are in
 
 # VPC PrivateLink 
 
+Open services to other VPCs
+    - vpc to internet
+    - vpc peering
+    - Private Link << BEST
+
+Private Link:
+ - no VPC peering, no route tables, NAT, igw
+
+Requirements:
+ - Network Load Balancer on Service VPC
+ - ENI on the Customer VPC
+
+                  +--------  AWS Private Link -----------+
+    Service VPC   |                                      | Customer VPC 
+    +--------------------------+            +--------------------------+
+    |             |            |            |            |             |
+    |             |            |            |            |             |
+    | [App    ]   |   [Network]|            |[Elastic]   |   [    App] |
+    | [Service]---|---[   Load]|------------|[Network]---|---[Service] |
+    |             |  [Balancer]|            |[Interface] |             |
+    |             |            |            |            |             |
+    +--------------------------+            +--------------------------+
+                  |                                      |
+                  +--------------------------------------+
+                  
+
+Question on peering VPC to 10, 100s, etc customer VPC  USE Private Link
+
+
+# Transit Gateway
+ - think big cloud router
+ - across AWS Regions
+ - supports multcast
+ - single point where all connections can connect to
+ - hub and spoke model
+
+
+    Amazon VPC  ------+    +------ Amazon VPC
+                      |    |                    
+                    [---------]                      
+                    [ AWS     ]
+      VPN ----------[ Transit ]----------[ AWS Direct Connect Gateway ]
+                    [ Gateway ]
+                    [---------]                      
+                      |    |
+    Amazon VPC  ------+    +------ Amazon VPC
+
+
+- Transitive peering between thousands of VPCs and On-prem datacenters
+- Regional and Multi-region
+- Across multiple AWS Accounts using Resource Access Manager
+- Use route tables to limit how VPCs talk to each other
+- works with Direct Connect and VPN
+- Supports IP multicast
+
+
+# AWS VPN CloudHub
+
+- hub and spoke model 
+- connect multiple sites using VPNs
+- operates over publc internet
+
+
+
+# Netowrk Costs
+
+
+
+
+
+
+
 
 
 .
