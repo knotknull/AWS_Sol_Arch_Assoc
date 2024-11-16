@@ -3759,4 +3759,71 @@ Requirements:
         - single point of failure
 
 
+Quiz:
+
+How man VPCs are allowed per AWS Account per Region before requesting increase 
+    - 5
+
+Are you permitted to conduct your own security assessments or penetration tests on your own VPC without alerting AWS first?
+  - Depends on the type of security assessment or penetration test and the service being assessed. 
+     Some assessments can be performed without alerting AWS, some require you to alert.
+  - AWS customers are welcome to carry out security assessments or penetration tests against their AWS 
+     infrastructure without prior approval for 8 services only. You should request authorization for other simulated events. Reference: Penetration Testing.
+
+
+
+Security Group: Instance level
+NACLs         : Subnet Level
+
+Which of the following are true for security groups?  Choose 3
+ - Security groups evaluate all rules before deciding whether to allow traffic.
+ - Security groups support "allow" rules only.
+ - Security groups operate at the instance level and are associated with network interfaces.
+
+Security groups control access at the instance-level (as they are associated with network interfaces), 
+they support "allow" rules only, and they evaluate all rules before deciding whether to allow traffic into the instance(s).
+
+Security groups operate at the instance level (as they are associated with network interfaces), 
+they support "allow" rules only, and they evaluate all rules before deciding whether to allow traffic.
+
+You have created a new VPC and launched an EC2 instance into a public subnet. However, you did not assign a public IP to the instance during its creation. What is the easiest way to make your instance reachable from the internet?
+ - Create an Elastic IP address and associate it with your EC2 instance.
+
+When peering VPCs, you may peer your VPC only with another VPC in your same AWS account.
+ - You may peer a VPC to another VPC that's in your same account, or to any VPC in any other account.
+
+
+
+
+What is the purpose of an egress-only internet gateway?
+ - Allows VPC based IPv6 traffic to communicate to the internet
+ - Prevents IPv6 based internet resources to initiate a connection into a VPC
+
+The purpose of an egress-only internet gateway is to allow IPv6 based traffic within a VPC to access the internet, whilst denying any internet based resources to connection back into the VPC.
+
+
+
+A VPN connection consists of which of the following components?
+ - Customer Gateway
+ - Virtual Private Gateway
+
+A customer gateway is a resource that is installed on the customer side and provides a customer gateway inside a VPC.
+A Virtual Private Gateway sits at the edge of your VPC and is a key component when using a VPN. It's responsible for site-to-site connection from on-premises to a VPC.
+
+By default, EC2 instances in new subnets in a custom VPC can communicate with each other across Availability Zones.
+- In a custom VPC with new subnets in each AZ, there is a route within the route table that supports communication 
+    across all subnets/AZs. Additionally, it has a Default SG with an "allow" rule: all traffic, 
+    all protocols, all ports, from resource using this default security group. 
+
+
+VPC Flow logs created at these levels:
+    - VPC
+    - Subnet 
+    - Network Interface 
+
+
+# Elastic Load Balancers 
+
+
+
 .
