@@ -3437,19 +3437,56 @@ https://www.youtube.com/watch?v=mj5V3_-QEW0
 
 # AWS Global Accelerator
 
+- service to create accelerator to improve availability / performance of apps 
+   for local / global users
+
+- Global Accelerator directors traffic to optimal engpoins to AWS Global Network
+    - default: gives two static IP addresses that's associated with Accelerator
 
 
 
+ [ User ] --> [ AWS Edge Location ] --> [ AWS Global Accelerator ] --> [ Endpoint Groups ] --> [ Endpoints ]
+
+AWS Global Accelerator: directs traffic to optimal endpoint 
+        - proximity, health, endpoint weights
+
+Endpoint group: Endpoint in an AWS Region, includes 1 or more application endpoints
+
+Endpoints     : final delivery of traffic
 
 
+Global Accelerator components:
+ - Static IP Address
+    - can BYO IP Addr 
+    
+ - Accelerator
+    - each Accelerator includes 1 or more listeners
+ - DNS Name
+    - created to point to static IP addresses assigned by Global Accelerator
+    i.e. aaaa11111xxxxx22222zzzzz.awsglobalaccelerator.com 
+
+ - Network Zone
+    - services static IP addresses for Accelerator 
+    - similar to Availability Zone
+    - own physical infrastructure
 
 
+ - Listener 
+    - listener processes connections from cliets to endpoints in groups
+    - associate endpoint group to listener vie Region 
 
+ - Endpoint Group
+     - associated with AWS Region 
+     - one more endpoints in region 
+     - traffic dial adjusts amount of traffic sent to endpoint group i.e. blue / grean testing
 
-
-
-
-
+ - Endpoint
+    - Network Load Balncers
+    - Application Load Balancers
+    - EC2 instances
+    - Elastic IP addresses
+    - weights used to portion out traffic among endpoints
+    - performance testing in a region
 
 
 
