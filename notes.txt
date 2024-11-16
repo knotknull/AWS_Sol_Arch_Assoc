@@ -3440,7 +3440,7 @@ https://www.youtube.com/watch?v=mj5V3_-QEW0
 - service to create accelerator to improve availability / performance of apps 
    for local / global users
 
-- Global Accelerator directors traffic to optimal engpoins to AWS Global Network
+- Global Accelerator directors traffic to optimal engpoints to AWS Global Network
     - default: gives two static IP addresses that's associated with Accelerator
 
 
@@ -3456,7 +3456,7 @@ Endpoints     : final delivery of traffic
 
 
 Global Accelerator components:
- - Static IP Address
+ - Static IP Address (2)
     - can BYO IP Addr 
 
  - Accelerator
@@ -3626,11 +3626,137 @@ Question on peering VPC to 10, 100s, etc customer VPC  USE Private Link
 # Netowrk Costs
 
 
+- ingress is free
+
+- instance to db via private ip and samve AZ, traffic is free
+
+- traffic between AZs via private IP: cost
+
+- traffic between AZs via public IP : 2x cost
+
+- traffic between two ec2 instance in same AWS Region stays within AWS network
+
+- traffic between two VPC in different regions:  inter-region cost
+
+- Always use private IP addresses over public IP addresses
+
+- Cut all network costs:  all EC2 in same AZ and use private IP addr
+        - single point of failure
+
+
+Summary:
+
+NAT Instance:  Disable Source / Destination Check on instance
+
+NAT Gateway: Redundant insize AZ  (5 Gbps to 45 Gbps)
+
+VPC comes automatically with NACL 
+ - default allows all outbout and inboud
+
+New NACL being created denies all inbound / outbound traffic by default
+
+Each Subnet MUST BE associated with NACL, defaults to VPC default NACL
+
+CAN  Block IP Addr / Ports on NACLs             (NACLs are ALLOW and DENY)
+CANT Block IP Addr / Ports on Security Groups   (Security Group is always allow)
+
+NACL can have MULTIPLE Subnets
+Subnets can have ONLY ONE NACL
+
+NACL rules evaluated with lowest number first
+
+If ALLOW before equivalent DENY, ALLOW wins because it is evaluated first
+If need to DENY ensure it is before any ALLOWs 
+
+
+Internet facing Load Balancer needs two subnets
+
+Can't have flow logs across Accounts
+Can't change flow log configuration
+NOT ALL TRAFFIC IS MONITORED in flowlogs:
+    - Amazon DNS server not logged
+        -own DNS server would be logged
+
+    - Windows license activation
+    - DHCP
+    - 169.254.169.253
+    - 
 
 
 
+# Setting up Direct Connect
+
+- AWS Direct Connect > Virtual Interface         : create Public Virtual Interface 
+- VPC > VPN Connection > Customer Gateway        : create Customer Gateway
+- VPC > VPN Connection > Virtual Prifate Gateway : create Virtual Private Gateway
+- Attach Virtual Private Gatewayto desired VPC
+- Site-to-Site VPN Connection : create VPN Connection
+    - select Virtual Private Gateway
+    - select Customer Gateway
+- Setup VPN on customer gateway / firewall
 
 
+# AWS Global Accelerator
+- service to create accelerator to improve availability / performance of apps 
+   for local / global users
+
+- Global Accelerator directors traffic to optimal engpoints to AWS Global Network
+    - default: gives two static IP addresses that's associated with Accelerator
+
+VPC Endpoints: 
+
+2 types:
+ - Interface Endpoints
+ - Gateway Endpoints
+
+Interface Endpoint:
+ - Elastic Netwrok Interface (ENI) with private IP address
+ - Essentially a prive IP address attached to an ENI that can access AWS services internally
+
+Gateway Endpoint:
+ - Supported fof 
+    - Amazon S3 
+    - DynamoDB
+
+Private Link:
+ - no VPC peering, no route tables, NAT, igw
+
+Requirements:
+ - Network Load Balancer on Service VPC
+ - ENI on the Customer VPC
+
+# Transit Gateway
+ - think big cloud router / across AWS Regions
+ - supports multcast
+ - single point where all connections can connect to
+ - hub and spoke model
+
+- Transitive peering between thousands of VPCs and On-prem datacenters
+- Regional and Multi-region
+- Across multiple AWS Accounts using Resource Access Manager
+- Use route tables to limit how VPCs talk to each other
+- works with Direct Connect and VPN
+- Supports IP multicast
+
+
+# AWS VPN CloudHub
+
+- hub and spoke model 
+- connect multiple sites using VPNs
+- operates over publc internet
+
+
+
+# Netowrk Costs
+- ingress is free
+- instance to db via private ip and samve AZ, traffic is free
+- traffic between AZs via private IP: cost
+- traffic between AZs via public IP : 2x cost
+- traffic between two ec2 instance in same AWS Region stays within AWS network
+- traffic between two VPC in different regions:  inter-region cost
+- Always use private IP addresses over public IP addresses
+- Cut all network costs:  all EC2 in same AZ and use private IP addr
+        - single point of failure
 
 
 .
