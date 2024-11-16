@@ -3458,7 +3458,7 @@ Endpoints     : final delivery of traffic
 Global Accelerator components:
  - Static IP Address
     - can BYO IP Addr 
-    
+
  - Accelerator
     - each Accelerator includes 1 or more listeners
  - DNS Name
@@ -3488,9 +3488,76 @@ Global Accelerator components:
     - weights used to portion out traffic among endpoints
     - performance testing in a region
 
+# VPC Endpoint
+ - Virtual device, horizontally scaled, redundant, HA VPC component
+ - allow communication between intances in VPC and services without leaving Amazon network
+ - powered by PrivateLink
+ - NO: internet gateway, NAT, VPN connect or AWS Direct Connect
+ - VPC instances do not require public IP address
+
+2 types:
+ - Interface Endpoints
+ - Gateway Endpoints
+
+Interface Endpoint:
+ - Elastic Netwrok Interface (ENI) with private IP address
+ - serves as an entry point for traffic destined to supported service
+ - Supported services: 
+    API Gateway                 Kinesis Data Streams
+    AWS CloudFormation          SageMaker  / SageMaker Runtime
+    AWS CloudWatch              SageMaker Notebook Instance
+    AWS CloudWatch Events       Secrets manager
+    AWS CloudWatch Logs         Security Token Service
+    AWS CodeBuild               Service Catalog
+    AWS Config                  SNS
+    AWS EC2 API                 SQS
+    ELB API                     Systems Manager
+    KMS 
+    Endpoint services hosted by other AWS Accounts
+    Supported AWS Marketplace partner services 
+
+ - Essentially a prive IP address attached to an ENI that can access AWS services internally
 
 
+Gateway Endpoint:
 
+ - Like NAT Gateway
+ - Supported fo 
+    - Amazon S3 
+    - DynamoDB
+
+ex. 
+  EC2 Instance in Private Subnet utilizing S3 Gateway Endpoint to read/write S3 bucket 
+   without leaving internal netowrk
+
+
+NOTE: ec2-s3 role allows EC2 full access to S3 
+
+- Add role to private ec2 instance
+
+VPC > Endpoints > Create Endpoint
+Type:
+     AWS Services  
+
+Services:
+   com.amazonaws.us-east-1.s3   gateway 
+
+Network settings: 
+ knoknull.dev.vpc
+
+Route Tables 
+  default / main
+
+Policy
+    full access or custom
+
+
+NOTE:  VPC Endpoint gets added to the Route of the VPC
+
+NOTE:   aws s3 ls << hangs, may have to specify region you are in 
+        aws s3 ls --region us-east-2
+
+# VPC PrivateLink 
 
 
 
