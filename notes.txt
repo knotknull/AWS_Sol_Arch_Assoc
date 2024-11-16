@@ -668,7 +668,7 @@ Storage Gateway:  agent installed on prem
         Stored Volumes: entire dataset stored on site and is asyn backed up to S3
         Cached Volumes: entire dataset on S3 and more frequently accessed is cached locally 
 
-    Gateway Virtua Tape Library: backup to S3
+    Gateway Virtual Tape Library: backup to S3
 
 
 Athena: 
@@ -3093,9 +3093,10 @@ Tips:
     - CANNOT HAVE 1 SUBNET across AZs
     - Can Have 1 AZ have multiple subnets
 
-Security Groups are Statefule
+Security Groups are Stateful
 NACLs  are Stateless
-
+NACLs are at the subnet / VPC level
+Security Groups are at the resource level
 
 # Create Own VPC Part 1
 
@@ -3337,6 +3338,122 @@ Custom NACL stargs with all inbound / outbound traffice as DENY
 
 Each subnets associated with 1 NACL
  - if NOT defined it is associated with default NACL
+
+NACLS are stateLESS
+Security groups are stateFULL
+
+
+# Custom VPC and ELBs
+
+EC2 > Load balancers 
+
+3 Types: 
+ - Application Load Balancer  (request level)      HTTP / HTTPS, microservices, containers
+ - Network Load Balancer      (connection level)   low latencies, millions request per sec, TLS offload, UDP, static IP
+ - Gateway Load Balancer      support 3rd party virtual appliences supporting GENEVE (bump in the wire)
+ 
+
+NOTE: At least 2 public subnets needed for a load balancer **
+
+# VPC Flow Logs
+
+- capture IP traffic going to / from network interfaces in VPC.
+- stored usin CloudWatch Logsg
+    - can view and retrieve in CloudWatch Logs 
+
+3 levels:
+ - VPC
+ - Subnet
+ - Network Interface level
+
+Tip: 
+- Cannot enable flow logs for VPCs that are peered with your VPC 
+  unless the peer VPC is in you account
+- can tag flow logs 
+- after creating flow log, CAN'T change configuration
+- Not all IP traffice is monitored
+    - Amazon DNS
+    - WIndows instance for Amazon Windows license activiation
+    - traffic to 169.254.169.254
+    - DHCP traffic
+    - traffice to reserved IP addr for default VPC router
+
+# Bastion Host
+
+ - jump box 
+ - allows access to internal network resources wil limiting / hardened against public access
+ - ssh / rdp
+ - Can't use an RDP Gateway as a bastion host
+
+
+# Direct Connect
+ - Cloud service that establishes dedicated network connection from onprem to AWS.
+ - Private connectivity from AWS to data center.
+ - increase bandwidth thruput
+ - dedicated lines / No traffic over Internet
+                                                   Direct Connect Location
++----------------+ <-- AWS Backbone Network-- >   +-------------------------+  <---- Customer / --->  +----------------+
+|                |                                | [AWS Cage]  [Customer]  |       Provider Link     |                |
+|                |                                | [   DX   ]  [/Partner]  |                         |                |
+|  [AWS Public]  |                                | [ Router ]  [Router  ]<-|---------+               |                |
+|       |        |            DX                  |    |            |       |         | Last Mile     |                |
+|       + -------|<------------------------------>|    +--X-Connect-+       |         +---------------|->[Customer ]   |   
+|       |        |         Connection             +-------------------------+           pseudo wire / |  [  Router ]   | 
+|       |        |                                 Direct Connect Location              LAN extension |                |
+|       |        |                                +-------------------------+                         |                |
+|       |        |                                | [AWS Cage]  [Customer]  |                         |                |
+|       |        |                                | [   DX   ]  [/Partner]  |                         |                |
+|  [VPC Private] |                                | [ Router ]  [Router  ]  |                         |                |
+|                |                                |    |            |       |                         |                |
+|                |                                |    +--X-Connect-+       |                         |                |   
+|                |                                +-------------------------+  <---- Customer / --->  |                |
++----------------+ <-- AWS Backbone Network-- >                                     Provder Link      +----------------+
+    AWS Region                                                                                            Customer
+                                                                                                        WAN / MAN / LAN     
+
+- Direct connection to AWS
+- Useful for high thruput (lots of network traffic)
+- need a stable and reliable connection
+ex. question:  VPN that drops connectiivity can be solved by Direct Connect
+
+
+# Setting up Direct Connect
+
+- AWS Direct Connect > Virtual Interface         : create Public Virtual Interface 
+- VPC > VPN Connection > Customer Gateway        : create Customer Gateway
+- VPC > VPN Connection > Virtual Prifate Gateway : create Virtual Private Gateway
+- Attach Virtual Private Gatewayto desired VPC
+- Site-to-Site VPN Connection : create VPN Connection
+    - select Virtual Private Gateway
+    - select Customer Gateway
+- Setup VPN on customer gateway / firewall
+
+
+How to setup routing my AWS Direct Connect private virtual interface to access my VPC resources
+
+https://www.youtube.com/watch?v=mj5V3_-QEW0
+
+
+
+# AWS Global Accelerator
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
