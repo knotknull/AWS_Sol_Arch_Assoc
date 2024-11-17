@@ -3823,6 +3823,123 @@ VPC Flow logs created at these levels:
 
 
 # Elastic Load Balancers 
+ 3 type
+ - Application Load Balancer
+ - Network Load Balancer
+ - Gateway Load Load Balancer
+
+Application Load Balancer
+ - HTTP / HTTPS 
+ - Layer 7 
+ - advanced request routing 
+    - sending specified requests to specific web servers
+
+
+ Network Load Balancer
+ - load balancing TCP traffic
+ - Layer 4 / connection level
+ - ultra low latencies
+ - millions req / sec
+
+
+Gateway Load Balancer
+deploy and manage a fleet of third-party virtual appliances that support GENEVE. 
+These appliances enable you to improve security, compliance, and policy controls
+
+X-Forwarded-For header has the original IP address of the end user
+504 Error : Gateway has timed out, application stopped responding
+
+
+Attach endpoints to a load balancer: 
+ associate targets to a target group and then associate target group to load balancer
+
+
+# Load Balancers and health checks
+
+
+502 / 504 Bad Gateway when using App ELB and no app is running
+
+Load Balancers always have DNS names, never given IP Address
+
+
+Read ELB FAQ
+
+
+# Advanced Load Balancer Theory
+
+Sticky Session 
+ - bind user session to specific EC2 instance
+   all requests from that users as sent to the same instance during that session
+ - can enable for App Load Balancers but traffic will be sent at Target Group Level
+ 
+ - disable sticky sessions if ec2 instance isn't receiving any traffic
+
+Cross Zone Load Balancing
+
+
+No Cross Zone Load Balancing   
+                             us-east-1a
+                            +---------------------------+ 
+                       +----|  [x] [x] [x] [x]     50%  |
+                       |    +---------------------------+
+     Route 54  ------- +
+                       |    +---------------------------+ 
+                       +----|  [x]                 50%  |
+                            +---------------------------+
+                             us-east-1b
+
+Traffic is being split across AZs although number of available instances is not even
+
+
+No Cross Zone Load Balancing   
+                             us-east-1a
+                            +---------------------------+ 
+                       +----|  [x] [x] [x] [x]     80%  |
+                       |    +---------------------------+
+     Route 54  ------- +
+                       |    +---------------------------+ 
+                       +----|  [x]                 20%  |
+                            +---------------------------+
+                             us-east-1b
+
+Load is balanced out across AZs
+
+
+Exam scenario, all instances in one AZ are getting traffic, other instance in other AZ are 
+  not receiving traffice:   Enable Cross Zone Load Balancing
+
+
+Path Patterns:
+ - create a listener with rules to forward requests based on the URL path.
+ Path based routing.  i.e. microservices
+  i.e. route general requests to one target group
+       route render image requests to another target group
+
+
+
+MAP: Replaced by  CloudFront, API Gateway, HTTP Service reverse proxy (NGINX)
+
+# Auto Scaling
+3 components 
+ - groups
+     logical components i.e. web server group, db group, app group
+
+ - Configuration Templates 
+    Groups uses a launch template or launch configuration for EC2 instances
+      specify: AMI ID, instance type, key pair, sec grps, block device
+
+ - Scaling Option
+    several ways to Scale Auto Scaling Groups.
+    ex.  configure by conditions (dynamic scaling) or on a schedule
+
+        - maintain current instance levels at all times
+        - scale manually
+        - scale based on a schedule
+        - scale based on demand
+             - scaling policies define parameters to control scaling 
+                i.e. don't go above CPU utilization of 70% else scale up
+        - use predictive scaling
+
 
 
 
