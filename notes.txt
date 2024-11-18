@@ -3954,10 +3954,29 @@ when you delete autoscaling group, instances beneath are deleted as well
 https://docs.aws.amazon.com/autoscaling/ec2/userguide/control-access-using-iam.html
 
 
+#HA Architecture
+- plan for failure
+- Netflix Simian Army project
+
+goo.gl/UR2nzM
+
+Example:
+    Route 53 Health Check
+     - w/ Auto Scaling Group 
+     - across regions
+     - database replication / multi-az deployment
+
+Use multiple AZs and Multiple Regions where ever you can
+Know difference between Multi-AZ (DR) and Read Replicas (performance)
+scaling up vs. scaling out
+consider cost element
+KNOW S3 storage classes:
+    S3-Standard    : highly available 
+    S3-Standard IA : highly available
+    S3-One ZOne    : NOT highly available
 
 
-
-
+Fault tolerant Wordpress: Lab pt1
 
 
 
