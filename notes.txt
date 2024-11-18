@@ -3941,6 +3941,24 @@ MAP: Replaced by  CloudFront, API Gateway, HTTP Service reverse proxy (NGINX)
         - use predictive scaling
 
 
+# Launch Configuration & Auto Scaling Groups
+
+https://docs.aws.amazon.com/autoscaling/ec2/userguide/control-access-using-iam.html
+
+
+Auto Scaling group 
+ - need a Launch Template first
+
+when you delete autoscaling group, instances beneath are deleted as well
+
+https://docs.aws.amazon.com/autoscaling/ec2/userguide/control-access-using-iam.html
+
+
+
+
+
+
+
 
 
 .
