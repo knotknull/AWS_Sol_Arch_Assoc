@@ -3821,6 +3821,7 @@ VPC Flow logs created at these levels:
     - Subnet 
     - Network Interface 
 
+## HA Architecture
 
 # Elastic Load Balancers 
  3 type
@@ -3958,7 +3959,7 @@ NOTE:  As of 10/1/2024 Auto Scaling Groups will only support Launch Templates
 
 
 
-#HA Architecture
+HA Architecture
 - plan for failure
 - Netflix Simian Army project
 
@@ -3990,11 +3991,11 @@ Pre-created cloudformatin scripts to create solutions:
 https://aws.amazon.com/solutions/
 
 
-CloudFormation 
+# CloudFormation 
  - script cloud environment creatin 
  - Quick Start / AWS Solutions Library: pre-built CF templates
 
-Elastic Beanstalk 
+# Elastic Beanstalk 
 
 - Elastic Beanstalk is under compute
 - deploy and manage apps to AWS Cloud without woryying about infra, etc.
@@ -4004,7 +4005,7 @@ Elastic Beanstalk
 HA with Bastion Hosts
 
 
-How to HA a Bastion Host 
+# How to HA a Bastion Host 
 
 1.  Expensive option: 2 instances and a Network Load Balancer 
 
@@ -4037,7 +4038,79 @@ How to HA a Bastion Host
   |                    |  +----|                 |
   +--------------------+       +-----------------+
 
-On-Prem Strategies with AWS
+# On-Prem Strategies with AWS
+
+- AWS Services to use on prem:
+
+Database Migration Service
+ - move db to / from AWS 
+   - Oracle, MySQL, DyanmoDB, etc
+   - homogenous and heterogeneous migrations
+
+Server   Migration Service
+ - incremental replication of on-prem servers to AWS
+ - backup tool, multi-site, DR
+
+AWS Applicaton Discovery Service
+ - helps customers plan migratio nprojects by gathering info of on-prem data centers
+ - install as virutal appliance on VMware vCenter
+ - build a utilization / dependency map of on-prem env
+ - saved as encrypted data store / used to estimate TCO of running on AWS
+ - data available in Migration Hub
+
+VM Import / Export 
+ - migrage existing apps to EC2
+ - DR or second site
+ - export AWS VMs to on-prem data center
+
+
+Download Amazon Linux 2 as an ISO
+ - works with all major virtualization providers: 
+   - VMware, Hyper-V, KVM, VirtualBox, etc
+
+
+# HA Architecture Summary
+https://d1.awsstatic.com/whitepapers/architecture/AWS_Well-Architected_Framework.pdf
+https://docs.aws.amazon.com/wellarchitected/latest/framework/welcome.html
+ 
+ - Operational Excellence Pillar
+ - Security Pillar
+ - Reliability Pillar
+ - Performance Efficiency Pillar
+ - Cost Optimazaton Pillar
+ - Sustainability Pillar
+
+
+Operaton Excellence Pilar
+https://d1.awsstatic.com/whitepapers/architecture/AWS-Operational-Excellence-Pillar.pdf
+
+https://docs.aws.amazon.com/wellarchitected/latest/operational-excellence-pillar/welcome.html
+
+
+
+
+- 50x Gateway Issue
+- check X-Forwarded-For header for IPv4 addresses of end user
+- Sticky Sessions, users to same EC2 instance 
+- Cross Zone Load Balancing across multiple AZs
+
+Read Load Balancer FAQ
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
