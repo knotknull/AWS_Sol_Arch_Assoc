@@ -3979,4 +3979,17 @@ KNOW S3 storage classes:
 Fault tolerant Wordpress: Lab pt1
 
 
+
+
+Fault tolerant Wordpress: Lab pt5 Cloudformation
+
+
+
+
+https://aws.amazon.com/solutions/
+
+
+
+
+
 .
