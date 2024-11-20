@@ -3954,6 +3954,10 @@ when you delete autoscaling group, instances beneath are deleted as well
 https://docs.aws.amazon.com/autoscaling/ec2/userguide/control-access-using-iam.html
 
 
+NOTE:  As of 10/1/2024 Auto Scaling Groups will only support Launch Templates
+
+
+
 #HA Architecture
 - plan for failure
 - Netflix Simian Army project
@@ -3979,14 +3983,28 @@ KNOW S3 storage classes:
 Fault tolerant Wordpress: Lab pt1
 
 
-
-
 Fault tolerant Wordpress: Lab pt5 Cloudformation
 
-
-
+Pre-created cloudformatin scripts to create solutions:
 
 https://aws.amazon.com/solutions/
+
+
+CloudFormation 
+ - script cloud environment creatin 
+ - Quick Start / AWS Solutions Library: pre-built CF templates
+
+Elastic Beanstalk 
+
+- Elastic Beanstalk is under compute
+- deploy and manage apps to AWS Cloud without woryying about infra, etc.
+    - handles load balancing, scaling, health monitoring, etc
+- layer above CloudFormation
+
+
+
+
+
 
 
 
