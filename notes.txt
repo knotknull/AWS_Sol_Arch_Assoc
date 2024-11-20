@@ -4093,25 +4093,42 @@ https://docs.aws.amazon.com/wellarchitected/latest/operational-excellence-pillar
 - check X-Forwarded-For header for IPv4 addresses of end user
 - Sticky Sessions, users to same EC2 instance 
 - Cross Zone Load Balancing across multiple AZs
+- Path patterns:  direct traffice to different EC2 instances based on URL
 
 Read Load Balancer FAQ
 
+HA Bastion Hosts 
+- remember netowrk load balancer to handle layer 4 traffic vs. layer 7
 
 
 
+# HA Quiz
 
 
+S3 Standard, S3 Intelligent-Tiering, S3 Standard-IA, S3 One Zone-IA, S3 Glacier, and S3 Glacier Deep Archive Amazon 
+designed for 99.999999999% DURABILITY
 
+ Reliability is the probability that a system will work as designed. 
 
+ Durability refers to the on-going existence of the object or resource.
 
+A spread placement group supports a maximum of seven running instances per Availability Zone
 
+Can't use 2nd db of a multi-az deployment as a read node 
 
+Resiliency is the ability of a workload to recover from infrastructure or service disruptions, dynamically acquire 
+computing resources to meet demand, and mitigate disruptions, such as misconfigurations or transient network issues.
 
+EC2 Autoscaling works in conjunction with the CloudWatch service to provide a predictive ability to your autoscaling groups.
 
+The Application Load Balancer  has functionality to distinguish traffic for different targets (mysite.co/accounts vs. mysite.co/sales vs. mysite.co/support)
 
+S3 Standard-IA has an availability of 99.9% while S3-1Zone-IA only has 99.5% 
 
+## Applications 
 
-
+# SQS
+Simple Queue Service
 
 
 .
