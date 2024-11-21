@@ -4299,17 +4299,39 @@ Error          : Origin policy cannot be read at the remote source
 
 # Kinesis
 
+Streaming data platform
+
+3 Types:
+ - Kinesis Streams
+   - producer stream to Kinesis Streams
+     - retained for 24 hours (default), up to 7 days 
+   - data is "sharded"
+   - consumers read from shards
+
+ - Kinesis Firehose
+   - producer stream to Kinesis Firehose
+   - no persistent storage, analsysis done "on the fly"
+        - Lambda function within Firehose
+        - output of Lambda to S3, etc
+
+ - Kinesis Analytics
+   - works with  Kinesis Streams and Firehose
+   - analyze data "on the fly" for either service
+   - stores on S3, Redshift, Elasticsearch Cluster
 
 
+Shards (partitions):
+ - 5 transactions per second for reads **
+ - 2 MB per second read rate  **
+ - 1000 records per second    **
+ - 1 MB per second write rate (including partition keys)**
 
+Stream capacity is a function of number of shartds
+ - sum of the capacities of its shards
 
+NOTE: Kinesis Streams is only Kinesis that has shards
 
-
-
-
-
-
-
+# Web Identity & Federation & Cognito
 
 
 
