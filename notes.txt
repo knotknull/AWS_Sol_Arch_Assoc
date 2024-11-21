@@ -4130,5 +4130,119 @@ S3 Standard-IA has an availability of 99.9% while S3-1Zone-IA only has 99.5%
 # SQS
 Simple Queue Service
 
+ - web services gives access to a message queue 
+ - distributed queue system
+    - standard queues: at-least-once messaging
+            - nearly unlimited transactions / sec
+            - can have more than one copy can be delivered
+            - messages can arrive out of order
+
+    - FIFO queues    : exactly-once messagint
+            - no duplicates
+            - message groups:  multiple ordered groups within a single queue
+            - limited to 300 transactions / sec
+
+ - redundant infra
+ - locks messages during processing: can have multple producers and consumers simultaneously
+ - decouple messages from processing 
+
+Message size is 256KB of text  **
+ - messages can be larger but would be stored in S3
+
+
+ - Pull based
+ - Messages can be kept in queue from 1 min to 14 days  **
+    - default is 4 Days
+
+
+Visibility timeout:
+ - amount of time that a message is invisible in the SQS queue after 
+    a reader picks up the message. 
+
+ - if job processes message before visibility timout, message is deleted from queue
+    - if not, message because visible again and another reader will process it.
+        hence, opportunity for duplicate messages
+
+ - timeout can be extended, maximum is 12 hours
+
+
+Polling:
+ - Long  Polling: does not return a response until a message arrives in the message queu 
+ - Short Polling: returns immediately, even if message queue is empty (defaul?) 
+
+
+# Simple Workflow Service (SWF)
+ - web service to coordinate work across distributed app components
+ - coordination of tasks
+ use cases: 
+    - media processing 
+    - web app backends
+    - analytics pipelines
+
+ tasks: various processing staps 
+ - executable code 
+ - web service calls
+ - human actions 
+ - scripts
+NOTE: assigned only once and not duplicated 
+
+SWF workflow executions can last up to 1 year
+    keeps track of all tasks and events in an application
+
+Workflow Starters: 
+  - application that can initate a workflow
+
+Deciders: 
+  - Control the flow of activity tasks in a workflow execution, what comes next
+
+ Actors: 
+  - Carry out the activity tasks
+
+# Simple Notification Service (SNS)
+ - web service that sends notifications from AWS
+ - allows app to publish messages and deliver to subscribers
+ - Redundant across multiple AZ
+ - Pay as you go
+
+ Push notification to: Apple, Google, Fire OS, Windows, Android, Baidu Cloud Push
+
+Integration:
+ - can send messages by SMS 
+ - email to SQS
+ - HTTP endpoint
+ - Push based delivery (No Polling)
+ - Multiple transport protocols
+
+SNS writes to topics 
+ - topic is an acces spoint for recipients to get notification
+ - Topic can delivery to multiple endpoints 
+ - One write to an SNS topic can be dlivered to multiple susbscribers on various platforms  
+
+SNS == Push
+SQS == Poll (Pull)
+
+
+# Elastic Transcoder
+
+EOL:  On November 13, 2025, AWS will discontinue support for Amazon Elastic Transcoder. 
+ - media transcoder in the cloud
+ - convert to target end platform: smartphones, tablets, etc
+ - provices presets for popular output formats
+ - pay by minute and resolution
+
+
+# API Gateway
+
+
+
+
+
+
+
+
+
+
+
+
 
 .
