@@ -4233,6 +4233,75 @@ EOL:  On November 13, 2025, AWS will discontinue support for Amazon Elastic Tran
 
 # API Gateway
 
+Full managed service that publishes, maintain, monitor and secures APIs at scale.
+
+"portal" to EC2, Lambda, Web App
+
+                              +--> [Lambda]
+                              |
+ [users] ---> [API Gateway] --+--> [EC2]
+                              |
+                              +--> [DynamoDB]
+
+- Expose HTTPS endpoints define RESTful API
+- Serverless connect to Lambda & DyanmoDB
+- Send API endpoints to different targets
+- Low cost 
+- Scales automatically
+- Track / control usage by API key
+- Throttle requests to prevent attacks
+- Connect to CloudWatch to log requests 
+- Maintain multiple versions of API
+
+Configure:
+    - Define API (container)
+    - Define Resources and nested Resources (URL paths)
+    Each Resource:
+      - Select supported HTTP methods (verbs)
+      - Set security
+      - Choose target ( EC2, Lambda, DynamoDB, etc)
+      - Set request / response tranformations
+
+Deploy:
+ - Deploy API to a stage: 
+   - Uses API Gateway domain, by default
+   - Can use custom domain
+   - Supports AWS Certificate Manager: free SSL / TLS certs
+
+API Caching 
+ - cache endpoint's response
+    - reduce number of calls made to your endpoint
+    - improve latency
+ - responses are cached to a TTL period (seconds)
+
+Same-origin policy
+ - web browser permits scripts in first web page to access data 
+    in a second we page but ONLY IF BOTH HAVE SAME ORIGIN (same domain name)
+- prevents Cross-Site Scripting (XSS) attacks
+     - enforece by web browsers
+     - Postman and curl ignore it
+
+CORS: Cross Origin Resource Sharing
+ - can relax same-origin policy
+ - allows restricted resources (i.e. fonts) on a web page to be requested 
+    from another domain outside the domain from the first served
+ - Enforced by browser
+
+Browser makes HTTP OPTIONS call for a URL
+  NOTE:  The HTTP OPTIONS method is used to describe communication options for the target resource. 
+         Browsers send an HTTP OPTIONS request to find out the supported HTTP methods and other options supported 
+         for the target resource before sending the actual request
+
+Server responds: These other domains are approved to GET this URL
+
+Error          : Origin policy cannot be read at the remote source
+                 Need to enable CORS on API Gateway
+
+# Kinesis
+
+
+
+
 
 
 
