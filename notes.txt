@@ -4333,6 +4333,66 @@ NOTE: Kinesis Streams is only Kinesis that has shards
 
 # Web Identity & Federation & Cognito
 
+Web Identity Federation
+ - access to AWS resources after authenticating with web-based provider 
+    Amazon, Facebook, Google
+ - after authenication user receives authenication token from id provider
+ - can trade for temporary AWS security credentials
+
+
+Cognito provides Web Id Federaiton features:
+    - sign-up and sign-in to apps
+    - access for guest users
+    - acts as an identity broker between app and Web ID providers
+        - don't have to write code auth / auth code
+    - synchronizes user data for multiple devices
+    - recommended for mobile apps
+    - credentials map to IAM Role
+
+Mobile App does not need to store credentials locally
+
+Cognito == Identity Broker: handles interaction between application and Web Id Provider **
+
+User Pools 
+ - user directories used to manage sign-up and sign-in 
+ - User can sign in directly to User Pool or thru Web Id Provider (Facebook, Google, etc)
+ - Successful authentication generates a JSON Web Token (JWT)
+ - interface with USERS
+
+Identity Pools 
+ - provide temporary AWS credential to access AWS Services: S3, DyanmoDB, etc
+ - interface with RESOURCES
+
+
+ user  -----(1)---->>  User Pool ---> Login to Web Id Provider --->  Facebook / Google / Amazon
+| | ^                     |    |                                                           |
+| | |                     |    +<--(2)--  auth token from Web Id Provider to User Pool <---+
+| | +--(3)---JWT Token----+
+| | 
+| +--------(4) ----------> Identity Pool 
+| |                           |
+| +---(5)--- temp AWS Creds --+
+|
++--(6)------ temp AWS Creds (IAM ROle) ----->  [AWS Resource: S3]
+
+
+Cognito uses Push Synchronization to push updates and synchronizes user 
+ data across multiple devices 
+  - uses SNS to send notification to all devices associated with a specific user
+
+[ user updates data i.e. password ] Cognito sends to SNS --> SNS Silent Push Notifications  --> User devices (phone, tablet, etc.) 
+
+
+
+User Pool    : user registratin, authenticcation, account recovery
+
+Identity Pool: grants the IAM role to access AWS resources
+
+# Event Processing Patterns
+
+
+
+
 
 
 
