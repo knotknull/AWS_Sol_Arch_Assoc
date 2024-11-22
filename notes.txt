@@ -4323,10 +4323,10 @@ Streaming data platform
 Shards (partitions):
  - 5 transactions per second for reads **
  - 2 MB per second read rate  **
- - 1000 records per second    **
+ - 1000 records per second    write **
  - 1 MB per second write rate (including partition keys)**
 
-Stream capacity is a function of number of shartds
+Stream capacity is a function of number of shards
  - sum of the capacities of its shards
 
 NOTE: Kinesis Streams is only Kinesis that has shards
@@ -4389,6 +4389,113 @@ User Pool    : user registratin, authenticcation, account recovery
 Identity Pool: grants the IAM role to access AWS resources
 
 # Event Processing Patterns
+
+
+Pub / Sub:
+ - SNS Topic
+   - publisher writes to topic
+   - subscriber receives message
+
+
+Dead Letter Queue 
+ - SNS:    uses SQS for failed deliveries
+ - SQS:    uses DLQ (another SQS queue) for maxReceiveCount messages
+ - Lambda: failed async invocations
+        - retries twice then sends to SQS or SNS
+
+ex. usage
+
+
+   [ mobile client ]  --> [ S3: image upload bucket ] --> [ Lambda: transcoding function ] --> [ s3: thumbnail bucket ]
+                                                                  |
+                                                                  v
+                                                        [ SNS: DLQ Topic ] --> [Lambda: Failue Notification Processor]
+
+Fanout Pattern: 
+
+                                          +---->  [ Prod: Fulfillment ]
+                                          |
+                                          |
+  [ Order System ] ----> [SNS: Topic] ----+---->  [ Prod: Data Warehouse ]
+                                          |
+                                          |
+                                          +---->  [ Test Environment  ]
+
+S3 Event Notifications: 
+ - receive notification when events happen in / on bucket
+    - can be delivered to:  SQS queues, SNS Topic, Lambda Function
+
+ - can filter notifications
+
+ - enable versioning on S3 bucket to ensure notification on every successful write
+
+
+S3 Event Types: 
+  - Object Creates:
+      - s3:ObjectCreated:Put
+      - s3:ObjectCreated:*
+
+  - Object Removed:
+      - deletes of versioned and unversioned objects
+
+  - Object Restored:
+      - restoration of objects in Glacier
+
+  - RRS Object Lost:
+      - detection of a reduced-redundancy storage object is lost
+
+  - Replication:
+      - replication failed
+      - replication exceeds 15 min
+      - Object no longer tracked by repl metrics
+
+
+# Application Summary
+
+SQS 
+ - decouple infra
+ - pull based
+ - 256 KB in size
+ - retention 1 min to 14 days, default is 4 days
+ - standard: order not guaranteed  / can be delivered more than once
+ - FIFO    : order is strictly maintained / messages delivered ONLY once
+
+
+# Lab: Scaling EC2 Using SQS
+
+- simulate load on EC2 Auto Scaling Group by sending messages to SQS
+
+- setup CloudWatch Alarm for Scale Out / In using the 
+    SQS metric ApproximateNumberOfMessagesVisible metric
+      NOTE: This will indicate there is a growing number of "unprocessed messages"
+
+- Create Scale Out / In simple scaling policies for Auto Scaling Group 
+   using the CloudWatch alarms created
+
+# Test 
+
+Domains provide a way of scoping Amazon SWF resources within your AWS account. All the components of a workflow, such as the workflow type and activity types, must be specified to be in a domain. It is possible to have more than one workflow in a domain; however, workflows in different domains can't interact with each other. Reference: Amazon SWF Domains.
+What happens when you create a topic on SNS, an Amazon Resource Name is created.
+Increase Visitbility window to allow consumers to process off of SQS
+
+## Security
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
