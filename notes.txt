@@ -4480,20 +4480,58 @@ Increase Visitbility window to allow consumers to process off of SQS
 
 ## Security
 
+# Reducing Security Threats
+
+- Use NACLs to filter known bad IP Addrs
+    - NACLs operate at layer 4
+- Host based firewall i.e. firewalld, iptables, ufw, Windows Firewall
+
+NOTE: Application Load Balancer terminates the bad actor IP addr
+  NLB passes traffic directly thru
+
+Web Application Firewall before Application Load Balancer
+    - operates at layer 7
+    - can block: 
+      -  IP Addr
+      -  SQL Injection
+      -  Cross-site scripting (XSS) attacks
+      -  Geomatch to block countries
+
+Can attach WAF to CloudFront
 
 
+# Key Management Service
+
+ - region secure key management encryption / decryption
+ - manages Customer Master Keys (CMK)
+    - pointer / reference
+    - keys never leave region or KMS
+ - ideal for S3 objects, db passwords, API Keys
+ - CMKs can encrypt / decrypt data upto 4KB size **
+ - Pay per API call
+ - Audit capability using CloudTrail, logs delivered to S3
+ - FIPS 140-2 Level 2 service
+    - US Gov Sec Std used to approve cryptographic modules
+ - CloudHSM is Level 3
+
+3 Types of CMKs 
+
+Type                    Can View        Can Manage      Dedicated to my Acct
+Cusomter Managed            Yes             Yes             Yes
+AWS Managed CMK             Yes             No              Yes
+AWS Owned CMK               No              Yes             No
 
 
+AWS Managed 
+ - Free, used by default if using encryption in most services.
+    Created automatically when creating an encrypted resource in AWS Service 
+    Only that service can use them
 
+Customer Managed CMK 
+ - Allows key rotation, controlled via key policies
 
-
-
-
-
-
-
-
-
+AWS Owned CMK 
+ - Used by AWS on a shared basis across many accounts
 
 
 
