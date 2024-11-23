@@ -4694,6 +4694,37 @@ Envelope Encyption
 
 Only data key goes over network to decrypt
 
+example 
+
+
+## Ecnrypt it using data key from KMS
+enc_it.sh: 
+aws kms encrypt \
+--key-id alias/kkio_test_key \
+--plaintext fileb://ls_it.txt \
+--query CiphertextBlob \
+--output text \
+| base64 -d > encrypted_ls_it.enc
+
+
+## Decrypt it using data key from KMS
+deEnc_it.sh:
+aws kms decrypt \
+--ciphertext-blob fileb://encrypted_ls_it.enc \
+--query Plaintext \
+--output text \
+| base64 -d > decrypted_ls_it.txt
+
+
+
+
+
+
+
+
+
+
+
 # CloudHSM
 
 Cloud Hardware Security Modules
@@ -4748,6 +4779,124 @@ Cloud HSM "projects" ENIs into App VPC
 
 
 # Systems Manager Parameter Store
+
+ - component of Systems Manager (SSM)
+ - serverless storage for config and secrets
+    - passwords
+    - database connection strings
+    - license codes 
+    - API keys
+
+ - values can be encrypted or plain text
+ - params can be stored in hierarchies
+ - versioning (rollback)
+ - TTL for values i.e. passwords
+
+Parameters stored into Hierarchies
+
+            dev                         prod
+       +-----+-----+               +-----+-----+
+       db         app              db         app
+ +-----+---+       +----+        +--+----+     +-----+
+mysql    pgsql       apikey    mysql   pgsql       apikey
+  |         |                     |        |
+conn-str  conn-str             conn-str  conn-str
+
+/prod/db/mysql/*
+/dev/api/apikey
+
+can get a single parameter (/dev/api/apikey) or entire branch (/prod/db/*) 
+
+NOTE:  Up to 15 levels deep  **
+
+Can grant permissions at any point in the tree structure i.e.
+ DBAs can get /prod/db/*   and dev can get /dev/api/*
+
+GetParametersByPath 
+     /dev
+     /dev/db
+
+Can be used in CloudFormation 
+ex. 
+
+Parameters:
+  LatestAmiID:
+    Type: 'AWS::SSM::Paramater::Value<AWS::EC2::Image::ID>'
+    Default: '/aws/service/ami-amazon-linux-latest/amzn2-ami-hvm-x86_64-gp2'
+
+Resources:
+ Instance: 
+    Type: 'AWS::EC2::Instance'
+    Properties: 
+      ImageID: !Ref LatestAmiID      <<< This references above
+
+
+
+# Secrets Manager
+
+- rotate, manage secrets
+- similar to parameter store
+- parameter has no additional charges
+- secrets manager has additional cost:
+   - charge per secret stored 
+   - per 10k API calls
+
+ - Secrets Manager can automatically rotate secrets 
+     - full key rotation with RDS
+            - new key / password
+
+ - Lambda can be written to rotate keys in other services 
+   - within Secrets Manager console
+ 
+ - Secrets Manager can generate random secrets
+    - generate random password in CloudFormation
+        - store them in Secrets Manager 
+
+    - aws sdks can do this as well 
+
+ - Can be shared across accounts
+
+
+# AWS Shield
+ - protects against DDoS attacks
+ - sits at edge of AWS Netowrk
+
+
+                AWS Shield Standard                                 AWS Shield Advanced
+
+ - use WAF w/ CloudFront or App LB get                      - $3k per month, per org 
+   AWS Shield Std at no cost                                - Enchanced protection for
+                                                                - EC2, ELB, ClourFront, GlobalAccelerator, Route 53
+ - protection against layer 3 and 4 attacks
+    - SYN (tcp) / UDP Floods                                - Business / Enterprise support customers get 24x7 access 
+    - reflection attacks                                        to DDoS Response Team (DRT)
+                                                            - DDoS cost protection
+ - Stopped 2.3 Tbps DDoS attack for 3 days
+
+
+# Web Application Firewall
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
