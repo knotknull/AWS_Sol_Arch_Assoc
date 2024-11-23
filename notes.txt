@@ -4876,19 +4876,47 @@ Resources:
 
 # Web Application Firewall
 
+- web firewall that monitors HTTP(S) requests to:
+   - CloudFront
+   - ALB
+   - API Gateway
+
+ - control access to content
+ - configure filtering rules to allow / deny traiffic:
+    - IP Addr
+    - Query string Params
+    - SQL Query Injection
+
+ - Blocked traffice receives HTTP 403 error / Forbidden
+
+3 Behaviors:
+ - Allow all reqs, except specified
+ - Deny  all reqs, except specified
+ - Count reqs that match properties specified
+
+Request Properties:
+    - Originating IP Addr
+    - Originating country
+    - Request size (put min or max value)
+    - Values in request headers
+    - Strings in request matching regex patterns
+    - SQL code injection
+    - Cross-site scripting (XSS) attacks
 
 
+combine to get a condition like blocking SQL Code Injection on .php requests 
+  while allowing .png requests
 
+AWS Firewall Manager (integrated with WAF) 
+ - Configuration service, manage firewall rules across AWS Organization
 
+ - Configure WAF Rules: 
+    - ALB, API Gateway, CloudFront 
 
+ - AWS Shield Advanced protections: 
+    - ALB, ELB Classic, EIP, CloudFront 
 
-
-
-
-
-
-
-
+ - Enable secruity groups for EC2 and ENIs
 
 
 
