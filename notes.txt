@@ -4919,17 +4919,70 @@ AWS Firewall Manager (integrated with WAF)
  - Enable secruity groups for EC2 and ENIs
 
 
+## Serverless 
+
+# Lambda
+
+- compute service that allows code upload to create a Lambda function
+  - AWS provisions and manages servers that you use to run code
+- no server / maintenance / admin
+- continuous scaling
+- inexpensive
+
+Use cases: 
+ - event driven compute service 
+    AWS runs Lambda code in response to events 
+    i.e. triggers:  changes to dta in a Bucket or DynamoDB
+
+ - compute service to run code in response to HTTP request using API Gateway 
+   or API calls via AWS SDK
+
+Lambda can trigger other Lambda functions
 
 
+Traditional vs. Serverless Architecture
 
 
+Tradtional: 
+ [ User ] -->  [ Route 53 ] --> [ ELB ] --> [ EC2 ] --> [ RDS ]
+
+Serverless (scales automagically): 
+ [ User ] -->  [ API Gateway ] --> [ Lambda ] --> [ Aurora ]
 
 
+Languages Supported: 
+  Node.js       Java
+  C#            Python
+  Go            PowerShell
 
+Pricing: 
+ - First 1MM requests are free
+    $0.20 per 1MM after
 
+ - Duration
+    - nearest 100ms
+    - depends on memory allocated 
+    - $0.00001667 for every GB-second used
 
+Alexa routes to Lambda
 
+Lambda scales out (not up)
+Each Lambda function is independent event,  1 event == 1 separate funciton call
+Lambda can call other Lambda functions 
 
+What AWS services are serverless: 
+    - Aurora Serverless
+    - Lambda
+    - DynamoDB
+    - S3
+    - API Gateway
 
+Difficult to debug Lambda applications 
+    - AWS X-Ray allows for debugging Serverless
+
+Lambda do things globally, can back up S3 bucket to S3 bucket
+
+KNOW WHAT CAN TRIGGER LAMBDA
+     i.e. RDS can't trigger Lambda
 
 .
