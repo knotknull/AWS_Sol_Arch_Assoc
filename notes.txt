@@ -4533,7 +4533,221 @@ Customer Managed CMK
 AWS Owned CMK 
  - Used by AWS on a shared basis across many accounts
 
+Two types of encryption for CMKs:
+Create a CMK in KMS by default it is Symmetric
 
+         Symmetric                                       Asymmetric 
+- same key encrypt / decrypt                        - mathematically related public / private key pair
+- AES256                                            - RSA and elliptic-curve cryptography (ECC) algos 
+- Never leaves AWS unencrypted                      - Private key never leaves AWS unencrypted 
+- Must call KMS APIs to use CMKs                    - Must call the KMS APIs to use private key
+- AWS services integrated w/ KMS use symmetri       - Can download public key and use outside of AWSc
+- encrypt, decrypt, re-encrypt dat                  - Used outside of AWS by users who can't call KMS APIsa
+- generate data keys, data key pairs                - AWS services integrated with KMS DO NOT SUPPORT asymmetric CMKs,
+   random byte string                               - Sign messages and verify signatures
+- import own key material
+
+
+
+
+Key Policy for newly created CMK
+{
+    "Sid": "Enable IAM User Permissions",
+    "Effect": "Allow",
+    "Principal": {"AWS": "arn:aws:iam::1111122223333:root"},
+    "Action": "kms:*",
+    "Resource": "*"
+}
+
+## Grant AWS account (root user) full access to the CMK
+
+KMS provides a Default Key Policy for you on create of a new CMK
+NOTE: if you update Key Policy to remove access from an account, need AWS to reset
+
+example policy 
+
+{
+    "Sid": "Allow use of the key",
+    "Effect": "Allow",
+    "Principal": {"AWS": "arn:aws:iam::1111122223333:role/EncryptionApp"},
+    "Action": [
+        "kms:DescribeKey",
+        "kms:GenerateDataKey*",
+        "kms:Encrypt",
+        "kms:ReEncrypt",
+        "kms:Decrypt",
+    ],
+    "Resource": "*"
+}
+
+## Grants IAM role role access to crypto actions for encrypting and decrypting data
+
+NOTE: KMS is REGIONAL.  If you wanted to move an object in S3 from one region to another, 
+ you'd have to:
+    - decrypt object 
+    - move to new region
+    - re-encrypt with CMK in the new region
+
+CLI:
+
+aws kms create-key --description "Test_KMS_CMK"
+returns:
+{
+    "KeyMetadata": {
+        "AWSAccountId": "709596356054",
+        "KeyId": "180b17b8-0f6b-41ac-a7f9-705ae965675b",
+        "Arn": "arn:aws:kms:us-east-1:709596356054:key/180b17b8-0f6b-41ac-a7f9-705ae965675b",
+        "CreationDate": "2024-11-22T22:59:37.168000+00:00",
+        "Enabled": true,
+        "Description": "Test_KMS_CMK",
+        "KeyUsage": "ENCRYPT_DECRYPT",
+        "KeyState": "Enabled",
+        "Origin": "AWS_KMS",
+        "KeyManager": "CUSTOMER",
+        "CustomerMasterKeySpec": "SYMMETRIC_DEFAULT",
+        "KeySpec": "SYMMETRIC_DEFAULT",
+        "EncryptionAlgorithms": [
+            "SYMMETRIC_DEFAULT"
+        ],
+        "MultiRegion": false
+    }
+}
+
+
+
+
+alias == short cut to a key 
+can be used to point to different keys using the same name (per rotation)
+
+
+aws kms create-alias --target-key-id  xxxx-some-long-key-id-yyyyy --alias-name "alias/test_cmk_alias"
+> aws kms create-alias --target-key-id  "180b17b8-0f6b-41ac-a7f9-705ae965675b" --alias-name "alias/test_cmk_alias"
+        
+aws kms list-keys
+{
+    "Keys": [
+        {
+            "KeyId": "180b17b8-0f6b-41ac-a7f9-705ae965675b",
+            "KeyArn": "arn:aws:kms:us-east-1:709596356054:key/180b17b8-0f6b-41ac-a7f9-705ae965675b"
+        }, .......
+        {
+            "KeyId": "5b1b077a-2eec-4af3-b60e-3bb95cc970bd",
+            "KeyArn": "arn:aws:kms:us-east-1:709596356054:key/5b1b077a-2eec-4af3-b60e-3bb95cc970bd"
+        }
+    ]
+}
+
+
+Default Key Policy created:
+{
+    "Version": "2012-10-17",
+    "Id": "key-default-1",
+    "Statement": [
+        {
+            "Sid": "Enable IAM User Permissions",
+            "Effect": "Allow",
+            "Principal": {
+                "AWS": "arn:aws:iam::709596356054:root"
+            },
+            "Action": "kms:*",
+            "Resource": "*"
+        }
+    ]
+}
+
+
+Know use the key at the CLI that was created above, use key alias
+
+echo "hellO worlD" > open_secret.txt
+## THIS DOESN'T WORK, NEEDS fileb  >>    aws kms encrypt --key-id "alias/test_cmk_alias" --plaintext file://open_secret.txt --output text --query CipherTextBlob
+aws kms encrypt --key-id alias/test_cmk_alias --plaintext fileb://open_secret.txt --output text --query CiphertextBlob | base64 --decode   > enc_secret
+
+NOTE: THIS IS OUTPUTS BASE64
+
+# decrypt it, NOTE:  NO CMK IS SPECIFIED, because there is a reference to CMK that encrypted data in encryption !!  **
+# THIS DECRYPTS TO BASE64
+# 
+aws kms decrypt --ciphertext-blob fileb://enc_secret  --output text --query Plaintext 
+aGVsbE8gd29ybEQK
+
+
+# decrypt it, out of base64 
+aws kms decrypt --ciphertext-blob fileb://enc_secret  --output text --query Plaintext  | base64 --decode
+hellO worlD
+
+
+- Use  data encryption key to generate data > 4KB   ** 
+
+aws kms generate-data-key  --key-id alias/test_cmk_alias  --key-spec AES_256
+{
+    "CiphertextBlob": "AQIDAHhvU7QOex6TlgFWtL6s6G5F6hWjooMZKlwaG1UchxveyAGoMhhq3q8InP+sYOiUymJcAAAAfjB8BgkqhkiG9w0BBwagbzBtAgEAMGgGCSqGSIb3DQEHATAeBglghkgBZQMEAS4wEQQM02/NSaaUIJohbJskAgEQgDs4TYB3fXnC0YQ09vUbFtQKwYkW7nJL3Ey4AlSq51i8hU441VxUIkSDx96rK9w9+Itk1owTq/Bq41SL2Q==",
+    "Plaintext": "jYTJZJiMFi57RJVyw63cDXtTVeJW8tasCudHJQn+aGw=",
+    "KeyId": "arn:aws:kms:us-east-1:709596356054:key/180b17b8-0f6b-41ac-a7f9-705ae965675b"
+}
+NOTE: 
+    - CiphertextBlob has metadata which tells KMS which CMK was used to encrypt data file
+    - use Plaintext to encrypt data file (> 4KB) 
+        NOTE: store CiphertextBlob and encrypted data
+                Encrypted data cannot be decrypted with just CiphertextBlob
+
+Envelope Encyption
+
+Only data key goes over network to decrypt
+
+# CloudHSM
+
+Cloud Hardware Security Modules
+
+ - dedicated hardware security module 
+ - FIPS 140-2 Level 3
+     - physical enclosure / tamper detection zeroes out plaintext cryptographic security providers
+        when removable doors / covers are opened up
+
+ - KMS == FIPS 140-2 Level 2  (show evidence of tampering)
+
+ - manage own keys in Cloud HSM
+    - single tenant multi-AZ cluster
+    - dedicated to customer
+    - KMS is multi-tenant
+    - No access to AWS-managed component
+    - AWS does not have access to keys
+    - runs within VPC in customer account
+    - Industry standard APIs -- NO AWS APIs
+    - Keys are irretrievable if lost
+
+CloudHSM can provide platform to handle: 
+    - PKCS#11
+    - Java Cryptography Extensions (JCE)
+    - Microsoft CryptoNG (CNG)
+
+Cloud HSM "projects" ENIs into App VPC 
+ - 1 HSM per subnet in each AZ
+
++------------------------------------+                   +------------------------------------+
+|  customer VPC                      |                   |  cloudHSM VPC                      |
+|                                    |                   |                                    |
+|   +-------------------------------------------------------------------------------------+   |
+|   |    +---------------------+     |                   |      +---------------------+   |   |
+|   |    |                     |     |                   |      |                     |   |   |
+|   |    |  [App]        [ENI]<---------------------------------------------- [HSM]+  |   |   |
+|   |    | Subnet 1            |     |                   |      | Subnet 1         |  |   |   |
+|   |AZ1 +---------------------+     |                   |      +------------------|--+   |   |
+|   +------------------------------------------------------------------------------|------+   |
+|                                    |                   |                         |          |
+|                                    |                   |                         + cluster  |
+|                                    |                   |                         |          |
+|   +------------------------------------------------------------------------------|------+   |
+|   |    +---------------------+     |                   |      +------------------|--+   |   |
+|   |    |                     |     |                   |      |                  |  |   |   |
+|   |    |  [App]        [ENI]<---------------------------------------------- [HSM]+  |   |   |
+|   |    | Subnet 2            |     |                   |      | Subnet 2            |   |   |
+|   |AZ2 +---------------------+     |                   |      +---------------------+   |   |
+|   +-------------------------------------------------------------------------------------+   |
+|                                    |                   |                                    |
++------------------------------------+                   +------------------------------------+
+
+
+# Systems Manager Parameter Store
 
 
 
