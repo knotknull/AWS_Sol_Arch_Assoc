@@ -5216,6 +5216,17 @@ AWS
 
 # Serverless Summary
 
+cloud 1.0:   ELB  -> EC2 -> RDS
+
+cloud 2.0:   API Gateway  -> Lambda  -> DynamoDB / Aurora
+
+Lambda scale out
+ - functions are independent
+
+Lambda can trigger other functions
+X-Ray allows to debug serverless apps 
+
+Lambda can execute globally
 
 
 .
