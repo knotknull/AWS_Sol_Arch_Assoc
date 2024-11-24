@@ -4985,4 +4985,237 @@ Lambda do things globally, can back up S3 bucket to S3 bucket
 KNOW WHAT CAN TRIGGER LAMBDA
      i.e. RDS can't trigger Lambda
 
+
+Lambda Lab: Alexa
+
+Lambda Triggers:
+- Alexa
+- MSK
+- Apache Kafka
+- API Gateway
+- Cloud Formation
+- CloudWatch Logs
+- CodeCommit
+- CodePipeline
+- Cognito
+- Config
+- Connect
+- Dynamo DB
+- EFS
+- ELB / ALB
+- Event Bridge (CloudWatch Event) 
+- AWS IoT
+- Kinesis
+- S3
+- SNS
+- SQS
+
+
+# Serverless Application Model
+
+- CloudFormation extension optimized for serverless applications 
+- new resource types: functions, APIs, tables
+- SAM is a superset of CloudFormation 
+- run serverless applications locally using docker
+- package and deploy using CodeDeploy
+
+NOTE:  SAM template creates :
+   - Lambda function from local code 
+   - API Gateway endpoint
+   - mappings and permissions
+
+cli> sam ini
+
+
+Sample SAM Template (template.yaml):
+
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: >
+  sam-app
+
+  Sample SAM Template for sam-app
+
+Globals:
+  Function:
+    Timeout: 3
+
+Resource: 
+  HelloWorldFunction:
+    Type: AWS::Serverless::Function
+      Properties:
+        CodeURI: hellow_world/
+        Handler: app.lambda_handler
+        Runtime: python3.7
+        Events: 
+          HelloWorld: 
+            Type: Api
+            Properties:
+              Path: /hello
+              Method: get
+
+Outputs:
+
+ HellowWorldApi:
+   Description: "API Gateway endpoint URL for Prod state for Hello World function"
+   Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Resgion}.amazonaws.com/Prod/hello/"
+ HellowWorldFucntion:
+   Descritpion: "Hello World Lambda Function ARN"
+   Value: !GetAtt HelloWorldFunction.Arn
+ HellowWorldFucntionIamRole:
+   Descritpion: "Implicit IAM Role created for Hello WOrld function"
+   Value: !GetAtt HelloWorldFunctionRole.Arn
+
+
+NOTE: the app.py will have a third party requirement (requests)
+
+# to build serverless app
+sam build 
+
+# to deploy
+sam deploy --guided 
+
+output
+## NOTE: creates sam-cli IAM role and s3 bucket (where deployment is staged)
+##       arguments writtent to samconfig.toml
+
+Resources created: 
+AWS::Lambda::Permission
+AWS::IAM::Role
+AWS::Lambda::Function
+AWS::ApiGateway::Deployment
+AWS::ApiGateway::Stage
+AWS::ApiGateway::RestApi
+
+# Elastic Container Service (ECS)
+
+- managed container orchestration service 
+- create clusters to manage fleets of container deployments
+   - manages EC2 or Fargate instances
+
+- schedules containers for optimal placement
+- define rules for CPU and memory requirements
+- monitor resource utilization
+- deploy, update, rollback
+
+ECS is free, EC2 / Fargate usage is paid for
+
+- integrates with VPC, sec grp, EBS volumes, ELB
+- integrates with CloudTrail, CloudWatch
+
+
+ECS Components:
+
+cluster: logical collection of ECS resources (EC2, Fargate instances)
+
+task definition: defines application. Similar to Dockerfile but for containers on ECS
+        - can contain multiple containers
+
+container definition: inside a task definition, defines individual containers a task uses.
+        - controls CPU, memory allocation and port mappings
+
+task: single running copy of any containers defined by a task definition 
+        - i.e. one working copy of application
+
+service: allows task definitions to be scaled by adding tasks.  Defines min / max values
+
+registry: storage for container images (Elastic Container Registry / Docker Hub)
+
+
+Fargate:
+ - Serverless container enginer
+ - Works with ECS and EKS
+ - don't have to provision / manage servers
+ - only pay for what is needed to run containers
+ - each workoad runs in it's own kernel 
+   - work isolation and security
+
+When to choose EC2 over Fargate:
+ - Compliance requirements (need certain OS version or bespoke image)
+ - Require broader customization
+ - Require GPUs
+
+
+Elastic Kubernetes Service (EKS)
+ - K8s open source software that lets you deploy / manage containerized apps
+ - same toolset on prem and in cloud
+ - containsers grouped into pods
+ - supports EC2 and Fargate models
+
+Whey use EKS 
+ - already using EKS
+ - migrating to AWS
+
+
+Elastic Container Registry (ECR)
+ - managed docker container registry
+ - store, manage, deploy images
+ - integrated with ECS and EKS
+ - works with on-prem deployments
+ - highly available 
+ - integrated with IAM
+ - pay for storage and data transfer
+
+ECS can use ELB to distribute traffic across tasks in service
+ - supports ALB, NLB, CLB (Classic)
+     - ALB HTTP / HTTPS layer 7 traffic)
+     - NLB or CLB route TCP (layer 4 traffic)
+
+ALB allows:
+  - Containers to user dynamic host port mapping   
+    - multiple tasks from same service are allowed per container instance
+
+  - Path-based routing
+  - Priority Rules
+    Multiple services to use the same listener port on single ALB
+
+ALB recommended over NLB / CLB
+
+ECS Security
+
+Intance Roles vs. Task Roles
+
+EC2 Instance Role is applied to all tasks running in that EC2 instance
+
+Task Roles allow for finer granularity of permissions of tasks
+ - policy on a per task basis
+     i.e. 
+       Task Role A: s3 only
+       Task Role B: s3  + Dynamo DB 
+       Task Role C: Dynamo DB 
+
++---------------------+
+| cluster             |
+| +-----------------+ |
+| | service         | |
+| | +-------------+ | |
+| | | task        | | |
+| | | +---------+ | | |
+| | | |container| | | |
+| | | |         | | | |
+| | | +---------+ | | |
+| | +-------------+ | |
+| +-----------------+ |
++---------------------+
+
+network mode: awsvpc (CNI, container network interface )
+
+Fargate creates the following resources:
+ECS 
+  - cluster
+  - task defintion
+  - service
+AWS 
+  - log group
+  - CloudFormation stack
+  - VPC
+  - subnet 1
+  - subnet 2
+  - security group
+
+
+# Serverless Summary
+
+
+
 .
