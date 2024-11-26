@@ -410,4 +410,229 @@ point-in-time snapshots of this data to Amazon S3.
 
 
 
+
+
+You are reviewing Change Control requests, and you note that there is a change designed to reduce costs by updating the Amazon SQS "WaitTimeSeconds" attribute. What does this mean?
+
+
+he maximum long polling wait time is 20 seconds. Long polling helps reduce the cost of using Amazon SQS by eliminating the number of empty response
+
+
+When coding a routine to upload to S3, you have the option of using either single part upload or multipart upload. Identify all the possible reasons below to use Multipart upload.
+
+Choose 4
+
+- Multipart upload delivers the ability to begin an upload before you know the final object size.
+- Multipart upload delivers the ability to pause and resume object uploads.
+- Multipart upload delivers quick recovery from network issues.
+- Multipart upload delivers improved throughput.
+
+
+How long can a message be retained in an SQS Queue?
+- Messages can be retained in queues for up to 14 days.
+
+
+
+With EBS, I can ________.
+Choose 2
+
+Create an encrypted snapshot from an unencrypted snapshot by creating an encrypted copy of the unencrypted snapshot.
+
+Create an encrypted volume from a snapshot of another encrypted volume.
+
+
+
+Which native AWS service will act as a file system mounted on an S3 bucket?
+File Gateway
+A file gateway supports a file interface into Amazon Simple Storage Service (Amazon S3) and combines a service and a virtual software appliance. By using this combination, you can store and retrieve objects in Amazon S3 using industry-standard file protocols such as Network File System (NFS) and Server Message Block (SMB).
+
+
+The software appliance, or gateway, is deployed into your on-premises environment as a virtual machine (VM) running on VMware ESXi, Microsoft Hyper-V, or Linux Kernel-based Virtual Machine (KVM) hypervisor. The gateway provides access to objects in S3 as files or file share mount points.
+
+
+Change designed to reduce wasted CPU cycles by increasing the value of your Amazon SQS "VisibilityTimeout" attribute. What does this mean?
+
+Poor timing of SQS processes can significantly impact the cost effectiveness of the solution. To prevent other consumers from processing the message again, Amazon SQS sets a visibility timeout, a period of time during which Amazon SQS prevents other consumers from receiving and processing the message. The default visibility timeout for a message is 30 seconds. The minimum is 0 seconds. The maximum is 12 hours.
+
+
+A NAT instance sends and retrieves traffic on behalf of instances in a private subnet. As a result, source/destination checks on the NAT instance must be disabled to allow the sending and receiving traffic for the private instances. Route 53 resolves DNS names, so it would not help here. Traffic that is originating from your NAT instance will not pass through an ELB. Instead, it is sent directly from the public IP address of the NAT Instance out to the Internet.
+
+
+Virtual-host-style URLs and Path-Style URLs (soon to be retired) are supported by AWS. DNS compliant names are recommended for the URLs to access S3.
+
+
+By default, all EC2 instances are monitored by CloudWatch. Using the default settings, how many minutes elapse between when metrics are sent to CloudWatch? Using the detailed option, how many minutes would elapse between metrics being sent to CloudWatch?
+
+5 minutes, 1 minute
+
+
+You have created a VPC that contains two EC2 instances in different availability zones. Both are running web servers, hosting the same content. These web servers will be accessible via the internet. Which of the following DNS configurations could you consider?
+
+Using an ALB will provide a very fault tolerant setup. When creating a record in Route 53 to other AWS resources, including ALB's, you should use Alias records where available.
+
+The alternate option of attaching Elastic IPs directly to the instances with an "A" record accomplishes similar results, but doesn't incur the cost of an ALB.
+
+
+REVIEW TENANCY instance vs. default
+How do you revert your instance tenancy attribute of a VPC to default for new launched EC2 instances?​
+Modify the instance tenancy attribute of your VPC from dedicated to default using the AWS CLI, an AWS SDK, or the Amazon EC2 API.
+
+
+Which of the following services should you provision in multiple availability zones in order to achieve high availability?
+
+S3, SQS & DynamoDB are already built in a fault tolerant fashion, you do not need to provision these services across multiple availability zones. Therefore the correct answers are RDS and EC2
+
+You have been engaged by a company to design and lead the migration to an AWS environment. An argument has broken out about how to meet future Backup & Archive requirements and how to transition. The Security Manager and CTO are concerned about backup continuity and the ability to continue to access old tape archives. The Senior engineer is adamant that there is no way to retain the old backup solution in the AWS environment, and that they will lose access to all the current archives. What information can you share that will satisfy both parties in a cost-effective manner?
+
+
+Suggest that during transition, a second AWS Tape Gateway (VTL) solution could be commissioned in the customer's new VPC and integrated with existing VTS. At the same time, the existing Enterprise Backup Solution could be used to perform tape-to-tape copies to migrate the Archives from tape to VTL/VTS virtual tape.
+
+
+Meet with both parties and brief them on the AWS Tape Gateway (VTL) solution. Explain that it can initially be installed in the on-premises environment utilizing the existing enterprise backup product to start the transition without losing access to the existing backups and archives. Over the duration of the migration, most (if not all) the backup cycles will be replaced by the new VTL & VTS tapes.
+
+
+
+
+Provide the required access for the auditing tasks. Which of the following might you do?
+
+- Create an IAM User with a policy that can Read Security Group and NACL settings.
+Create an IAM user for the auditor and explain that the firewall functionality is implemented as stateful Security Groups, and stateless subnet NACLs.
+
+
+
+
+
+
+
+Amazon ElastiCache can fulfill a number of roles. Choose the operations from the following list which can be implemented using ElastiCache for Redis.
+
+- In-Memory Data Store
+- Pub/Sub
+- Sorted Sets
+
+However, Amazon ElastiCache for Redis doesn't support multithreaded 
+
+
+Amazon Web Services offers 4 different levels of support. Which of the following are valid support levels?
+The correct answers are Enterprise, Business, Developer. Plus the Basic free level. Remember that Free Tier is a Billing rebate not an account or support level.
+
+
+
+You work for a busy real estate company, and you need to protect your data stored on S3 from accidental deletion. Which of the following actions might you take to achieve this?
+The best answers are to allow versioning on the bucket and to protect the objects by configuring MFA-protected API access.
+
+
+- You need to store some easily re-creatable objects on S3. With rapid access times and cost-effectiveness in mind, which S3 storage class should you consider?
+S3 One Zone-IA is for data that is accessed less frequently, but requires rapid access when needed.
+
+
+You've been commissioned to develop a high-availability application with a stateless web tier. Identify the most cost-effective means of reaching this end.
+
+- With proper scripting and scaling policies, running EC2 On-Demand instances behind the Spot instances will deliver the most cost-effective solution because On-Demand instances will only spin up if the Spot instances are not available. DynamoDB lends itself to supporting stateless web/app installations better than RDS .
+
+
+
+To save money, you quickly stored some data in one of the attached volumes of an EC2 instance and stopped it for the weekend. When you returned on Monday and restarted your instance, you discovered that your data was gone. Why might that be?
+
+The volume was ephemeral, block-level storage. Data on an instance store volume is lost if an instance is stopped.
+The most likely answer is that the EC2 instance had an instance store volume attached to it. Instance store volumes are ephemeral, meaning that data in attached instance store volumes is lost if the instance stops.
+
+
+
+requires new instances of the Auto Scaling group to identify their public and private IP addresses. How can you achieve this?
+Using a Curl or Get Command to get the latest meta-data from http://169.254.169.254/latest/meta-data/
+
+
+
+
+
+You need to restrict access to an S3 bucket. Which of the following methods can you use to do so?
+
+Access Control Lists for S3 (Permissions)
+S3 Bucket policies
+
+
+You have been asked to deploy an application on a small number of EC2 instances. The application must be placed across multiple Availability Zones and should also minimize the chance of underlying hardware failure. Which of the following options would provide this solution?
+
+Spread Placement Groups are recommended for applications that have a small number of critical instances which need to be kept separate from each other. Launching instances in a Spread Placement Group reduces the risk of simultaneous failures that might occur when instances share the same underlying hardware. 
+
+What data formats are used to create CloudFormation templates?
+- YAML
+- JSON
+
+
+Your company likes the idea of storing files on AWS. Your company would like to store common/recently used files locally, while storing long-term colder data in AWS. Which Storage Gateway configuration would you use to achieve both of these ends?
+
+- File Gateway
+- Volume Gateway - Cached volumes
+
+A file gateway simplifies file storage in Amazon S3, integrates to existing applications through industry-standard file system protocols, and provides a cost-effective alternative to on-premises storage. It also provides low-latency access to data through transparent local caching.
+
+Cached volumes allow you to store common/recently used files locally, while storing long-term colder data in AWS. Cached volumes offer a substantial cost savings on primary storage and minimize the need to scale your storage on-premises.
+
+
+You create the VPC with a subnet bearing the CIDR address range of 10.0.1.0/24. Which of the following steps should you take to make this subnet public?
+
+- Create a route in the route table associated with the subnet allowing a route to the Internet Gateway (IGW).
+- Attach an Internet Gateway (IGW) to the VPC.
+
+The correct answers is to attach an Internet Gateway (IGW) and to create a route in the route table out to the Internet Gateway (IGW).
+
+
+AWS intends to shut down your spot instance; which of these scenarios is possible?
+
+Choose 3
+
+- AWS sends a notification of termination and you receive it 120 seconds before the intended forced shutdown.
+- AWS sends a notification of termination, but you do not receive it within the 120 seconds and the instance is shutdown.
+- AWS sends a notification of termination and you receive it 120 seconds before the forced shutdown, but the defined duration period (also known as Spot blocks) hasn't ended yet.
+
+
+When Amazon EC2 is going to interrupt your Spot Instance, it emits an event two minutes prior to the actual interruption (except for hibernation, which gets the interruption notice, but not two minutes in advance because hibernation begins immediately).
+
+It is possible that your Spot Instance is terminated before the warning can be made available.
+
+In rare situations, Spot blocks may be interrupted due to Amazon EC2 capacity needs. In these cases, AWS provides a two-minute warning before the instance is terminated, and customers are not charged for the terminated instances even if they have used them.
+
+
+DynamoDB has many use cases. Which of the following are legitimate use cases for DynamoDB?
+- Storing JSON
+- Storing the metadata of BLOB data stored in S3
+- Storing web session data
+
+Use cases include storing JSON data, BLOB data and storing web session data. You cannot run relational joins on DynamoDB and storing archived data would be better placed on Glacier
+
+
+You are building a NAT Instance in an m3.medium using the AWS Linux2 distro with amazon-linux-extras installed. Which of the following do you need to set?
+- Ensure that "Source/Destination Checks" is disabled on the NAT instance.
+
+With a NAT instance, the most common oversight is forgetting to disable Source/Destination Checks. TNote: This is a legacy topic and while it may appear on the AWS exam it will only do so infrequently.
+
+
+REVIEW:
+You are reviewing Change Control requests and you note that there is a proposed change designed to reduce errors due to SQS Eventual Consistency by updating the "DelaySeconds" attribute. What does this mean?
+
+Delay queues are similar to visibility timeouts because both features make messages unavailable to consumers for a specific period of time. 
+The difference between the two is that, for delay queues, a message is hidden when it is first added to queue, 
+whereas for visibility timeouts a message is hidden only after it is consumed from the queue.
+
+Delay queues let you postpone the delivery of new messages to a queue for a number of seconds, for example, when your consumer application needs additional time to process messages. If you create a delay queue, any messages that you send to the queue remain invisible to consumers for the duration of the delay period. The default (minimum) delay for a queue is 0 seconds. The maximum is 15 minutes. To set delay seconds on individual messages, rather than on an entire queue, use message timers to allow Amazon SQS to use the message timer's DelaySeconds value instead of the delay queue's DelaySeconds value. Reference: Amazon SQS delay queues.
+min delay queue 0 seconds **
+max delay queue 15 min **
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 .
