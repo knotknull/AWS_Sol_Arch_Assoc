@@ -1,0 +1,413 @@
+
+# Book your training 
+http://aws.training 
+
+ - sign up / sign in with amazon.com credentials
+ - Certification link
+    - takes you to certmetrics.com
+ - left hand side Exam Regriation: 
+ - Schedule an exam
+ -  select  AWS Certified Solutions Architect - Associate
+        - hit authoriz
+        - then hit schedule 
+
+
+Test center County College of Morris
+
+
+
+County College of Morris
+County College of Morris Testing Center
+214 Center Grove Rd.
+Randolph, New Jersey 07869
+United States
+Phone:
+973-328-5166
+
+
+Directions to the County College of Morris located at 214 Center Grove Road, Randolph, NJ 07869.
+
+Entrances are on Center Grove Road, Route 10 East and Dover Chester Road.
+
+NOTE; ONCE YOU REACH THE COUNTY COLLEGE OF MORRIS, GO TO PARKING LOT 10 (PUBLIC SAFETY). THEY WILL GIVE YOU A TEMPORARY PARKING PASS. THE OFFICER WILL TELL YOU WHERE YOU CAN PARK.
+
+
+IN CASE OF INCLEMENT WEATHER PLEASE CHECK THE COUNTY COLLEGE OF MORRIS WEBSITE FOR CLOSURES:www.ccm.edu
+
+12:45 to 3:05pm
+
+## Quiz #1
+
+
+
+
+
+
+
+
+
+
+
+
+
+max visiblity timeout for SQS FIFO
+ - 12 hrs
+
+Geoproximity and Geolocation routing policies: review
+
+
+Name limit value of DynamoDB
+     - combined value and name limit for DDB is 400kb
+
+
+Volume Gateway:
+  - stored volumes: low latency
+  - cached volumes: caches to S3
+
+When using a Dedicated Instance, which of the following tenancy attributes are you able to transition between by stopping the instance and starting it again?
+Dedicated & Host ??
+The tenancy of an instance can only be changed between variants of ‘dedicated' tenancy hosting. It cannot be changed from or to default tenancy hosting. Dedicated Instances.
+
+
+Which of the following strategies does AWS use to deliver the promised levels of DynamoDB performance?
+AWS DynamoDB delivers predictable performance brought on by the use of Solid State Drives, better known as SSDs.
+DynamoDB makes use of parallel processing to achieve predictable performance. You visualise each partition as an independent DB server of fixed size. Each responsible for a defined block of data. In SQL terminology it is called sharding.
+
+
+What are the available AWS Support Plans?
+Basic (included for all AWS customers), Developer, Business, and Enterprise are the available AWS Support Plans. Reference: Compare AWS Support Plans.
+
+
+What is the maximum response time for a Business Level 'production down' Support Case?
+The business support plan has a maximum response time of < 1 hour for "production system down" cases.
+
+
+
+You are a systems administrator and you need to monitor the health of your production environment. 
+You decide to do this using CloudWatch. However, you notice that you cannot see the health of every important metric 
+in the default dashboard. When monitoring the health of your EC2 instances, for which of the following metrics 
+do you need to design a custom CloudWatch metric?
+ - Memory Usage
+
+Remember, under the shared security model, AWS can see the instance, but not inside the instance to indicate how it is doing. 
+AWS can see that you have memory, but not how much of the memory is being used. In the case of CPU, AWS can see how 
+much of CPU you are using, but cannot see what you are using it for.
+
+
+
+Route 53, the AWS implementation of DNS, supports a number of Routing policies. Which of the following are valid Policy types?
+
+
+Failover Routing Policy
+Geolocation Routing Policy
+Geoproximity Routing Policy
+Simple Routing Policy
+Latency Routing Policy
+
+
+You are a consultant planning to deploy DynamoDB across three AZs. Your lead DBA is concerned about data consistency. 
+Which of the following do you advise the lead DBA to do?
+
+To ask the development team to code for strongly consistent reads. As the consultant, you will advise the CTO it may 
+have higher latency than eventually consistent reads.
+
+When you request a strongly consistent read, DynamoDB returns a response with the most up-to-date data, 
+reflecting the updates from all prior write operations that were successful. However, this consistency comes with 
+some disadvantages such as read might not be available if there is a network delay or outage, higher latency than 
+eventually consistent reads, global secondary indexes not supported, and use of more throughput capacity than 
+eventually consistent reads.
+
+S3 - IA
+The storage savings between IA and OneZone-IA are about $0.0025 this is small compared to the $10 for licensing 
+if many files are lost. The durability of S3 - IA and S3 - OneZone-IA is the same: 99.999999999%., but there is 
+far more of a risk of high costs if it is in one zone. S3 - IA guards against that possibility.
+
+
+A user of your web-site makes an HTTP request to access a static resource on your server. 
+The request is automatically redirected to the nearest CloudFront server. For some reason, 
+the requested resource does not exist on the CloudFront server. Which of the following is true?
+
+CloudFront will query the origin server and then cache the resource on the edge location.
+CloudFront checks its cache for the requested files. If the files are in the cache, CloudFront returns them to the user. 
+If the files are not in the cache, it does the following: a) CloudFront compares the request with the specifications in 
+your distribution and forwards the request for the files to your origin server for the corresponding file type—for example, 
+to your Amazon S3 bucket for image files and to your HTTP server for HTML files. b) The origin servers send the files back 
+to the edge location. c) As soon as the first byte arrives from the origin, CloudFront begins to forward the files to the user. 
+CloudFront also adds the files to the cache in the edge location for the next time someone requests those files. 
+Reference: How CloudFront delivers content to your users.
+
+
+n order to keep costs low, they run the analysis for only a few hours in the early hours of the morning, using spot instances for the task nodes. The core nodes are on-demand instances. Lately however the EMR jobs have been failing. This is due to spot instances being unexpectedly terminated. Which of the following is recommended to have the best experience in terms of availability using the Spot service?
+choose 2
+- Use proactive capacity rebalancing.
+- Use the capacity optimized allocation strategy.
+
+Correct Answer
+
+Capacity Rebalancing helps you maintain workload availability by proactively augmenting your fleet with a new Spot Instance before a running Spot Instance receives the two-minute Spot Instance interruption notice. When Capacity Rebalancing is enabled, Auto Scaling or Spot Fleet attempts to proactively replace Spot Instances that have received a rebalance recommendation, providing the opportunity to rebalance your workload to new Spot Instances that are not at elevated risk of interruption. Capacity Rebalancing complements the capacity optimized allocation strategy (which is designed to help find the most optimal spare capacity) and the mixed instances policy (which is designed to enhance availability by deploying instances across multiple instance types running in multiple Availability Zones). Reference: Best practices for EC2 Spot.
+
+Allocation strategies in Auto Scaling groups help you to provision your target capacity without the need to manually look for the Spot Instance pools with spare capacity. AWS recommends using the capacity optimized strategy because this strategy automatically provisions instances from the most-available Spot Instance pools. You can also take advantage of the capacity optimized allocation strategy in Spot Fleet. Because your Spot Instance capacity is sourced from pools with optimal capacity, this decreases the possibility that your Spot Instances are reclaimed. Reference: Best practices for EC2 Spot.
+
+
+How does AWS deliver high availability for DynamoDB?
+DynamoDB data is automatically replicated across multiple AZs.
+
+
+Which options are valid to protect your Amazon S3 data at rest using server-side encryption?
+choose 3 
+- Server-Side Encryption with Customer-Provided Keys (SSE-C)
+- Server-Side Encryption with Customer Master Keys (CMKs) Stored in AWS Key Management Service (SSE-KMS)
+- Server-Side Encryption with Amazon S3-Managed Keys (SSE-S3)
+
+With Server-Side Encryption with Customer-Provided Keys (SSE-C), you manage the encryption keys and Amazon S3 manages the encryption, as it writes to disks, and decryption, when you access your objects. For more information, see Protecting data using server-side encryption with customer-provided encryption keys (SSE-C).
+
+Server-Side Encryption with Customer Master Keys (CMKs) Stored in AWS Key Management Service (SSE-KMS) is similar to SSE-S3, but with some additional benefits and charges for using this service. There are separate permissions for the use of a CMK that provides added protection against unauthorized access of your objects in Amazon S3. SSE-KMS also provides you with an audit trail that shows when your CMK was used and by whom. Additionally, you can create and manage customer managed CMKs or use AWS managed CMKs that are unique to you, your service, and your Region. For more information, see Protecting Data Using Server-Side Encryption with CMKs Stored in AWS Key Management Service (SSE-KMS).
+
+When you use Server-Side Encryption with Amazon S3-Managed Keys (SSE-S3), each object is encrypted with a unique key. As an additional safeguard, it encrypts the key itself with a master key that it regularly rotates. Amazon S3 server-side encryption uses one of the strongest block ciphers available, 256-bit Advanced Encryption Standard (AES-256), to encrypt your data. For more information, see Protecting data using server-side encryption with Amazon S3-managed encryption keys (SSE-S3).
+
+
+In order to run your application leveraging those AMI's in your backup region, which process would you follow?
+
+- Copy the AMI from us-west-2 to us-west-1. After the copy operation is complete, apply launch permissions, user-defined tags, and security group configurations.
+
+AWS does not copy launch permissions, user-defined tags, or security group rules from the source AMI to the new AMI. 
+After the copy operation is complete, you can apply launch permissions, user-defined tags, and security group configurations 
+to the new AMI.
+
+
+By definition, a public subnet within a VPC is one that ________.
+ - Has at least one route in its routing table that uses an Internet Gateway (IGW).
+
+
+
+
+When editing Amazon S3 bucket permissions (policies and ACLs), to whom does the concept of the "resource owner" refer?
+
+- The "resource owner" refers to the AWS account that creates Amazon S3 buckets and objects.
+
+The "resource owner" concept comes into play especially when setting or locking down access to various objects. Reference: Amazon S3 bucket and object ownership
+
+
+
+
+
+They store their research data on S3. However, an intern recently deleted some critical files accidentally. 
+You've been asked to prevent this from happening in the future. Which of the following solutions can be used to 
+prevent accidental data loss?
+
+- Enable S3 versioning on the bucket & enable MFA Delete on the bucket.
+
+To prevent or mitigate future accidental deletions, consider the following features: Enable versioning to keep historical versions of an object and MFA Delete to require multi-factor authentication (MFA) when deleting an object version. Reference: How can I audit deleted or missing objects from my Amazon S3 bucket?
+
+
+
+VPC with a subnet that has a CIDR block of 10.0.3.0/28 address range. Inside this subnet, you have 2 web servers, 2 application servers, 2 database servers, and a NAT. You have configured an Autoscaling group on the two web servers to automatically scale when the CPU utilization goes above 90%. Several days later you notice that autoscaling is no longer deploying new instances into the subnet, despite the CPU utilization of all web servers being at 100%. Which of the following answers may offer an explanation?
+
+- AWS reserves both the first four and the last IP address in each subnet's CIDR block.
+- Your Autoscaling Group (ASG) has provisioned too many EC2 instances and has exhausted the number of internal IP addresses available in the subnet.
+
+A /28 subnet will only have 16 addresses available. AWS reserve both the first four and last IP addresses in each subnet’s 
+CIDR block. It is likely that your autoscaling group has provisioned too many EC2 instances and you have run out of 
+internal private IP addresses.
+
+
+
+You successfully configure VPC Peering between VPC A and VPC B. You then establish an IGW and a Direct Connect connection in 
+VPC B. Can instances in VPC A connect to your corporate office via the Direct Connect service, and connect to the 
+Internet via the IGW?
+
+- VPC peering does not support edge to edge routing.
+
+VPC peering only routes traffic between source and destination VPCs. VPC peering does not support edge to edge routing. Reference: Unsupported VPC peering configurations.
+
+
+Which of the following database technologies are supported by RDS.
+choose 3
+- Oracle
+- MariaDB
+- Aurora
+
+RDS supports the MariaDB, PostgreSQL, MySQL, SQLServer, Oracle, and Aurora database engines.
+
+
+
+However, you are told that the bucket name is already taken. What should you do to resolve this?
+ - Bucket names are global, not regional. This is a popular bucket name and is already taken. You must choose another bucket name.
+
+
+You have created 15 users for your system administrators. What further steps do you need to take to enable your 
+system administrators to get access to the AWS console in a secure fashion?
+choose 2
+- Generate a password for each administrator user and give these passwords to your system administrators.
+- Have each user set up multi-factor authentication once they have logged in to the console.
+
+You should generate a password for each administrator user and give these passwords to your system administrators. You should then have each user set up multi-factor authentication once they have been able to log in to the console. You cannot use the secret access key and access key id to log in to the AWS console; rather, these credentials are used to call Amazon API’s.
+
+You should generate a password for each administrator user and give these passwords to your system administrators. It is best practice to require the user to change their password after the initial logon. You should then have each user set up multi-factor authentication once they have been able to log in to the console. You cannot use the secret access key and access key id to log in to the AWS console; rather, these credentials are used to call Amazon APIs.
+
+
+
+
+
+Which of the following features only relate to Spread Placement Groups?
+
+- A spread placement group supports a maximum of seven running instances per Availability Zone.
+
+Spread placement groups have a specific limitation that you can only have a maximum of 7 running instances per Availability Zone 
+and therefore this is the only correct option. Deploying instances in a single Availability Zone is unique to 
+Cluster Placement Groups only and therefore is not correct. The other two remaining options are common to all placement group 
+types and so are not specific to Spread Placement Groups.
+
+
+
+
+Which AWS service does not allow native encryption of data while at rest?
+
+- Elasticache for Memcached
+
+Elasticache for Memcached does not offer native encryption of data at rest. For a managed caching solution with encryption at rest, you can use Elasticache for Redis.
+
+
+
+Which of the following Amazon S3 Storage Classes offer 99.999999999% (11 x 9s) durability?
+
+- Standard, Standard-Infrequent Access, One Zone-Infrequent Access
+
+Currently the S3 Classes are; Standard, Standard-Infrequent Access, One Zone-Infrequent Access, Reduced Redundancy Storage 
+and for archive, Glacier & Glacier Deep Archive. Reduced Redundancy Storage is the only S3 Class that does not 
+offer 99.999999999% durability and therefore any of the answers that contain Reduced Redundancy Storage cannot be correct.
+
+
+Which of the following are valid Route 53 routing policies?
+choose 3
+
+- Simple
+- Weighted
+- Latency
+
+Route 53 has the following routing policies - Simple, Weighted, Latency, Failover, Multivalue answer, Geoproximity. and Geolocation
+
+What is true about Amazon S3 URLs for accessing a bucket?
+choose 3
+- Path-Style URLs will be eventually deprecated in favor of virtual hosted-style URLs for S3 bucket access
+- Path-Style URLs (such as https://s3.Region.amazonaws.com/bucket-name/key name) are supported to access an S3 bucket
+- Virtual-host-style URLs (such as: https://bucket-name.s3.Region.amazonaws.com/key name) are supported to access an S3 bucket
+
+Path-Style URLs will be eventually deprecated. Virtual-host-style URLs are strongly recommended.
+Reference: Amazon S3 Path Deprecation Plan – The Rest of the Story.
+Both virtual-host-style and Path-Style URLs are supported, but path-style URLs will be eventually deprecated in favor of virtual hosted-style URLs for S3 bucket access. DNS compliant names are also recommended.
+Reference: Virtual hosting of buckets.
+Both Virtual-host-Style and Path-Style URLs are supported, but path-style URLs will be eventually deprecated in favor of virtual hosted-style URLs for S3 bucket access. DNS compliant names are also recommended.
+
+
+
+messages presented to the support team are not arriving in the order in which they were generated, and occasionally they are 
+receiving a duplicate copy of the message. You know that this is due to the way that the underlying SQS standard queue 
+service is being used to manage messages. Which of the following are correct explanations?
+
+choose 2
+
+- SQS uses multiple hosts, and each host holds only a portion of all the messages. When a staff member calls for their next 
+  message, the consumer process does not see all the hosts or all the messages. As such, messages are not necessarily delivered 
+  in the order in which they were generated.
+
+- If an agent abandons a message or takes a break before finishing with a message, it will be offered in the queue again. 
+  In order to ensure that no message is lost, a message will persist in the SQS queue until it is processed successfully or 
+  until the message retention quota is reached. 
+
+Standard queues support at-least-once message delivery. However, occasionally (because of the highly distributed architecture that allows nearly unlimited throughput), more than one copy of a message might be delivered out of order.
+
+When a consumer receives and processes a message from a queue, the message remains in the queue. Amazon SQS doesn't automatically delete the message. To prevent other consumers from processing the message again, Amazon SQS sets a visibility timeout, a period of time during which Amazon SQS prevents other consumers from receiving and processing the message. The visibility timeout begins when Amazon SQS returns a message. During this time, the consumer processes and deletes the message. However, if the consumer fails before deleting the message and your system doesn't call the DeleteMessage action for that message before the visibility timeout expires, the message becomes visible to other consumers and the message is received again. If a message must be received only once, your consumer should delete it within the duration of the visibility timeout.
+
+
+Attached to your EC2 instances are multiple EBS volumes, and you must ensure this data is encrypted. 
+Which of the following options will allow you to do this?
+choose 3
+- Use third party volume encryption tools.
+- Encrypt the data using native encryption tools available in the operating system.
+- Encrypt your data inside your application, before storing it on EBS.
+
+
+
+Encryption by default is a Region-specific setting. It needs to be enabled to encrypt EBS volumes when instances are launched.
+Correct Answer
+Encrypting Amazon EBS volumes attached to Windows instances can be done using BitLocker or Encrypted File System (EFS) as well as open source applications like TrueCrypt. Some common block-level open source encryption solutions for Linux are Loop-AES, dm-crypt (with or without) LUKS, and TrueCrypt.
+This is a valid approach to protect sensitive files inside an EBS volume.
+
+
+
+
+
+​A client is concerned that someone other than approved administrators is trying to gain access to the Linux web app instances in their VPC. She asks what sort of network access logging can be added. Which of the following might you recommend?​
+
+- Create a flow log for a VPC, subnet, or individual network interface. Publish the flow log data to either Amazon CloudWatch Logs or Amazon S3. 
+
+VPC Flow Logs is a feature that enables you to capture information about the IP traffic going to and from network interfaces 
+in your VPC. Flow log data can be published to Amazon CloudWatch Logs or Amazon S3. After you've created a flow log, you can 
+retrieve and view its data in the chosen destination. You can create a flow log for a VPC, a subnet, or a network interface. 
+If you create a flow log for a subnet or VPC, each network interface in that subnet or VPC is monitored.
+
+
+You have been asked by your employer to create an identical copy of your production environment in another Region for 
+disaster recovery purposes. In the list below, which AWS resources would you NOT need to recreate, because they are 
+available universally across the console?
+
+- Identity Access Management Roles
+- Route 53
+
+Identity Access Management Roles are available universally across the AWS management console and do not need to be recreated in a different region.
+Route 53 configurations are available universally across the AWS management console and do not need to be recreated in a different region.
+
+
+
+77% !!!!! FAILED
+
+
+
+
+
+
+
+
+REVIEW: 
+
+Allocation strategies in Auto Scaling groups help you to provision your target capacity without the need to manually look for the 
+Spot Instance pools with spare capacity. AWS recommends using the capacity optimized strategy because this strategy automatically 
+provisions instances from the most-available Spot Instance pools. You can also take advantage of the capacity optimized allocation 
+strategy in Spot Fleet. Because your Spot Instance capacity is sourced from pools with optimal capacity, this decreases the 
+possibility that your Spot Instances are reclaimed. Reference: Best practices for EC2 Spot.
+
+Capacity Rebalancing helps you maintain workload availability by proactively augmenting your fleet with a new Spot Instance before a 
+running Spot Instance receives the two-minute Spot Instance interruption notice. When Capacity Rebalancing is enabled, 
+Auto Scaling or Spot Fleet attempts to proactively replace Spot Instances that have received a rebalance recommendation, 
+providing the opportunity to rebalance your workload to new Spot Instances that are not at elevated risk of interruption. 
+Capacity Rebalancing complements the capacity optimized allocation strategy (which is designed to help find the most optimal spare capacity) 
+and the mixed instances policy (which is designed to enhance availability by deploying instances across multiple instance types running 
+in multiple Availability Zones). Reference: Best practices for EC2 Spot.
+
+
+Elasticache for Memcached does not offer native encryption of data at rest. For a managed caching solution with encryption at rest, 
+you can use Elasticache for Redis.
+
+Being automatically replicated across multiple AZs makes DynamoDB highly available.
+
+Remember, under the shared security model, AWS can see the instance, but not inside the instance to indicate how it is doing. 
+AWS can see that you have memory, but not how much of the memory is being used. In the case of CPU, AWS can see how much of CPU 
+you are using, but cannot see what you are using it for.
+
+
+The visibility timeout controls how long a message is invisible in the queue while it is being worked on by a processing instance. 
+This interval should not be confused with how long the message can remain in the queue.
+
+Route 53 has the following routing policies: Simple, Weighted, Latency, Failover, Multivalue answer, Geoproximity. and Geolocation
+
+A volume gateway provides cloud-backed storage volumes that you can mount as Internet Small Computer System Interface (iSCSI) 
+devices from your on-premises application servers. The gateway supports stored volumes if you need low-latency access to your 
+entire dataset. You can configure your on-premises gateway to store all your data locally, then asynchronously back up 
+point-in-time snapshots of this data to Amazon S3. 
+
+
+
+
+
+.
